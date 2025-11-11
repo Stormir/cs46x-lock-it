@@ -45,11 +45,11 @@ Glimmr is an attempt to address the gender gap on dating apps by putting women's
 
 ## Motivations
 
->There's way more men on dating apps than women. A quick Google search suggests a ratio between 60:40 for Hinge and OKCupid and 75:25 for Tinder and Bumble. Why do you think that is?
+> There's way more men on dating apps than women. A quick Google search suggests a ratio between 60:40 for Hinge and OKCupid and 75:25 for Tinder and Bumble. Why do you think that is?
 >
->The consensus among my female friends is that a) women have valid concerns about their safety and b) the volume of messages they get is literally overwhelming. On the face of it, this is a user experience problem, but I would argue that it's also a usability problem: no one's getting what they want out of these apps.
+> The consensus among my female friends is that a) women have valid concerns about their safety and b) the volume of messages they get is literally overwhelming. On the face of it, this is a user experience problem, but I would argue that it's also a usability problem: no one's getting what they want out of these apps.
 >
->I'm curious what a dating app designed for women would look like--because it's not Bumble.
+> I'm curious what a dating app designed for women would look like--because it's not Bumble.
 
 --Ellie
 
