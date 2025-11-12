@@ -1,16 +1,20 @@
-const Home = ({ setPageLanding }) => {
-  const handleClickSignOut = () => setPageLanding();
+import React from "react";
 
-  return (
-    <>
-      <header>
-        <h1>Glimmr</h1>
-      </header>
-      <main>
-        <button onClick={handleClickSignOut}>Sign Out</button>
-      </main>
-    </>
-  );
-};
+interface HomeProps {
+  setPageLanding: () => void;
+}
+
+const Home: React.FC<HomeProps> = ({ setPageLanding }) => (
+  <>
+    <header>
+      <h1>Glimmr</h1>
+    </header>
+    <main>
+      <button onClick={() => setPageLanding()} type="button">
+        Sign Out
+      </button>
+    </main>
+  </>
+);
 
 export default Home;

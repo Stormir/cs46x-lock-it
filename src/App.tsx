@@ -1,24 +1,22 @@
-import { useState } from "react";
+import React from "react";
 
 import Home from "./pages/Home.tsx";
 import Landing from "./pages/Landing.tsx";
 
+import assert from "./utils/assert.tsx";
+
+type PageEnum = "Home" | "Landing";
+
 const App = () => {
-  const Pages = {
-    Home: "Home",
-    Landing: "Landing"
-  };
-
-  const [page, setPage] = useState(Pages.Landing);
-
-  const setPageHome = () => setPage(Pages.Home);
-  const setPageLanding = () => setPage(Pages.Landing);
+  const [page, setPage] = React.useState<PageEnum>("Landing");
 
   switch (page) {
     case "Home":
-      return <Home setPageLanding={setPageLanding} />;
+      return <Home setPageLanding={() => setPage("Landing")} />;
     case "Landing":
-      return <Landing setPageHome={setPageHome} />;
+      return <Landing setPageHome={() => setPage("Home")} />;
+    default:
+      return assert.never(page);
   }
 };
 
