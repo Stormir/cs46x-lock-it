@@ -1,6 +1,6 @@
 # Creative Commons Attribution-NonCommercial 4.0 International Public License
 
-Copyright January 2026 Catherine Kaye Dela Chica, Stormi Rhodes, Yuritzia Peraza
+Copyright 2025 Catherine Kaye Dela Chica, Ellie Frost, Stormi Rhodes, Yuritzia Peraza
 
 This project includes material derived from prior work licensed under
 Creative Commons Attribution-NonCommercial 4.0. See ATTRIBUTION.md for prior contributor credits.
