@@ -2,6 +2,7 @@ import React from "react";
 
 import Modal from "./Modal";
 import { signIn } from "../api/auth";
+import { ComingSoon } from "./ComingSoon";
 
 interface ModalSignInProps {
   setPageHome: () => void;
@@ -58,9 +59,12 @@ const ModalSignIn: React.FC<ModalSignInProps> = ({
 
   return (
     <Modal>
-      <h2>Sign In</h2>
+      {/* Sets up email form field */}
+      <h2 className="text-center text-lg font-semibold text-[#382543] mb-4">
+        Sign In  
+      </h2>
       <form onSubmit={handleSubmitForm}>
-        <label>
+        <label  className="flex flex-col gap-1 text-sm text-[#382543]">
           Email:
           <input
             name="email"
@@ -68,9 +72,12 @@ const ModalSignIn: React.FC<ModalSignInProps> = ({
             required
             type="email"
             value={form.email}
+            className="w-full rounded-md border border-gray-300 px-3 py-2"
           />
         </label>
-        <label>
+
+        {/* Sets up password form field*/}
+        <label className="flex flex-col gap-1 text-sm text-[#382543]">
           Password:
           <input
             name="password"
@@ -78,12 +85,41 @@ const ModalSignIn: React.FC<ModalSignInProps> = ({
             required
             type="password"
             value={form.password}
+            className="w-full rounded-md border border-gray-300 px-3 py-2"
           />
         </label>
-        <button type="submit">Submit</button>
-        <button type="reset" onClick={handleResetForm}>
-          Cancel
+
+        {/* Stormi: Sets up forget password component
+          enables coming soon component 
+        */}
+        <div className="flex items-center gap-2 mt-1">
+          <button
+            type="button"
+            disabled
+            className="text-sm underline opacity-60 cursor-not-allowed"
+          >
+          forgot password
         </button>
+        <ComingSoon />
+        </div>
+        
+        <div className="mt-5 flex justify-center gap-6">
+          <button
+            type="submit"
+            className="text-sm underline text-[#382543] font-medium"        
+          > 
+            Submit
+          </button>
+
+          <button
+            type="reset" 
+            onClick={handleResetForm}
+            className="text-sm underline text-[#382543] font-medium"  
+          >
+            Cancel
+          </button>
+        </div>
+
         <label>
           <input
             checked={form.rememberMe}
