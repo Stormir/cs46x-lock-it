@@ -1,4 +1,5 @@
 # Lock it - Closed, safe connnections
+<img width="687" height="213" alt="image" src="https://github.com/user-attachments/assets/fa4c2b31-82e2-4163-bc72-5c418fe2ffa0" />
 
 ---
 
