@@ -10,6 +10,7 @@ Current project maintainers and primary contributors of project (September 2025 
 - Stormi Rhodes
 
 Other contributors and credits to:
-- Ellie Frost, original member in OSU CS46x (earlier - January 2026)
+- Ellie Frost, original member in OSU CS46x (September 2025 - January 2026)
 - Mayaal Khan, contributing member from CS36x (earlier - Spring 2025)
 - Ken Wheeler, contributing member from CS36x (earlier - Spring 2025)
+- Michelle Ma, contributing member from CS35x (earlier - Spring 2025)
