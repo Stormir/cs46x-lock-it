@@ -47,3 +47,20 @@ Lock It aims to provide a safe space for users when finding their match. Whether
 > are the norm—where finding a trusted “Lock It” match feels natural, expected, and empowering.
 
 -- C. Kaye Dela Chica
+
+## Meet the team
+### Catherine Kaye Dela Chica
+- email: [kaye.delachica@gmail.com](mailto:kaye.delachica@gmail.com)
+- github: [ckayed](https://github.com/ckayed)
+- linkedIn: link here
+
+### Yuritzia Peraza
+- Email: perazaortega1979@gmail.com
+- github: perazay
+- linkedIn: www.linkedin.com/in/perazay
+
+
+### Stormi Rhodes
+- email: stormi.rhodes@gmail.com
+- github: Stormir
+- linkedIn: link here
