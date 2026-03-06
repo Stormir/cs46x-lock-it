@@ -5,6 +5,7 @@ import { signOut } from "../api/auth";
 // Will populate with real data
 interface HomeProps {
   setPageLanding: () => void;
+  setPageVerifyTest: () => void;
 }
 
 type Match = {
@@ -44,7 +45,7 @@ const mockMatch: Match = {
   aboutMe: "Add description here :)"
 };
 
-const Home: React.FC<HomeProps> = ({ setPageLanding }) => {
+const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const handleClickSignOut = async () => {
@@ -87,6 +88,18 @@ const Home: React.FC<HomeProps> = ({ setPageLanding }) => {
         {menuOpen && (
           <div className="mx-auto max-w-sm px-4 pb-3">
             <div className="rounded-2xl bg-white/10 p-2 ring-1 ring-white/15">
+              
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setPageVerifyTest();
+                }}
+                className="w-full rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
+              >
+                Verify Test
+              </button>
+
               <button
                 type="button"
                 onClick={handleClickSignOut}

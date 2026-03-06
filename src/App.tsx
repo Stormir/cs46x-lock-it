@@ -5,8 +5,9 @@ import Landing from "./pages/Landing.tsx";
 
 import { useSession } from "./api/useSession"; 
 import assert from "./utils/assert.tsx";
+import VerifyTest from "./pages/VerifyTest.tsx";
 
-type PageEnum = "Home" | "Landing";
+type PageEnum = "Home" | "Landing" | "VerifyTest";
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
@@ -14,26 +15,36 @@ const App = () => {
   // Supabase session tracking
   const { session, loading } = useSession();
 
-   React.useEffect(() => {
-    if (session && page !== "Home") {
-      // If users logged in, go to Home
-      setPage("Home");          
-    } else if (!session && page !== "Landing") {
-      // if users logged out, go to Landing
-      setPage("Landing");        
-    }
-  }, [session, page]);
+  React.useEffect(() => {
+  if (session && page === "Landing") {
+    setPage("Home");
+  } else if (!session && page !== "Landing") {
+    setPage("Landing");
+  }
+}, [session, page]);
 
   if (loading) return <p>Loading...</p>;
 
   switch (page) {
-    case "Home":
-      return <Home setPageLanding={() => setPage("Landing")} />;
-    case "Landing":
-      return <Landing setPageHome={() => setPage("Home")} />;
-    default:
-      return assert.never(page);
-  }
+  case "Home":
+    return (
+      <Home
+        setPageLanding={() => setPage("Landing")}
+        setPageVerifyTest={() => setPage("VerifyTest")}
+      />
+    );
+  case "VerifyTest":
+    return (
+      <VerifyTest
+        onBack={() => setPage("Home")}
+      />
+    );
+  case "Landing":
+    return <Landing setPageHome={() => setPage("Home")} />;
+  default:
+    return assert.never(page);
+}
+
 };
 
 export default App;
