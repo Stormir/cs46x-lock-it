@@ -71,17 +71,17 @@ const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest }) => {
             </div>
           </button>
 
-          <div className="h-10 w-10 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30">
+          <div className="h-12 w-12 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30">
             <div className="h-full w-full bg-white/10" />
           </div>
 
-          <div className="flex-1 text-center">
-            <div className="text-sm font-semibold tracking-wide text-white">
+          <div className="flex-1 text-right">
+            <div className="text-2xl font-bold tracking-tight text-white">
               Lock It
             </div>
           </div>
 
-          <div className="w-10" />
+          <div className="w-0" />
         </div>
 
         {/* dropdown menu */}
