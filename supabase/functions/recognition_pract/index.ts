@@ -31,70 +31,91 @@ function safeObject(raw: string | null): Record<string, JsonValue> {
 }
 
 // Define CORS headers so browsers are allowed to call this function
-  // Allow requests from ANY domain (useful during development)
-  // Allow these request headers to be sent by frontend apps
-  // Only allow POST requests + OPTIONS preflight checks
+// Allow requests from ANY domain (useful during development)
+// Allow these request headers to be sent by frontend apps
+// Only allow POST requests + OPTIONS preflight checks
 const corsHeaders: Record<string, string> = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers":
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 // Helper function to return JSON responses consistently
 function json(
-    //Status code. Ex 400
-    status: number,
-    body: unknown,
-    //additional headers
-    extraHeaders: Record<string, string> = {},
+  //Status code. Ex 400
+  status: number,
+  body: unknown,
+  //additional headers
+  extraHeaders: Record<string, string> = {},
 ) {
-    // Create a response object with JSON string body
-    return new Response(JSON.stringify(body), {
-        status,
-        // Merge default CORS headers, extra headers, json content 
-        headers: { ...corsHeaders, ...extraHeaders, "Content-Type": "application/json" },
-    });
+  // Create a response object with JSON string body
+  return new Response(JSON.stringify(body), {
+    status,
+    // Merge default CORS headers, extra headers, json content
+    headers: {
+      ...corsHeaders,
+      ...extraHeaders,
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 // Helper: pull a number from a few common CompreFace response shapes
 function getPathValue(
-    obj: unknown,
-    path: string[],
+  obj: unknown,
+  path: string[],
 ): unknown {
-    let current: unknown = obj;
-    for (const key of path) {
-        if (
-            current &&
-            typeof current === "object" && key in (current as Record<string, unknown>)
-        ) {
-            current = (current as Record<string, unknown>)[key];
-        } else {
-            return undefined;
-        }
+  let current: unknown = obj;
+  for (const key of path) {
+    if (
+      current &&
+      typeof current === "object" && key in (current as Record<string, unknown>)
+    ) {
+      current = (current as Record<string, unknown>)[key];
+    } else {
+      return undefined;
     }
-    return current;
+  }
+  return current;
 }
 
 function pickNumber(obj: unknown, paths: string[]): number | null {
-    for (const p of paths) {
-        const value = getPathValue(obj, p.split("."));
-        if (typeof value === "number" && Number.isFinite(value)) {
-            return value;
-        }
+  for (const p of paths) {
+    const value = getPathValue(obj, p.split("."));
+    if (typeof value === "number" && Number.isFinite(value)) {
+      return value;
     }
-    return null;
+  }
+  return null;
 }
 
 function pickBoolean(obj: unknown, paths: string[]): boolean | null {
-    for (const p of paths) {
-        const value = getPathValue(obj, p.split("."));
-        if (typeof value === "boolean") {
-            return value;
-        }
+  for (const p of paths) {
+    const value = getPathValue(obj, p.split("."));
+    if (typeof value === "boolean") {
+      return value;
     }
-    return null;
+  }
+  return null;
 }
+
+// helper to pull the first result from the array:
+function getFirstResult(obj: unknown): Record<string, unknown> | null {
+  if (!obj || typeof obj !== "object") return null;
+
+  const result = (obj as Record<string, unknown>)["result"];
+
+  if (Array.isArray(result) && result.length > 0) {
+    const first = result[0];
+    if (first && typeof first === "object") {
+      return first as Record<string, unknown>;
+    }
+  }
+
+  return null;
+}
+
 /**
  * recognition_pract (VERIFY)
  * Purpose:
@@ -119,19 +140,23 @@ Deno.serve(async (req) => {
   const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("PROJECT_SERVICE_ROLE_KEY");
 
   if (!COMPREFACE_BASE_URL || !COMPREFACE_API_KEY_KAYE) {
-    return json(500, { error: "Missing COMPREFACE_BASE_URL or COMPREFACE_API_KEY_KAYE" });
-    }
+    return json(500, {
+      error: "Missing COMPREFACE_BASE_URL or COMPREFACE_API_KEY_KAYE",
+    });
+  }
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    return json(500, { error: "Missing PROJECT_SUPABASE_URL or PROJECT_SERVICE_ROLE_KEY" });
+    return json(500, {
+      error: "Missing PROJECT_SUPABASE_URL or PROJECT_SERVICE_ROLE_KEY",
+    });
   }
 
   // Parse multipart/form-data
   let form: FormData;
   try {
     form = await req.formData();
-} catch {
+  } catch {
     return json(400, { error: "Expected multipart/form-data" });
-}
+  }
 
   // Required inputs for verify
   const image_id = form.get("image_id")?.toString().trim();
@@ -143,7 +168,9 @@ Deno.serve(async (req) => {
 
   if (!image_id) return json(400, { error: "Missing 'image_id' in form-data" });
   if (!bucket) return json(400, { error: "Missing 'bucket' in form-data" });
-  if (!storage_path) return json(400, { error: "Missing 'storage_path' in form-data" });
+  if (!storage_path) {
+    return json(400, { error: "Missing 'storage_path' in form-data" });
+  }
 
   // Optional metadata for logging
   const metadataRaw = form.get("metadata")?.toString() ?? null;
@@ -159,20 +186,19 @@ Deno.serve(async (req) => {
 
   if (dlError || !fileData) {
     return json(400, {
-        error: "Failed to download image from storage",
-        details: dlError?.message ?? "No file data returned",
-        bucket,
-        storage_path,
+      error: "Failed to download image from storage",
+      details: dlError?.message ?? "No file data returned",
+      bucket,
+      storage_path,
     });
-}
+  }
 
   // Convert Blob -> File for CompreFace multipart
   const bytes = new Uint8Array(await fileData.arrayBuffer());
   const verifyFile = new File([bytes], "verify.jpg", { type: "image/jpeg" });
 
   // 2) Send to CompreFace verify
-  const verifyUrl =
-    `${COMPREFACE_BASE_URL.replace(/\/$/, "")}` +
+  const verifyUrl = `${COMPREFACE_BASE_URL.replace(/\/$/, "")}` +
     `/api/v1/recognition/faces/${encodeURIComponent(image_id)}/verify`;
 
   const cfForm = new FormData();
@@ -183,42 +209,52 @@ Deno.serve(async (req) => {
     headers: { "x-api-key": COMPREFACE_API_KEY_KAYE },
     body: cfForm,
   });
-  
+
   const cfText = await cfResp.text();
 
   let cfJson: JsonObject;
   try {
     const parsed = JSON.parse(cfText) as unknown;
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-        cfJson = parsed as JsonObject;
+      cfJson = parsed as JsonObject;
     } else {
-        cfJson = { value: parsed as JsonValue };
+      cfJson = { value: parsed as JsonValue };
     }
   } catch {
     cfJson = { raw: cfText };
   }
 
   // 3) Extract a similarity/threshold/passed if present (safe, best-effort)
+  const firstResult = getFirstResult(cfJson);
+
   const similarity = pickNumber(cfJson, [
     "similarity",
     "result.similarity",
     "data.similarity",
     "probability",
     "result.probability",
-]);
+  ]) ??
+    (typeof firstResult?.similarity === "number"
+      ? firstResult.similarity
+      : null);
 
   const threshold = pickNumber(cfJson, [
     "threshold",
     "result.threshold",
     "data.threshold",
-]);
+  ]) ?? 0.5;
 
   const passed = pickBoolean(cfJson, [
     "verified",
     "result.verified",
     "match",
     "result.match",
-]) ?? (similarity !== null && threshold !== null ? similarity >= threshold : null);
+  ]) ??
+    (typeof firstResult?.match === "boolean" ? firstResult.match : null) ??
+    (similarity !== null && threshold !== null
+      ? similarity >= threshold
+      : null);
+
   // 4) Store result in backend_face
   const { error: insertError } = await supabase.from("backend_face").insert({
     user_id,
@@ -236,12 +272,14 @@ Deno.serve(async (req) => {
 
   // 5) Return result
   return json(200, {
-    Wok: cfResp.ok,
+    ok: cfResp.ok,
     status: cfResp.status,
     similarity,
     threshold,
     passed,
     compreface: cfJson,
+    // debug statement
+    debug_version1: "stormi-deploy-test-1",
     db_warning: insertError?.message ?? null,
     logged: !insertError,
     metadata_used: { ...metadata, image_id },
