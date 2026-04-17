@@ -5,6 +5,7 @@ import { signOut } from "../api/auth";
 // Will populate with real data
 interface HomeProps {
   setPageLanding: () => void;
+  setPageVerifyTest: () => void;
 }
 
 type Match = {
@@ -44,7 +45,7 @@ const mockMatch: Match = {
   aboutMe: "Add description here :)"
 };
 
-const Home: React.FC<HomeProps> = ({ setPageLanding }) => {
+const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const handleClickSignOut = async () => {
@@ -70,23 +71,35 @@ const Home: React.FC<HomeProps> = ({ setPageLanding }) => {
             </div>
           </button>
 
-          <div className="h-10 w-10 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30">
+          <div className="h-12 w-12 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30">
             <div className="h-full w-full bg-white/10" />
           </div>
 
-          <div className="flex-1 text-center">
-            <div className="text-sm font-semibold tracking-wide text-white">
+          <div className="flex-1 text-right">
+            <div className="text-2xl font-bold tracking-tight text-white">
               Lock It
             </div>
           </div>
 
-          <div className="w-10" />
+          <div className="w-0" />
         </div>
 
         {/* dropdown menu */}
         {menuOpen && (
           <div className="mx-auto max-w-sm px-4 pb-3">
             <div className="rounded-2xl bg-white/10 p-2 ring-1 ring-white/15">
+              
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setPageVerifyTest();
+                }}
+                className="w-full rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
+              >
+                Verify Test
+              </button>
+
               <button
                 type="button"
                 onClick={handleClickSignOut}
