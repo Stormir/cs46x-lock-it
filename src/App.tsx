@@ -6,8 +6,9 @@ import Landing from "./pages/Landing.tsx";
 import { useSession } from "./api/useSession"; 
 import assert from "./utils/assert.tsx";
 import VerifyTest from "./pages/VerifyTest.tsx";
+import ResetPassword from "./pages/ResetPassword";
 
-type PageEnum = "Home" | "Landing" | "VerifyTest";
+type PageEnum = "Home" | "Landing" | "VerifyTest" | "ResetPassword";
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
@@ -15,11 +16,21 @@ const App = () => {
   // Supabase session tracking
   const { session, loading } = useSession();
 
+  // Adds reset-password path 
   React.useEffect(() => {
+    if (window.location.pathname.includes("reset-password")) {
+      setPage("ResetPassword");
+    }
+  }, []);
+
+  React.useEffect(() => {
+
+  if (page === "ResetPassword") return; 
+  // dont redirect duirng reset flow 
   if (session && page === "Landing") {
     setPage("Home");
   } else if (!session && page !== "Landing") {
-    setPage("Landing");
+  setPage("Landing");
   }
 }, [session, page]);
 
@@ -39,10 +50,16 @@ const App = () => {
         onBack={() => setPage("Home")}
       />
     );
+
+  case "ResetPassword":
+    return <ResetPassword setPageLanding={() => setPage("Landing")} />;
+  
   case "Landing":
     return <Landing setPageHome={() => setPage("Home")} />;
+  
   default:
-    return assert.never(page);
+      return assert.never(page);
+  
 }
 
 };
