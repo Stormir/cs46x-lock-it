@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { runPhotoVerificationFlow } from "../api/verification";
 import { supabase } from "../client";
+import CameraCapture from "../components/CameraCapture";
 
 type VerifyTestProps = {
   onBack: () => void;
@@ -13,11 +14,12 @@ export default function VerifyTest({ onBack }: VerifyTestProps) {
   const [photoIdFile, setPhotoIdFile] = useState<File | null>(null);
   // Stores the uploaded selfie (live image) 
   const [selfieFile, setSelfieFile] = useState<File | null>(null);
+  // Stores image for Preview on URL
+  const [selfiePreview, setSelfiePreview] = useState<string | null>(null);
   // stores the result that comes back from pipeline
   const [output, setOutput] = useState<any>(null);
   // Tracks if pipeline is running
   const [loading, setLoading] = useState(false);
-
   // Runs when user clickes "Run Verification"
   async function handleRun() {
   setLoading(true);
@@ -139,7 +141,8 @@ const prettyStatus =
             </div>
           </label>
 
-          {/* Take photo (selfie upload for now) */}
+        
+          {/* Take photo (selfie upload for now) DELETE AS NECESSARY
           <label className="block cursor-pointer">
             <input
               type="file"
@@ -162,6 +165,43 @@ const prettyStatus =
               </div>
             </div>
           </label>
+          */}
+
+          {/* Take Photo (CameraCapture.tsx) */}
+          {/* ADDED FOR 4/21 BRANCH. DELETE NOTE LATER */}
+          <div className="flex min-h-[110px] items-center justify-center rounded-none bg-[#dddddd] px-6 text-center">
+            <div className="w-full">
+              <CameraCapture
+                hasPhoto={!!selfiePreview}
+                onRetake={() => {
+                  if (selfiePreview) {
+                    URL.revokeObjectURL(selfiePreview);
+                  }
+                  setSelfieFile(null);
+                  setSelfiePreview(null);
+                }}
+                onCapture={(file, previewUrl) => {
+                  if (selfiePreview) {
+                    URL.revokeObjectURL(selfiePreview);
+                  }
+                  setSelfieFile(file);
+                  setSelfiePreview(previewUrl);
+                }}
+              />
+
+
+              {/*After taking a picture*/}
+              {selfiePreview && (
+                <img
+                  src={selfiePreview}
+                  alt="Selfie preview"
+                  className="mt-3 w-full rounded-2xl border border-white/20 object-cover"
+                />
+              )}
+              
+            </div>
+          </div>
+          {/* END FOR 4/21 PR. DELETE NOTE LATER */}
 
           {/* Verify */}
           <div className="flex justify-center pt-2">

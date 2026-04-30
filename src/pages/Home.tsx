@@ -1,5 +1,17 @@
 import React from "react";
 import { signOut } from "../api/auth";
+import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
+import ViewMatchesIcon from "../assets/logo/matches_heart_white.svg";
+import MessagesIcon from "../assets/logo/msg_white.svg";
+import DateTrackerIcon from "../assets/logo/loc_track_white.svg";
+import ProfileIcon from "../assets/logo/usr_prof_white.svg";
+import HomeLogo from "../assets/logo/logo_pink_home.svg";
+import TipsIcon from "../assets/logo/tips_light_purple.svg";
+import GoBackIcon from "../assets/logo/go_back_button.svg";
+import SkipIcon from "../assets/logo/skip_button.svg";
+import LikeIcon from "../assets/logo/like_buttn.svg";
+import SuperLikeIcon from "../assets/logo/super_like_button.svg";
+
 
 // Mock home page
 // Will populate with real data
@@ -76,9 +88,11 @@ const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest }) => {
           </div>
 
           <div className="flex-1 text-right">
-            <div className="text-2xl font-bold tracking-tight text-white">
-              Lock It
-            </div>
+            <img
+              src={HomeLogo}
+              alt="Lock It"
+              className="h-8 object-contain ml-auto"
+            />
           </div>
 
           <div className="w-0" />
@@ -134,7 +148,11 @@ const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest }) => {
             aria-label="Tips"
             title="Tips"
           >
-            💡
+            <img
+              src={TipsIcon}
+              className="h-7 w-7 object-contain"
+              alt="Tips"
+            />
           </button>
         </div>
 
@@ -179,30 +197,46 @@ const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest }) => {
 
         {/* Action buttons*/}
         {/* Will update with official icon buttons */}
-        <section className="mt-5 flex items-center justify-center gap-8">
-          <CircleButton label="Nope" title="Nope">
-            ✕
+        <section className="mt-5 flex items-center justify-center gap-11">
+          <CircleButton label="Go Back" title="Go Back">
+            <img src={GoBackIcon} className="h-13 w-13 object-contain drop-shadow-md" />
           </CircleButton>
+
+          <CircleButton label="Skip" title="Skip">
+            <img src={SkipIcon} className="h-13 w-13 object-contain drop-shadow-md" />
+          </CircleButton>
+
           <CircleButton label="Like" title="Like">
-            ♥
+            <img src={LikeIcon} className="h-13 w-13 object-contain drop-shadow-md" />
           </CircleButton>
-          <CircleButton label="Super like" title="Super like">
-            🔥
+
+          <CircleButton label="Super Like" title="Super Like">
+            <img src={SuperLikeIcon} className="h-14 w-14 object-contain drop-shadow-md" />
           </CircleButton>
         </section>
       </main>
 
       {/* Bottom nav */}
       {/* Will update with official icons */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50" style={{ backgroundColor: BRAND }}>
-        <div className="mx-auto flex max-w-sm items-center justify-between px-6 py-3 text-white">
-          <NavIcon label="Profile">👤</NavIcon>
-          <NavIcon label="Search">🔍</NavIcon>
-          <NavIcon label="Likes">♥</NavIcon>
-          <NavIcon label="Messages">💬</NavIcon>
-          <NavIcon label="Notifications">
-            🔔
-            <span className="ml-1 inline-block h-2 w-2 rounded-full bg-red-400" />
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-50"
+        style={{ backgroundColor: BRAND }}
+      >
+        <div className="mx-auto flex max-w-sm items-center justify-between px-4 py-3 text-white">
+          <NavIcon label="Find Matches">
+            <img src={FindMatchesIcon} className="h-7 w-7 object-contain" />
+          </NavIcon>
+          <NavIcon label="View Matches">
+            <img src={ViewMatchesIcon} className="h-7 w-7 object-contain" />
+          </NavIcon>
+          <NavIcon label="Messages">
+            <img src={MessagesIcon} className="h-7 w-7 object-contain" />
+          </NavIcon>
+          <NavIcon label="Date Tracker">
+            <img src={DateTrackerIcon} className="h-7 w-7 object-contain" />
+          </NavIcon>
+          <NavIcon label="Profile">
+            <img src={ProfileIcon} className="h-7 w-7 object-contain" />
           </NavIcon>
         </div>
       </nav>
@@ -221,11 +255,7 @@ function DetailItem({ icon, text }: { icon: string; text: string }) {
   );
 }
 
-function CircleButton({
-  children,
-  label,
-  title
-}: {
+function CircleButton({ children, label, title }: {
   children: React.ReactNode;
   label: string;
   title: string;
@@ -235,30 +265,30 @@ function CircleButton({
       type="button"
       aria-label={label}
       title={title}
-      className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-2xl shadow-md ring-1 ring-neutral-200 hover:scale-[1.02] active:scale-[0.98]"
+      className="flex items-center justify-center hover:scale-105 transition"
     >
       {children}
     </button>
   );
 }
 
-function NavIcon({
-  children,
-  label
-}: {
-  children: React.ReactNode;
+type NavIconProps = {
   label: string;
-}) {
+  children: React.ReactNode;
+};
+
+function NavIcon({ label, children }: NavIconProps) {
   return (
     <button
       type="button"
       aria-label={label}
       title={label}
-      className="rounded-lg px-2 py-1 hover:bg-white/10"
+      className="flex items-center justify-center text-white px-3 py-2 hover:bg-white/10 rounded-lg"
     >
-      <span className="text-xl">{children}</span>
+      {children}
     </button>
   );
 }
 
 export default Home;
+
