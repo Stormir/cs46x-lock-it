@@ -8,7 +8,6 @@ type ResetPasswordProps = {
 const ResetPassword: React.FC<ResetPasswordProps> = ({setPageLanding}) => {
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
-    
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // if password and confirm password don't match send alert

@@ -6,6 +6,7 @@ import { signOut } from "../api/auth";
 interface HomeProps {
   setPageLanding: () => void;
   setPageVerifyTest: () => void;
+  setPageProfile: () => void;
 }
 
 type Match = {
@@ -45,7 +46,7 @@ const mockMatch: Match = {
   aboutMe: "Add description here :)"
 };
 
-const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest }) => {
+const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest, setPageProfile }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const handleClickSignOut = async () => {
@@ -71,9 +72,15 @@ const Home: React.FC<HomeProps> = ({ setPageLanding, setPageVerifyTest }) => {
             </div>
           </button>
 
-          <div className="h-12 w-12 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30">
+          <button
+            type="button"
+            onClick={setPageProfile}
+            className="h-12 w-12 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30 hover:ring-white/60"
+            aria-label="Open profile"
+            title="Open profile"
+          >
             <div className="h-full w-full bg-white/10" />
-          </div>
+          </button>
 
           <div className="flex-1 text-right">
             <div className="text-2xl font-bold tracking-tight text-white">

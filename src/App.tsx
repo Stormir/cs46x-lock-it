@@ -7,8 +7,10 @@ import { useSession } from "./api/useSession";
 import assert from "./utils/assert.tsx";
 import VerifyTest from "./pages/VerifyTest.tsx";
 import ResetPassword from "./pages/ResetPassword";
+import Profile from "./pages/Profile.tsx";
 
-type PageEnum = "Home" | "Landing" | "VerifyTest" | "ResetPassword";
+
+type PageEnum = "Home" | "Landing" | "VerifyTest" | "ResetPassword" | "Profile";
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
@@ -42,20 +44,28 @@ const App = () => {
       <Home
         setPageLanding={() => setPage("Landing")}
         setPageVerifyTest={() => setPage("VerifyTest")}
+        setPageProfile={() => setPage("Profile")}
       />
-    );
+  );
   case "VerifyTest":
     return (
       <VerifyTest
         onBack={() => setPage("Home")}
       />
-    );
+  );
 
   case "ResetPassword":
     return <ResetPassword setPageLanding={() => setPage("Landing")} />;
   
   case "Landing":
     return <Landing setPageHome={() => setPage("Home")} />;
+
+  case "Profile":
+    return (
+     <Profile
+        setPageHome={() => setPage("Home")}
+      />
+  );
   
   default:
       return assert.never(page);
