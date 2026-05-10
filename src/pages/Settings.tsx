@@ -12,6 +12,7 @@ type SettingsProps = {
   onSafetySupport: () => void;
   onPauseAccount: () => void;
   onDeactivateAccount: () => void;
+  onDateTracking: () => void;
 };
 
 const Settings: React.FC<SettingsProps> = ({
@@ -22,7 +23,8 @@ const Settings: React.FC<SettingsProps> = ({
   onHelpTechSup,
   onSafetySupport,
   onPauseAccount,
-  onDeactivateAccount
+  onDeactivateAccount,
+  onDateTracking,
 }) => {
   const [email, setEmail] = React.useState(true);
   const [push, setPush] = React.useState(true);
@@ -68,6 +70,7 @@ const Settings: React.FC<SettingsProps> = ({
       <TopBar
         onHomeClick={onBack}
         onSettingsClick={() => {}}
+        onDateTrackerClick={onDateTracking}
         onSignOutClick={onBack}
       />
 
@@ -156,7 +159,10 @@ const Settings: React.FC<SettingsProps> = ({
         </Section>
       </main>
 
-      <BottomNav onHomeClick={onBack} />
+      <BottomNav
+        onHomeClick={onBack}
+        onDateTrackerClick={onDateTracking}
+      />
     </div>
   );
 };

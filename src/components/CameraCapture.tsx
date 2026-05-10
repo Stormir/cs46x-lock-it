@@ -1,6 +1,6 @@
 // required package
 // > npm install @mediapipe/tasks-vision
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FilesetResolver, FaceDetector } from "@mediapipe/tasks-vision";
 
 type CameraCaptureProps = {

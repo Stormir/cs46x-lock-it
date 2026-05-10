@@ -14,12 +14,14 @@ const BRAND = "#382543";
 type TopBarProps = {
   onHomeClick: () => void;
   onSettingsClick?: () => void;
+  onDateTrackerClick?: () => void;
   onSignOutClick?: () => void;
 };
 
 const TopBar: React.FC<TopBarProps> = ({
   onHomeClick,
   onSettingsClick,
+  onDateTrackerClick,
   onSignOutClick
 }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -109,18 +111,23 @@ const TopBar: React.FC<TopBarProps> = ({
               <span>Edit Match Preferences</span>
             </button>
 
-            {/* Track Dates */}
+            {/* Date Tracker */}
+            {/* Date Tracker */}
             <button
               type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                onDateTrackerClick?.();
+              }}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
               <img
                 src={TrackDatesIcon}
-                alt="Track Dates"
+                alt="Date Tracker"
                 className="h-5 w-5 object-contain"
               />
 
-              <span>Track Dates</span>
+              <span>Date Tracker</span>
             </button>
 
             {/* Safety */}

@@ -1,0 +1,288 @@
+.dateTracking-page {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #24142e;
+}
+
+.map-wrapper {
+  position: absolute;
+  top: 88px;
+  left: 0;
+  right: 0;
+  bottom: 62px;
+}
+
+.leaflet-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.floating-map-btn {
+  position: absolute;
+  right: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  border: none;
+  background: #2d1939;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+  z-index: 500;
+  transition: background 0.2s ease;
+}
+
+.floating-map-btn:hover {
+  background: #3b2349;
+}
+
+.top-btn {
+  top: 18px;
+}
+
+.bottom-btn {
+  top: 74px;
+}
+
+/* The main navigator thag */
+.tracking-card {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 20px);
+  max-width: 480px;
+  bottom: 69px;
+  min-height: 350px;
+  background: #24142e;
+  border-radius: 12px;
+  z-index: 600;
+  color: white;
+  text-align: center;
+  padding: 10px 10px 0;
+}
+
+.drag-bar {
+  width: 55px;
+  height: 3px;
+  border-radius: 20px;
+  background: white;
+  margin: 0 auto 28px;
+}
+
+.tracking-title {
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.tracking-subtext {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.tracking-error {
+  color: #ff9ea5;
+  margin-top: 12px;
+}
+
+
+.tracking-tabs {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-evenly;
+  border-top: 1px solid #66506f;
+  padding: 10px 0;
+  font-size: 10px;
+}
+
+.tracking-tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 72px;
+  gap: 6px;
+  text-align: center;
+}
+
+.tracking-tab-item span {
+  width: 100%;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.tracking-tab-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.custom-user-marker {
+  background: transparent;
+  border: none;
+}
+
+.user-marker-glow {
+  position: relative;
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9999px;
+
+ filter: drop-shadow(0 0 3px #c97cff)
+  drop-shadow(0 0 6px #c97cff);
+}
+
+.user-marker-frame {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  z-index: 2;
+}
+
+.user-marker-profile {
+  position: absolute;
+  top: 9px;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 9999px;
+  object-fit: cover;
+
+  z-index: 3;
+}
+
+/* for profile picture placeholder */
+.user-marker-profile-placeholder {
+  position: absolute;
+
+  top: 6px;
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 9999px;
+
+  background: #8a7d96;
+
+  z-index: 3;
+}
+
+.tracking-tab-item {
+  cursor: pointer;
+}
+
+.trusted-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trusted-add-btn {
+  margin-top: 52px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 4px #e495bc)
+    drop-shadow(0 0 8px #e495bc);
+  cursor: pointer;
+}
+
+.trusted-add-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.sharing-title {
+  font-size: 30px;
+  color: white;
+  margin: -30px 250px 28px 0px;
+  text-align: left;
+}
+
+.sharing-email-row {
+  width: 95%;
+  height: 44px;
+  margin: -8px auto 20px auto;
+  background-color: #74637f;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 6px 0 22px;
+}
+
+.sharing-email-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 18px;
+}
+
+.sharing-email-input::placeholder {
+  color: #b8aabd;
+}
+
+.sharing-email-add-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  color: #21142b;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.sharing-note {
+  width: 90%;
+  margin: 0 auto;
+  color: white;
+  font-size: 15px;
+  line-height: 1.15;
+  text-align: left;
+}
+
+.trusted-close-btn {
+  position: absolute;
+  top: -30px;
+  right: -12px;
+  width: 50px;
+  height: 10px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.trusted-close-icon {
+  width: 37px;
+  height: 37px;
+  object-fit: contain;
+}
+
+.trusted-section {
+  position: relative;
+}

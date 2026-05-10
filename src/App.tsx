@@ -4,7 +4,7 @@ import Landing from "./pages/Landing.tsx";
 import Settings from "./pages/Settings";
 import { useSession } from "./api/useSession";
 import assert from "./utils/assert.tsx";
-import VerifyTest from "./pages/VerifyTest.tsx";
+import DateTracking from "./pages/DateTracking";
 //settings page
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
@@ -12,6 +12,8 @@ import HelpTechSup from "./pages/HelpTechSup.tsx";
 import SafetySupport from "./pages/SafetySupport.tsx";
 import PauseAccount from "./pages/PauseAccount.tsx";
 import DeactivateAccount from "./pages/DeactivateAccount.tsx";
+import VerifyTest from "./pages/VerifyTest.tsx";
+
 
 type PageEnum =
   | "Home"
@@ -23,7 +25,8 @@ type PageEnum =
   | "HelpTechSup"
   | "SafetySupport"
   | "PauseAccount"
-  | "DeactivateAccount";
+  | "DeactivateAccount"
+  | "DateTracking";
 
 const App = () => {
   // TEMPORARY: open directly to Settings page
@@ -33,13 +36,13 @@ const App = () => {
   const { session, loading } = useSession();
 
   // COMMENT OUT FOR SETTINGS PAGE
-  React.useEffect(() => {
-     if (session && page === "Landing") {
-       setPage("Home");
-     } else if (!session && page !== "Landing") {
-       setPage("Landing");
-     }
-   }, [session, page]);
+  //React.useEffect(() => {
+  //   if (session && page === "Landing") {
+  //     setPage("Home");
+  //   } else if (!session && page !== "Landing") {
+  //     setPage("Landing");
+  //   }
+  // }, [session, page]);
   // ^^^ COMMENT OUT FOR SETTINGS PAGE
 
   if (loading) return <p>Loading...</p>;
@@ -75,6 +78,8 @@ const App = () => {
 
           onPauseAccount={() => setPage("PauseAccount")}
           onDeactivateAccount={() => setPage("DeactivateAccount")}
+
+          onDateTracking={() => setPage("DateTracking")}
         />
       );
 
@@ -96,6 +101,14 @@ const App = () => {
     case "DeactivateAccount":
       return <DeactivateAccount onBack={() => setPage("Settings")} />;
 
+    case "DateTracking":
+      return (
+        <DateTracking
+          setPageHome={() => setPage("Home")}
+          setPageSettings={() => setPage("Settings")}
+          setPageDateTracking={() => setPage("DateTracking")}
+        />
+      );
     default:
       return assert.never(page);
   }
