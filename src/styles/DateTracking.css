@@ -63,19 +63,26 @@
   color: white;
   text-align: center;
   padding: 10px 10px 0;
+  transition:
+    min-height 0.25s ease,
+    height 0.25s ease,
+    bottom 0.25s ease;
 }
 
-.drag-bar {
-  width: 55px;
-  height: 3px;
-  border-radius: 20px;
-  background: white;
-  margin: 0 auto 28px;
+/* Title Display */
+.module-display-title {
+  font-size: 25px;
+  color: white;
+  margin: -20px 0 15px 10px;
+  text-align: left;
+  align-self: flex-start;
 }
 
-.tracking-title {
-  font-size: 14px;
+/* main text contents sizing */ 
+.module-information-text-1{
+  font-size: 16px;
   margin-bottom: 18px;
+  margin: -8px auto 20px auto;
 }
 
 .tracking-subtext {
@@ -87,7 +94,6 @@
   color: #ff9ea5;
   margin-top: 12px;
 }
-
 
 .tracking-tabs {
   position: absolute;
@@ -128,6 +134,7 @@
   border: none;
 }
 
+/* The glow ring on blimp */
 .user-marker-glow {
   position: relative;
   width: 48px;
@@ -167,16 +174,11 @@
 /* for profile picture placeholder */
 .user-marker-profile-placeholder {
   position: absolute;
-
   top: 6px;
-
   width: 28px;
   height: 28px;
-
   border-radius: 9999px;
-
   background: #8a7d96;
-
   z-index: 3;
 }
 
@@ -188,6 +190,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .trusted-add-btn {
@@ -205,22 +208,16 @@
   cursor: pointer;
 }
 
+/* the glowing one. The one if you have none */ 
 .trusted-add-icon {
   width: 30px;
   height: 30px;
   object-fit: contain;
 }
 
-.sharing-title {
-  font-size: 30px;
-  color: white;
-  margin: -30px 250px 28px 0px;
-  text-align: left;
-}
-
 .sharing-email-row {
   width: 95%;
-  height: 44px;
+  height: 34px;
   margin: -8px auto 20px auto;
   background-color: #74637f;
   border-radius: 999px;
@@ -243,8 +240,8 @@
 }
 
 .sharing-email-add-btn {
-  width: 34px;
-  height: 34px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: none;
   background: white;
@@ -265,6 +262,8 @@
   font-size: 15px;
   line-height: 1.15;
   text-align: left;
+  margin: -8px auto 20px auto;
+
 }
 
 .trusted-close-btn {
@@ -283,6 +282,40 @@
   object-fit: contain;
 }
 
-.trusted-section {
+.tracking-card.minimized {
+  min-height: 105px;
+  height: 85px;
+  padding-top: 8px;
+}
+
+.tracking-card.minimized .tracking-tabs {
+  border-top: none;
+  padding-top: 8px;
+}
+
+.tracking-card.minimized .drag-bar {
+  margin-bottom: 6px;
+}
+
+.drag-bar {
+  width: 70px;
+  height: 20px;
+  margin: 0 auto 12px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
   position: relative;
+  z-index: 999;
+}
+
+.drag-bar::after {
+  content: "";
+  width: 55px;
+  height: 4px;
+  border-radius: 999px;
+  background: white;
 }

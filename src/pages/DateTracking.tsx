@@ -10,8 +10,7 @@ import TopBar from "../components/TopBar";
 import BottomNav from "../components/BottomNav";
 import { ArrowLocationIcon, GlobeIcon, LiveDatesIcon, PastFutureDatesIcon,
           ScheduleDateIcon, TrustedContactsIcon, YourLocationIcon, AddButtonIcon,
-          TrustedContactsExitButton } from "../components/DateTrackingIcons.tsx";
-
+        } from "../components/DateTrackingIcons.tsx";
 type DateTrackingProps = {
   setPageHome: () => void;
   setPageSettings: () => void;
@@ -56,12 +55,13 @@ export default function DateTracking({
   const [position, setPosition] = useState<Latlngt | null>(null);
   const [error, setError] = useState("");
   const [map, setMap] = useState<L.Map | null>(null);
-  const [activeSection, setActiveSection] = useState<"live" | "trusted">(
-    "live"
-  );
-
+  const [activeSection, setActiveSection] = useState<
+    "live" | "trusted" | "pastFuture" | "schedule"
+  >("live");
   const [showStartSharing, setShowStartSharing] = useState(false);
   const [shareEmail, setShareEmail] = useState("");
+  const [isCardMinimized, setIsCardMinimized] = useState(false);
+  const [dragStartY, setDragStartY] = useState<number | null>(null);
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -167,95 +167,141 @@ export default function DateTracking({
         </button>
       </div>
 
-      <div className="tracking-card">
-        <div className="drag-bar" />
+      <div className={`tracking-card ${isCardMinimized ? "minimized" : ""}`}>
 
-        {activeSection === "trusted" ? (
-          showStartSharing ? (
+      <button
+        type="button"
+        className="drag-bar"
+        onClick={() => setIsCardMinimized((prev) => !prev)}
+        onPointerDown={(e) => {
+          setDragStartY(e.clientY);
+        }}
+        onPointerUp={(e) => {
+          if (dragStartY === null) return;
 
-            // Start Sharing Screen
-            <div className="trusted-section">
+          const dragDistance = e.clientY - dragStartY;
 
-              <button
-                className="trusted-close-btn"
-                onClick={() => setShowStartSharing(false)}
-              >
-                <img
-                  src={TrustedContactsExitButton}
-                  alt="Close"
-                  className="trusted-close-icon"
-                />
-              </button>
+          if (dragDistance > 40) {
+            setIsCardMinimized(true);
+          }
 
-              <p className="sharing-title">
-                Start Sharing
-              </p>
+          if (dragDistance < -40) {
+            setIsCardMinimized(false);
+          }
 
-              <div className="sharing-email-row">
+          setDragStartY(null);
+        }}
+        aria-label={isCardMinimized ? "Expand panel" : "Minimize panel"}
+      >
+      </button>
+        
 
-                <input
-                  type="email"
-                  placeholder="type user's email here"
-                  className="sharing-email-input"
-                  value={shareEmail}
-                  onChange={(e) => setShareEmail(e.target.value)}
-                />
+        {!isCardMinimized && (
+          <>
+            {activeSection === "live" ? (
 
-                <button className="sharing-email-add-btn">
-                  <img
-                    src={AddButtonIcon}
-                    alt="Add"
-                    className="sharing-add-icon"
-                  />
-                </button>
+              // Live Dates Screen
+              <>
+                <p className="module-display-title">
+                  Live Dates
+                </p>
 
+                <p className="module-information-text-1">
+                  You are currently tracking no dates
+                </p>
+
+                {error && <p className="tracking-error">{error}</p>}
+              </>
+
+            ) : activeSection === "pastFuture" ? (
+
+              // Past/Future Dates Screen
+              <div className="trusted-section">
+                <p className="module-display-title">
+                  Past and Future Dates
+                </p>
+
+                <p className="module-information-text-1">
+                  Coming Soon
+                </p>
               </div>
 
-              <p className="sharing-note">
-                At this time, trusted contacts must have an active account with Lock It.
-                By sending an invitation, you are permitting that user to track your location through Lock It.
-              </p>
+            ) : activeSection === "schedule" ? (
 
-            </div>
+              // Schedule a Date Screen
+              <div className="trusted-section">
+                <p className="module-display-title">
+                  Schedule a Date
+                </p>
 
-          ) : (
+                <p className="module-information-text-1">
+                  Coming Soon
+                </p>
+              </div>
 
-            // Default Trusted Contacts Screen
-            <div className="trusted-section">
+            ) : activeSection === "trusted" ? (
 
-              <p className="tracking-title">
-                You currently have no trusted contacts.
-                <br />
-                Add a trusted contact by sharing your location
-              </p>
+              showStartSharing ? (
 
-              <button
-                className="trusted-add-btn"
-                onClick={() => setShowStartSharing(true)}
-              >
-                <img
-                  src={AddButtonIcon}
-                  alt="Add trusted contact"
-                  className="trusted-add-icon"
-                />
-              </button>
+                // Start Sharing Screen
+                <div className="trusted-section">
+                  <p className="module-display-title">
+                    Start Sharing
+                  </p>
 
-            </div>
+                  <div className="sharing-email-row">
+                    <input
+                      type="email"
+                      placeholder="type user's email here"
+                      className="sharing-email-input"
+                      value={shareEmail}
+                      onChange={(e) => setShareEmail(e.target.value)}
+                    />
 
-          )
-        ) : (
-          <>
-            <p className="tracking-title">
-              You are currently tracking no dates
-            </p>
+                    <button className="sharing-email-add-btn">
+                      <img
+                        src={AddButtonIcon}
+                        alt="Add"
+                        className="sharing-add-icon"
+                      />
+                    </button>
+                  </div>
 
-            <p className="tracking-subtext">
-              Words here on how to schedule a date/add trusted
-              <br />
-              contact
-            </p>
+                  <p className="sharing-note">
+                    Add a trusted contact! At this time, trusted contacts must have
+                    an active account with Lock It. By sending an invitation, you
+                    are permitting that user to track your location through Lock It.
+                  </p>
+                </div>
 
-            {error && <p className="tracking-error">{error}</p>}
+              ) : (
+
+                // Default Trusted Contacts Screen
+                <div className="trusted-section">
+                  <p className="module-display-title">
+                    Trusted Contacts
+                  </p>
+
+                  <p className="module-information-text-1">
+                    You currently have no trusted contacts.
+                    <br />
+                    Add a trusted contact by sharing your location
+                  </p>
+
+                  <button
+                    className="trusted-add-btn"
+                    onClick={() => setShowStartSharing(true)}
+                  >
+                    <img
+                      src={AddButtonIcon}
+                      alt="Add trusted contact"
+                      className="trusted-add-icon"
+                    />
+                  </button>
+                </div>
+              )
+
+            ) : null}
           </>
         )}
 
@@ -269,11 +315,13 @@ export default function DateTracking({
               alt="Live Dates"
               className="tracking-tab-icon"
             />
-
             <span>Live Dates</span>
           </div>
 
-          <div className="tracking-tab-item">
+          <div
+            className="tracking-tab-item"
+            onClick={() => setActiveSection("pastFuture")}
+          >
             <img
               src={PastFutureDatesIcon}
               alt="Past Future Dates"
@@ -287,7 +335,10 @@ export default function DateTracking({
             </span>
           </div>
 
-          <div className="tracking-tab-item">
+          <div
+            className="tracking-tab-item"
+            onClick={() => setActiveSection("schedule")}
+          >
             <img
               src={ScheduleDateIcon}
               alt="Schedule Date"
@@ -300,32 +351,30 @@ export default function DateTracking({
               Date
             </span>
           </div>
-          
+
           <div
             className="tracking-tab-item"
-            onClick={() =>
-                setActiveSection("trusted")
-            }
-            >
+            onClick={() => setActiveSection("trusted")}
+          >
             <img
-                src={TrustedContactsIcon}
-                alt="Trusted Contacts"
-                className="tracking-tab-icon"
+              src={TrustedContactsIcon}
+              alt="Trusted Contacts"
+              className="tracking-tab-icon"
             />
 
             <span>
-                Trusted
-            <br />
-                Contacts
+              Trusted
+              <br />
+              Contacts
             </span>
-            </div>
+          </div>
         </div>
-    </div>
+      </div>
 
       <BottomNav
         onHomeClick={setPageHome}
         onDateTrackerClick={setPageDateTracking}
       />
-    </div>
-  );
+      </div>
+    );
 }
