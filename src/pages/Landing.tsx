@@ -90,7 +90,6 @@ const Landing: React.FC<LandingProps> = ({ setPageHome }) => {
           case "Register":
             return (
               <ModalRegister
-                setPageHome={setPageHome}
                 setViewNone={setViewNone}
               />
             );
