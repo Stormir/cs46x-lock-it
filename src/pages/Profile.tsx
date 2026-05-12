@@ -25,8 +25,6 @@ import FamilyIcon from "../assets/icons/Family.svg";
 
 // Business colors 
 const BRAND = "#382543";
-const BOX_COLOR = "#8F3372";
-const ICON_COLOR = "#7A1E43";
 const BODY_TEXT = "#382543";
 
 // Create shape for current profile table
