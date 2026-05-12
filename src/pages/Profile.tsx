@@ -23,11 +23,18 @@ import DogsOkayIcon from "../assets/icons/Dogs_Okay.svg";
 import CommunicationIcon from "../assets/icons/Communication.svg";
 import FamilyIcon from "../assets/icons/Family.svg";
 
+//CONSTANTS
+
 // Business colors 
 const BRAND = "#382543";
-const BOX_COLOR = "#8F3372";
-const ICON_COLOR = "#7A1E43";
 const BODY_TEXT = "#382543";
+
+// Media Expiration 
+const MEDIA_URL_EXPIRES_IN_SECONDS = 60 * 60;
+
+// Max allowed images/video uploads
+const MAX_PROFILE_MEDIA = 9;
+
 
 // Create shape for current profile table
 type ProfileRow = {
@@ -66,9 +73,30 @@ type ProfileRow = {
   dating_comm_method: string | null;
 };
 
+// Media Types
+type ProfileMediaRow = {
+  id: string;
+  profile_id: string | null;
+  user_id: string | null;
+  bucket: string;
+  storage_path: string;
+  media_type: string | null;
+  display_order: number | null;
+  is_primary: boolean | null;
+  caption: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
+
+// Media URL Type
+type ProfileMediaItem = ProfileMediaRow & {
+  url: string;
+};
+
 // Profile Props Type
 type ProfileProps = {
   setPageHome: () => void;
+  setPageEditProfile: () => void;
 };
 
 // Helper Functions
@@ -114,8 +142,37 @@ function showValue(value: string | number | boolean | null | undefined): string 
   return String(value);
 }
 
+// Turns a profile_media database row into a frontend-ready media item with a usable URL
+async function addSignedUrlToMedia(
+  row: ProfileMediaRow
+): Promise<ProfileMediaItem | null> {
+  if (!row.bucket || !row.storage_path) return null;
+
+  const { data, error } = await supabase.storage
+    .from(row.bucket)
+    .createSignedUrl(row.storage_path, MEDIA_URL_EXPIRES_IN_SECONDS);
+
+  if (error || !data?.signedUrl) {
+    console.error("Could not create signed media URL:", {
+      error,
+      bucket: row.bucket,
+      storage_path: row.storage_path
+    });
+
+    return null;
+  }
+
+  return {
+    ...row,
+    url: data.signedUrl
+  };
+}
+
 // Main Profile Page Component
-const Profile: React.FC<ProfileProps> = ({ setPageHome }) => {
+const Profile: React.FC<ProfileProps> = ({ 
+    setPageHome,
+    setPageEditProfile
+  }) => {
   // Gets the current logged-in user's session
   const { session, loading: sessionLoading } = useSession();
 
@@ -124,6 +181,15 @@ const Profile: React.FC<ProfileProps> = ({ setPageHome }) => {
 
   // Tracks whether the profile query is still loading
   const [profileLoading, setProfileLoading] = React.useState(true);
+
+  // Stores the user's profile media rows after converting them to usable image/video URLs
+  const [media, setMedia] = React.useState<ProfileMediaItem[]>([]);
+
+  // Tracks whether the profile media query is still loading
+  const [mediaLoading, setMediaLoading] = React.useState(true);
+
+  // enables scrolling withing HTML
+  const mediaScrollRef = React.useRef<HTMLDivElement | null>(null);
 
   // Stores an error message if Supabase cannot load the profile
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -145,17 +211,12 @@ const Profile: React.FC<ProfileProps> = ({ setPageHome }) => {
       setProfileLoading(true);
       setErrorMessage(null);
 
-      console.log("Current logged-in user id:", session.user.id);
-
       // Pull the current user's profile row from Supabase
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("profile_id", session.user.id)
         .maybeSingle();
-      
-      console.log("Profile query data:", data);
-    console.log("Profile query error:", error);
 
       // If Supabase gives an error, save the error message
       if (error) {
@@ -172,6 +233,65 @@ const Profile: React.FC<ProfileProps> = ({ setPageHome }) => {
     };
 
     loadProfile();
+  }, [session, sessionLoading]);
+
+  // Loads the logged-in user's profile media from Supabase
+  React.useEffect(() => {
+    const loadMedia = async () => {
+      // Wait until the session finishes loading before querying media
+      if (sessionLoading) return;
+
+      // If there is no logged-in user, stop loading media
+      if (!session?.user?.id) {
+        setMedia([]);
+        setMediaLoading(false);
+        return;
+      }
+
+      // Start loading media
+      setMediaLoading(true);
+
+      // Pull this user's media rows from profile_media
+      const { data, error } = await supabase
+        .from("profile_media")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .order("display_order", { ascending: true })
+        // limits number of images 
+        .limit(MAX_PROFILE_MEDIA);
+
+      if (error) {
+        console.error("Profile media load error:", error);
+        setMedia([]);
+        setMediaLoading(false);
+        return;
+      }
+
+      // If there's no media rows yet, keep media empty
+      if (!data || data.length === 0) {
+        setMedia([]);
+        setMediaLoading(false);
+        return;
+      }
+
+      // Convert each DB row into a frontend-ready item with a signed URL
+      const mediaWithUrls = await Promise.all(
+        data.map((row) => addSignedUrlToMedia(row as ProfileMediaRow))
+      );
+
+      // Remove any rows that failed to get a signed URL
+      const usableMedia = mediaWithUrls.filter(
+        (item): item is ProfileMediaItem => item !== null
+      );
+
+      // Save the final media list in React state
+      setMedia(usableMedia);
+
+      // Stop loading media
+      setMediaLoading(false);
+    };
+
+    loadMedia();
   }, [session, sessionLoading]);
 
   // Shows loading message while Supabase session or profile data is loading
@@ -238,6 +358,20 @@ const Profile: React.FC<ProfileProps> = ({ setPageHome }) => {
 
   // Shows age if birthdate exists, otherwise gives fallback text
   const ageText = age ? String(age) : "Age not added";
+  // Only show up to 9 media items on the profile
+  const displayedMedia = media.slice(0, MAX_PROFILE_MEDIA);
+
+  // Allows scrollable media 
+  const scrollMedia = (direction: "left" | "right") => {
+  if (!mediaScrollRef.current) return;
+
+  const scrollAmount = mediaScrollRef.current.clientWidth;
+
+  mediaScrollRef.current.scrollBy({
+    left: direction === "left" ? -scrollAmount : scrollAmount,
+    behavior: "smooth"
+  });
+};
 
   return (
   <div
@@ -268,6 +402,7 @@ const Profile: React.FC<ProfileProps> = ({ setPageHome }) => {
     <main className="mx-auto max-w-[320px] px-3 py-5">
 
       <section className="border border-neutral-500 bg-white p-2">
+
         {/* Profile Identity */}
         <section className="mb-3 border border-neutral-300 bg-white p-2">
           <div className="flex items-start justify-between gap-2">
@@ -285,25 +420,93 @@ const Profile: React.FC<ProfileProps> = ({ setPageHome }) => {
                 {ageText} | {displayCity}
               </p>
             </div>
+            <div className="flex shrink-0 flex-col items-end gap-2">
+              {profile.is_verified ? (
+                <span className="rounded-full bg-[#F3BBC8] px-2 py-1 text-[10px] font-semibold text-[#382543]">
+                  Verified
+                </span>
+              ) : (
+                <span className="rounded-full bg-neutral-200 px-2 py-1 text-[10px] font-semibold text-neutral-600">
+                  Not verified
+                </span>
+              )}
 
-            {profile.is_verified ? (
-              <span className="shrink-0 rounded-full bg-[#F3BBC8] px-2 py-1 text-[10px] font-semibold text-[#382543]">
-                Verified
-              </span>
-            ) : (
-              <span className="shrink-0 rounded-full bg-neutral-200 px-2 py-1 text-[10px] font-semibold text-neutral-600">
-                Not verified
-              </span>
-            )}
+              <button
+                type="button"
+                onClick={setPageEditProfile}
+                className="text-[11px] font-semibold text-[#382543] underline underline-offset-2"
+              >
+                Edit
+              </button>
+            </div>
           </div>
         </section>
 
-        {/* Media placeholders */}
+        {/* Profile Media */}
         <section className="mb-3 border border-neutral-300 bg-white p-2">
-          <div className="grid grid-cols-2 gap-3">
-            <div className="h-36 bg-neutral-200" />
-            <div className="h-36 bg-neutral-200" />
-          </div>
+          {mediaLoading ? (
+            <div className="flex gap-3">
+              <div className="aspect-square flex-1 bg-neutral-200" />
+              <div className="aspect-square flex-1 bg-neutral-200" />
+            </div>
+          ) : displayedMedia.length > 0 ? (
+            <div className="relative">
+              {/* Left button */}
+              {displayedMedia.length > 2 && (
+                <button
+                  type="button"
+                  onClick={() => scrollMedia("left")}
+                  className="absolute left-1 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-sm font-bold text-[#382543] shadow"
+                  aria-label="Scroll photos left"
+                >
+                  ‹
+                </button>
+              )}
+
+              {/* Scrollable photo row */}
+              <div
+                ref={mediaScrollRef}
+                className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-1"
+              >
+                {displayedMedia.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="aspect-square flex-[0_0_calc(50%-0.375rem)] snap-start overflow-hidden border border-neutral-200 bg-neutral-100"
+                  >
+                    {item.media_type === "image" ? (
+                      <img
+                        src={item.url}
+                        alt={item.caption || `Profile photo ${index + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center px-2 text-center text-[11px] text-neutral-500">
+                        Media type not supported yet
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Right button */}
+              {displayedMedia.length > 2 && (
+                <button
+                  type="button"
+                  onClick={() => scrollMedia("right")}
+                  className="absolute right-1 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-sm font-bold text-[#382543] shadow"
+                  aria-label="Scroll photos right"
+                >
+                  ›
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              <div className="flex aspect-square w-36 items-center justify-center border border-dashed border-neutral-300 bg-neutral-100 px-2 text-center text-[11px] text-neutral-500">
+                No photo added yet
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Details / Demographics */}

@@ -8,9 +8,10 @@ import assert from "./utils/assert.tsx";
 import VerifyTest from "./pages/VerifyTest.tsx";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile.tsx";
+import EditProfile from "./pages/EditProfile.tsx";
 
 
-type PageEnum = "Home" | "Landing" | "VerifyTest" | "ResetPassword" | "Profile";
+type PageEnum = "Home" | "Landing" | "VerifyTest" | "ResetPassword" | "Profile" | "EditProfile";
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
@@ -61,11 +62,19 @@ const App = () => {
     return <Landing setPageHome={() => setPage("Home")} />;
 
   case "Profile":
-    return (
-     <Profile
-        setPageHome={() => setPage("Home")}
-      />
-  );
+      return (
+        <Profile
+          setPageHome={() => setPage("Home")}
+          setPageEditProfile={() => setPage("EditProfile")}
+        />
+      );
+
+  case "EditProfile":
+      return (
+        <EditProfile
+          setPageProfile={() => setPage("Profile")}
+        />
+      );
   
   default:
       return assert.never(page);
