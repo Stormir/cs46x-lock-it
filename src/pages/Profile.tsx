@@ -142,6 +142,45 @@ function showValue(value: string | number | boolean | null | undefined): string 
   return String(value);
 }
 
+function isProfileMostlyBlank(profile: ProfileRow): boolean {
+  const importantFields = [
+    profile.display_city,
+    profile.sexual_interest,
+    profile.job_title,
+    profile.zodiac,
+    profile.education,
+    profile.nationality,
+    profile.race_ethnicity,
+    profile.about_me,
+    profile.drinking_status,
+    profile.smoking_status,
+    profile.height_inches,
+    profile.exercise_status,
+    profile.has_kids,
+    profile.pets_preference,
+    profile.dating_communication_style,
+    profile.dating_family_plans,
+    profile.dating_love_language,
+    profile.dating_comm_method,
+    profile.favorite_movie,
+    profile.favorite_show,
+    profile.favorite_artist,
+    profile.favorite_song,
+    profile.prompt_1_question,
+    profile.prompt_1_answer,
+    profile.prompt_2_question,
+    profile.prompt_2_answer
+  ];
+
+  const filledCount = importantFields.filter((field) => {
+    if (field === null || field === undefined) return false;
+
+    return String(field).trim() !== "";
+  }).length;
+
+  return filledCount < 7;
+}
+
 // Turns a profile_media database row into a frontend-ready media item with a usable URL
 async function addSignedUrlToMedia(
   row: ProfileMediaRow
@@ -361,6 +400,8 @@ const Profile: React.FC<ProfileProps> = ({
   // Only show up to 9 media items on the profile
   const displayedMedia = media.slice(0, MAX_PROFILE_MEDIA);
 
+  const shouldShowCompleteProfilePrompt = isProfileMostlyBlank(profile);
+
   // Allows scrollable media 
   const scrollMedia = (direction: "left" | "right") => {
   if (!mediaScrollRef.current) return;
@@ -441,6 +482,26 @@ const Profile: React.FC<ProfileProps> = ({
             </div>
           </div>
         </section>
+
+        {shouldShowCompleteProfilePrompt && (
+        <section className="mb-3 border border-[#F3BBC8] bg-[#fff7fa] p-3">
+          <p className="text-xs font-semibold text-[#382543]">
+            Your profile is looking a little empty.
+          </p>
+
+          <p className="mt-1 text-[11px] text-neutral-600">
+            Add details so matches can get to know you.
+          </p>
+
+          <button
+            type="button"
+            onClick={setPageEditProfile}
+            className="mt-2 text-[11px] font-semibold text-[#382543] underline underline-offset-2"
+          >
+            Edit Profile
+          </button>
+        </section>
+      )}
 
         {/* Profile Media */}
         <section className="mb-3 border border-neutral-300 bg-white p-2">
