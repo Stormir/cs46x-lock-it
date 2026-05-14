@@ -814,11 +814,12 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
                 onChange={handleProfileChange}
               />
               
-            <TextField
+            <SelectField
               label="Interested In"
               name="sexual_interest"
               value={profileForm.sexual_interest}
               onChange={handleProfileChange}
+              options={["Men", "Women", "Both"]}
             />
 
             <TextField

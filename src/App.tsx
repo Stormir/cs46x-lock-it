@@ -9,12 +9,30 @@ import VerifyTest from "./pages/VerifyTest.tsx";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile.tsx";
 import EditProfile from "./pages/EditProfile.tsx";
+import ViewProfile from "./pages/ViewProfile.tsx";
+import Matches from "./pages/Matches.tsx";
 
-
-type PageEnum = "Home" | "Landing" | "VerifyTest" | "ResetPassword" | "Profile" | "EditProfile";
+type PageEnum =
+  | "Home"
+  | "Landing"
+  | "VerifyTest"
+  | "ResetPassword"
+  | "Profile"
+  | "EditProfile"
+  | "ViewProfile"
+  | "Matches";
+  
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
+  // stores ID of person whose profile is clicked
+  const [selectedProfileId, setSelectedProfileId] = React.useState<string | null>(null);
+
+  // sets ID and switches the app to new ViewProfile page
+  const openViewProfile = (profileId: string) => {
+    setSelectedProfileId(profileId);
+    setPage("ViewProfile");
+  };
   
   // Supabase session tracking
   const { session, loading } = useSession();
@@ -46,6 +64,8 @@ const App = () => {
         setPageLanding={() => setPage("Landing")}
         setPageVerifyTest={() => setPage("VerifyTest")}
         setPageProfile={() => setPage("Profile")}
+        setPageMatches={() => setPage("Matches")}
+        openViewProfile={openViewProfile}
       />
   );
   case "VerifyTest":
@@ -75,6 +95,32 @@ const App = () => {
           setPageProfile={() => setPage("Profile")}
         />
       );
+  case "Matches":
+    return (
+      <Matches
+        setPageHome={() => setPage("Home")}
+        openViewProfile={openViewProfile}
+      />
+    );
+
+  case "ViewProfile":
+    if (!selectedProfileId) {
+      return (
+        <Home
+          setPageLanding={() => setPage("Landing")}
+          setPageVerifyTest={() => setPage("VerifyTest")}
+          setPageProfile={() => setPage("Profile")}
+          openViewProfile={openViewProfile}
+        />
+      );
+    }
+
+    return (
+      <ViewProfile
+        profileId={selectedProfileId}
+        setPageHome={() => setPage("Home")}
+      />
+    );
   
   default:
       return assert.never(page);
