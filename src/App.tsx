@@ -5,6 +5,8 @@ import Settings from "./pages/Settings";
 import { useSession } from "./api/useSession";
 import assert from "./utils/assert.tsx";
 import VerifyTest from "./pages/VerifyTest.tsx";
+import ResetPassword from "./pages/ResetPassword";
+import Profile from "./pages/Profile.tsx";
 //settings page
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
@@ -23,7 +25,9 @@ type PageEnum =
   | "HelpTechSup"
   | "SafetySupport"
   | "PauseAccount"
-  | "DeactivateAccount";
+  | "DeactivateAccount"
+  | "ResetPassword"
+  | "Profile";
 
 const App = () => {
   // TEMPORARY: open directly to Settings page
@@ -32,30 +36,56 @@ const App = () => {
   // Supabase session tracking
   const { session, loading } = useSession();
 
-  // COMMENT OUT FOR SETTINGS PAGE
+  // Adds reset-password path 
   React.useEffect(() => {
-     if (session && page === "Landing") {
-       setPage("Home");
-     } else if (!session && page !== "Landing") {
-       setPage("Landing");
-     }
-   }, [session, page]);
-  // ^^^ COMMENT OUT FOR SETTINGS PAGE
+    if (window.location.pathname.includes("reset-password")) {
+      setPage("ResetPassword");
+    }
+  }, []);
+
+  React.useEffect(() => {
+
+  if (page === "ResetPassword") return; 
+  // dont redirect duirng reset flow 
+  if (session && page === "Landing") {
+    setPage("Home");
+  } else if (!session && page !== "Landing") {
+  setPage("Landing");
+  }
+}, [session, page]);
 
   if (loading) return <p>Loading...</p>;
 
   switch (page) {
-    case "Home":
-      return (
-        <Home
-          setPageLanding={() => setPage("Landing")}
-          // Moved to settings
-          // setPageVerifyTest={() => setPage("VerifyTest")}
-          setPageSettings={() => setPage("Settings")}
-        />
-      );
+  case "Home":
+    return (
+      <Home
+        setPageLanding={() => setPage("Landing")}
+        setPageSettings={() => setPage("Settings")}
+        setPageProfile={() => setPage("Profile")}
+      />
+  );
+  case "VerifyTest":
+    return (
+      <VerifyTest
+        onBack={() => setPage("Home")}
+      />
+  );
 
-    case "VerifyTest":
+  case "ResetPassword":
+    return <ResetPassword setPageLanding={() => setPage("Landing")} />;
+  
+  case "Landing":
+    return <Landing setPageHome={() => setPage("Home")} />;
+
+  case "Profile":
+    return (
+     <Profile
+        setPageHome={() => setPage("Home")}
+      />
+  );
+  
+  case "VerifyTest":
       return <VerifyTest onBack={() => setPage("Home")} />;
 
     case "Landing":
@@ -99,6 +129,7 @@ const App = () => {
     default:
       return assert.never(page);
   }
+
 };
 
 export default App;

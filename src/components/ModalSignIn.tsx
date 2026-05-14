@@ -1,8 +1,7 @@
 import React from "react";
 
 import Modal from "./Modal";
-import { signIn } from "../api/auth";
-import { ComingSoon } from "./ComingSoon";
+import { signIn, sendPasswordResetEmail } from "../api/auth";
 
 interface ModalSignInProps {
   setPageHome: () => void;
@@ -48,7 +47,7 @@ const ModalSignIn: React.FC<ModalSignInProps> = ({
     event.preventDefault();
 
     if (form.email && form.password) {
-      const { error } = await signIn(form.email, form.password);
+      const {error} = await signIn(form.email, form.password);
       if (!error) {
         setPageHome();
       } else {
@@ -56,6 +55,23 @@ const ModalSignIn: React.FC<ModalSignInProps> = ({
       }
     }
   };
+
+  // Handles Forgot Password
+  // Alerts forgot password confirmation 
+  const handleForgotPassword = async () => {
+  if (!form.email) {
+    alert("Please enter your email first.");
+    return;
+  }
+
+  const { error } = await sendPasswordResetEmail(form.email);
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Password reset email sent! Please check your inbox.");
+  }
+};
 
   return (
     <Modal>
@@ -89,18 +105,17 @@ const ModalSignIn: React.FC<ModalSignInProps> = ({
           />
         </label>
 
-        {/* Stormi: Sets up forget password component
-          enables coming soon component 
+        {/* Removed coming soon helper 
+        Added onCLick functionality
         */}
         <div className="flex items-center gap-2 mt-1">
           <button
             type="button"
-            disabled
-            className="text-sm underline opacity-60 cursor-not-allowed"
+            onClick={handleForgotPassword}
+            className="text-sm underline opacity-60"
           >
           forgot password
         </button>
-        <ComingSoon />
         </div>
         
         <div className="mt-5 flex justify-center gap-6">

@@ -1,5 +1,4 @@
 import React from "react";
-
 import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
 import ViewMatchesIcon from "../assets/logo/matches_heart_white.svg";
 import MessagesIcon from "../assets/logo/msg_white.svg";
@@ -10,6 +9,8 @@ const BRAND = "#382543";
 
 type BottomNavProps = {
   onHomeClick?: () => void;
+  onProfileClick?: () => void;
+
 };
 
 type NavIconProps = {
@@ -38,6 +39,7 @@ function NavIcon({
 
 const BottomNav: React.FC<BottomNavProps> = ({
   onHomeClick,
+  onProfileClick,
 }) => {
   return (
     <nav
@@ -81,7 +83,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
         </NavIcon>
 
         {/* Profile */}
-        <NavIcon label="Profile">
+        <NavIcon label="Profile" onClick={onProfileClick}>
           <img
             src={ProfileIcon}
             className="h-7 w-7 object-contain"
