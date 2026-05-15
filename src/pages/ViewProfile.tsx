@@ -1,6 +1,6 @@
 import React from "react";
 import { supabase } from "../client";
-import { useSession } from "../api/useSession";
+
 
 import LogoPinkHome from "../assets/logo/logo_pink_home.svg";
 import GoBackButton from "../assets/icons/go_back_button.svg";
@@ -93,10 +93,10 @@ type ProfileMediaItem = ProfileMediaRow & {
   url: string;
 };
 
-// Profile Props Type
-type ProfileProps = {
+// View Profile Props Type
+type ViewProfileProps = {
+  profileId: string;
   setPageHome: () => void;
-  setPageEditProfile: () => void;
 };
 
 // Helper Functions
@@ -142,45 +142,6 @@ function showValue(value: string | number | boolean | null | undefined): string 
   return String(value);
 }
 
-function isProfileMostlyBlank(profile: ProfileRow): boolean {
-  const importantFields = [
-    profile.display_city,
-    profile.sexual_interest,
-    profile.job_title,
-    profile.zodiac,
-    profile.education,
-    profile.nationality,
-    profile.race_ethnicity,
-    profile.about_me,
-    profile.drinking_status,
-    profile.smoking_status,
-    profile.height_inches,
-    profile.exercise_status,
-    profile.has_kids,
-    profile.pets_preference,
-    profile.dating_communication_style,
-    profile.dating_family_plans,
-    profile.dating_love_language,
-    profile.dating_comm_method,
-    profile.favorite_movie,
-    profile.favorite_show,
-    profile.favorite_artist,
-    profile.favorite_song,
-    profile.prompt_1_question,
-    profile.prompt_1_answer,
-    profile.prompt_2_question,
-    profile.prompt_2_answer
-  ];
-
-  const filledCount = importantFields.filter((field) => {
-    if (field === null || field === undefined) return false;
-
-    return String(field).trim() !== "";
-  }).length;
-
-  return filledCount < 7;
-}
-
 // Turns a profile_media database row into a frontend-ready media item with a usable URL
 async function addSignedUrlToMedia(
   row: ProfileMediaRow
@@ -208,12 +169,10 @@ async function addSignedUrlToMedia(
 }
 
 // Main Profile Page Component
-const Profile: React.FC<ProfileProps> = ({ 
-    setPageHome,
-    setPageEditProfile
+const ViewProfile: React.FC<ViewProfileProps> = ({
+    profileId,
+    setPageHome
   }) => {
-  // Gets the current logged-in user's session
-  const { session, loading: sessionLoading } = useSession();
 
   // Stores the user's profile row from Supabase
   const [profile, setProfile] = React.useState<ProfileRow | null>(null);
@@ -233,108 +192,86 @@ const Profile: React.FC<ProfileProps> = ({
   // Stores an error message if Supabase cannot load the profile
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-  // Loads the logged-in user's profile from Supabase
+  // Loads the selected user's profile from Supabase
   React.useEffect(() => {
     const loadProfile = async () => {
-      // Wait until the session finishes loading before querying profiles
-      if (sessionLoading) return;
-
-      // If there is no logged-in user, stop and show an error
-      if (!session?.user?.id) {
-        setErrorMessage("No logged-in user found.");
+      if (!profileId) {
+        setErrorMessage("No profile selected.");
         setProfileLoading(false);
         return;
       }
 
-      // Start loading and clear old errors
       setProfileLoading(true);
       setErrorMessage(null);
 
-      // Pull the current user's profile row from Supabase
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("profile_id", session.user.id)
+        .eq("profile_id", profileId)
         .maybeSingle();
 
-      // If Supabase gives an error, save the error message
       if (error) {
-        console.error("Profile load error:", error);
+        console.error("Selected profile load error:", error);
         setErrorMessage(error.message);
         setProfile(null);
       } else {
-        // If successful, store the profile row in state
         setProfile(data as ProfileRow);
       }
 
-      // Stop loading once the query is done
       setProfileLoading(false);
     };
 
     loadProfile();
-  }, [session, sessionLoading]);
+  }, [profileId]);
 
-  // Loads the logged-in user's profile media from Supabase
+  // Loads the selected user's profile media from Supabase
   React.useEffect(() => {
     const loadMedia = async () => {
-      // Wait until the session finishes loading before querying media
-      if (sessionLoading) return;
-
-      // If there is no logged-in user, stop loading media
-      if (!session?.user?.id) {
+      if (!profileId) {
         setMedia([]);
         setMediaLoading(false);
         return;
       }
 
-      // Start loading media
       setMediaLoading(true);
 
-      // Pull this user's media rows from profile_media
       const { data, error } = await supabase
         .from("profile_media")
         .select("*")
-        .eq("user_id", session.user.id)
+        .eq("user_id", profileId)
         .order("display_order", { ascending: true })
-        // limits number of images 
         .limit(MAX_PROFILE_MEDIA);
 
       if (error) {
-        console.error("Profile media load error:", error);
+        console.error("Selected profile media load error:", error);
         setMedia([]);
         setMediaLoading(false);
         return;
       }
 
-      // If there's no media rows yet, keep media empty
       if (!data || data.length === 0) {
         setMedia([]);
         setMediaLoading(false);
         return;
       }
 
-      // Convert each DB row into a frontend-ready item with a signed URL
       const mediaWithUrls = await Promise.all(
         data.map((row) => addSignedUrlToMedia(row as ProfileMediaRow))
       );
 
-      // Remove any rows that failed to get a signed URL
       const usableMedia = mediaWithUrls.filter(
         (item): item is ProfileMediaItem => item !== null
       );
 
-      // Save the final media list in React state
       setMedia(usableMedia);
-
-      // Stop loading media
       setMediaLoading(false);
     };
 
     loadMedia();
-  }, [session, sessionLoading]);
+  }, [profileId]);
 
-  // Shows loading message while Supabase session or profile data is loading
-  if (sessionLoading || profileLoading) {
+  //Show s loading message while selected profile data is loading
+  if (profileLoading) {
     return (
       <div className="min-h-screen bg-neutral-100 flex items-center justify-center">
         <p className="text-[#382543]">Loading profile...</p>
@@ -368,7 +305,7 @@ const Profile: React.FC<ProfileProps> = ({
     return (
       <div className="min-h-screen bg-neutral-100 flex flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="text-lg font-semibold text-[#382543]">
-          No profile found.
+          Selected profile not found.
         </p>
 
         <button
@@ -400,7 +337,6 @@ const Profile: React.FC<ProfileProps> = ({
   // Only show up to 9 media items on the profile
   const displayedMedia = media.slice(0, MAX_PROFILE_MEDIA);
 
-  const shouldShowCompleteProfilePrompt = isProfileMostlyBlank(profile);
 
   // Allows scrollable media 
   const scrollMedia = (direction: "left" | "right") => {
@@ -472,36 +408,9 @@ const Profile: React.FC<ProfileProps> = ({
                 </span>
               )}
 
-              <button
-                type="button"
-                onClick={setPageEditProfile}
-                className="text-[11px] font-semibold text-[#382543] underline underline-offset-2"
-              >
-                Edit
-              </button>
             </div>
           </div>
         </section>
-
-        {shouldShowCompleteProfilePrompt && (
-        <section className="mb-3 border border-[#F3BBC8] bg-[#fff7fa] p-3">
-          <p className="text-xs font-semibold text-[#382543]">
-            Your profile is looking a little empty.
-          </p>
-
-          <p className="mt-1 text-[11px] text-neutral-600">
-            Add details so matches can get to know you.
-          </p>
-
-          <button
-            type="button"
-            onClick={setPageEditProfile}
-            className="mt-2 text-[11px] font-semibold text-[#382543] underline underline-offset-2"
-          >
-            Edit Profile
-          </button>
-        </section>
-      )}
 
         {/* Profile Media */}
         <section className="mb-3 border border-neutral-300 bg-white p-2">
@@ -823,4 +732,4 @@ function MiniValueBox({
   );
 }
 
-export default Profile;
+export default ViewProfile;
