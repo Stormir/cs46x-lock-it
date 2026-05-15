@@ -4,12 +4,8 @@ import { supabase } from "../client";
 import { useSession } from "../api/useSession";
 
 // Icon Imports
-import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
-import ViewMatchesIcon from "../assets/logo/matches_heart_white.svg";
-import MessagesIcon from "../assets/logo/msg_white.svg";
-import DateTrackerIcon from "../assets/logo/loc_track_white.svg";
-import ProfileIcon from "../assets/logo/usr_prof_white.svg";
-import HomeLogo from "../assets/logo/logo_pink_home.svg";
+import TopBar from "../components/TopBar";
+import BottomNav from "../components/BottomNav";
 import TipsIcon from "../assets/logo/tips_light_purple.svg";
 import GoBackIcon from "../assets/logo/go_back_button.svg";
 import SkipIcon from "../assets/logo/skip_button.svg";
@@ -37,9 +33,10 @@ const MEDIA_URL_EXPIRES_IN_SECONDS = 60 * 60;
 // Will populate with real data
 interface HomeProps {
   setPageLanding: () => void;
-  setPageVerifyTest: () => void;
+  setPageSettings: () => void;
   setPageProfile: () => void;
   setPageMatches: () => void;
+  setPageVerifyTest: () => void;
   openViewProfile: (profileId: string) => void;
 }
 
@@ -103,41 +100,6 @@ type CandidateMediaItem = CandidateMediaRow & {
 
 // Sets up shape for interaction 
 type InteractionType = "skip" | "like" | "super_like";
-
-type Match = {
-  name: string;
-  pronouns?: string;
-  age: number;
-  city: string;
-  state: string;
-  details: {
-    interestedIn: string;
-    height: string;
-    race: string;
-    work: string;
-    education: string;
-    drinks: string;
-  };
-  aboutMe: string;
-};
-
-
-const mockMatch: Match = {
-  name: "Match Name",
-  pronouns: "(Pronouns)",
-  age: 26,
-  city: "Portland",
-  state: "OR",
-  details: {
-    interestedIn: "Interested in Men",
-    height: "5ft 5in",
-    race: "Asian/Pacific Islander",
-    work: "Works as Medical Assistant",
-    education: "Studied at Oregon State",
-    drinks: "Drinks Occasionally"
-  },
-  aboutMe: "Add description here :)"
-};
 
 // -------------
 // HELPERS
@@ -216,9 +178,10 @@ async function addSignedUrlToMedia(
 
 const Home: React.FC<HomeProps> = ({
   setPageLanding,
-  setPageVerifyTest,
+  setPageSettings,
   setPageProfile,
   setPageMatches,
+  setPageVerifyTest,
   openViewProfile
 }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -346,10 +309,12 @@ React.useEffect(() => {
   loadCandidateMedia();
 }, [currentCandidate]);
 
-  const handleClickSignOut = async () => {
-    await signOut();
-    setPageLanding();
-  };
+// Moved action to top bar.tsx  
+/* const handleClickSignOut = async () => {
+  await signOut();
+  setPageLanding();
+};
+*/
 
 // Loads active users primary photo
 React.useEffect(() => {
@@ -603,80 +568,20 @@ React.useEffect(() => {
 
   const height = formatHeight(currentCandidate?.height_inches ?? null);
 
+  async function handleClickSignOut() {
+    await signOut();
+    setPageLanding();
+  }
+
   return (
     <div className="min-h-screen bg-neutral-100 pb-20 flex flex-col">
       {/* Top bar */}
-      <header className="sticky top-0 z-40" style={{ backgroundColor: BRAND }}>
-        <div className="mx-auto flex max-w-sm items-center gap-3 px-4 py-3">
-          <button
-            type="button"
-            onClick={() => setMenuOpen((v) => !v)}
-            className="rounded-lg p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
-            aria-label="Open menu"
-          >
-            <div className="space-y-1">
-              <div className="h-0.5 w-6 bg-white" />
-              <div className="h-0.5 w-6 bg-white" />
-              <div className="h-0.5 w-6 bg-white" />
-            </div>
-          </button>
-
-          <button
-            type="button"
-            onClick={setPageProfile}
-            className="h-12 w-12 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30 hover:ring-white/60"
-            aria-label="Open profile"
-            title="Open profile"
-          >
-            {ownPrimaryPhotoUrl ? (
-              <img
-                src={ownPrimaryPhotoUrl}
-                alt="Open your profile"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="h-full w-full bg-white/10" />
-            )}
-          </button>
-
-          <div className="flex-1 text-right">
-            <img
-              src={HomeLogo}
-              alt="Lock It"
-              className="h-8 object-contain ml-auto"
-            />
-          </div>
-
-          <div className="w-0" />
-        </div>
-
-        {/* dropdown menu */}
-        {menuOpen && (
-          <div className="mx-auto max-w-sm px-4 pb-3">
-            <div className="rounded-2xl bg-white/10 p-2 ring-1 ring-white/15">
-              
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false);
-                  setPageVerifyTest();
-                }}
-                className="w-full rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
-              >
-                Verify Test
-              </button>
-
-              <button
-                type="button"
-                onClick={handleClickSignOut}
-                className="w-full rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
-        )}
-      </header>
+      {/* Top bar */}
+      <TopBar
+        onHomeClick={() => {}}
+        onSettingsClick={setPageSettings}
+        onSignOutClick={handleClickSignOut}
+      />
 
       {/* Main page */}
       <main className="mx-auto max-w-[320px] px-3 py-4 pb-28">
@@ -868,29 +773,10 @@ React.useEffect(() => {
       </main>
 
       {/* Bottom nav */}
-      {/* Will update with official icons */}
-      <nav
-        className="fixed bottom-0 left-0 right-0 z-50"
-        style={{ backgroundColor: BRAND }}
-      >
-        <div className="mx-auto flex max-w-sm items-center justify-between px-4 py-3 text-white">
-          <NavIcon label="Find Matches">
-            <img src={FindMatchesIcon} className="h-7 w-7 object-contain" />
-          </NavIcon>
-          <NavIcon label="View Matches" onClick={setPageMatches}>
-            <img src={ViewMatchesIcon} className="h-7 w-7 object-contain" />
-          </NavIcon>
-          <NavIcon label="Messages">
-            <img src={MessagesIcon} className="h-7 w-7 object-contain" />
-          </NavIcon>
-          <NavIcon label="Date Tracker">
-            <img src={DateTrackerIcon} className="h-7 w-7 object-contain" />
-          </NavIcon>
-          <NavIcon label="Profile" onClick={setPageProfile}>
-            <img src={ProfileIcon} className="h-7 w-7 object-contain" />
-          </NavIcon>
-        </div>
-      </nav>
+      <BottomNav
+        onHomeClick={() => {}} 
+        onProfileClick={setPageProfile}
+      />
     </div>
   );
 };
@@ -933,26 +819,6 @@ function CircleButton({
       onClick={onClick}
       disabled={disabled}
       className="flex h-16 w-16 items-center justify-center rounded-full bg-transparent transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
-    >
-      {children}
-    </button>
-  );
-}
-
-type NavIconProps = {
-  label: string;
-  children: React.ReactNode;
-  onClick?: () => void;
-};
-
-function NavIcon({ label, children, onClick }: NavIconProps) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      onClick={onClick}
-      className="flex items-center justify-center text-white px-3 py-2 hover:bg-white/10 rounded-lg"
     >
       {children}
     </button>

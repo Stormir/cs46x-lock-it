@@ -1,9 +1,8 @@
 import React from "react";
-
 import Home from "./pages/Home.tsx";
 import Landing from "./pages/Landing.tsx";
-
-import { useSession } from "./api/useSession"; 
+import Settings from "./pages/Settings";
+import { useSession } from "./api/useSession";
 import assert from "./utils/assert.tsx";
 import VerifyTest from "./pages/VerifyTest.tsx";
 import ResetPassword from "./pages/ResetPassword";
@@ -11,6 +10,13 @@ import Profile from "./pages/Profile.tsx";
 import EditProfile from "./pages/EditProfile.tsx";
 import ViewProfile from "./pages/ViewProfile.tsx";
 import Matches from "./pages/Matches.tsx";
+//settings page
+import CookiePolicy from "./pages/CookiePolicy.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
+import HelpTechSup from "./pages/HelpTechSup.tsx";
+import SafetySupport from "./pages/SafetySupport.tsx";
+import PauseAccount from "./pages/PauseAccount.tsx";
+import DeactivateAccount from "./pages/DeactivateAccount.tsx";
 
 type PageEnum =
   | "Home"
@@ -20,8 +26,14 @@ type PageEnum =
   | "Profile"
   | "EditProfile"
   | "ViewProfile"
-  | "Matches";
-  
+  | "Matches"
+  | "Settings"
+  | "CookiePolicy"
+  | "PrivacyPolicy"
+  | "HelpTechSup"
+  | "SafetySupport"
+  | "PauseAccount"
+  | "DeactivateAccount";
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
@@ -62,24 +74,16 @@ const App = () => {
     return (
       <Home
         setPageLanding={() => setPage("Landing")}
-        setPageVerifyTest={() => setPage("VerifyTest")}
+        setPageSettings={() => setPage("Settings")}
         setPageProfile={() => setPage("Profile")}
         setPageMatches={() => setPage("Matches")}
+        setPageVerifyTest={() => setPage("VerifyTest")}
         openViewProfile={openViewProfile}
-      />
-  );
-  case "VerifyTest":
-    return (
-      <VerifyTest
-        onBack={() => setPage("Home")}
       />
   );
 
   case "ResetPassword":
     return <ResetPassword setPageLanding={() => setPage("Landing")} />;
-  
-  case "Landing":
-    return <Landing setPageHome={() => setPage("Home")} />;
 
   case "Profile":
       return (
@@ -108,8 +112,10 @@ const App = () => {
       return (
         <Home
           setPageLanding={() => setPage("Landing")}
-          setPageVerifyTest={() => setPage("VerifyTest")}
+          setPageSettings={() => setPage("Settings")}
           setPageProfile={() => setPage("Profile")}
+          setPageMatches={() => setPage("Matches")}
+          setPageVerifyTest={() => setPage("VerifyTest")}
           openViewProfile={openViewProfile}
         />
       );
@@ -122,10 +128,50 @@ const App = () => {
       />
     );
   
-  default:
+  case "VerifyTest":
+      return <VerifyTest onBack={() => setPage("Home")} />;
+
+    case "Landing":
+      return <Landing setPageHome={() => setPage("Home")} />;
+
+    case "Settings":
+      return (
+        <Settings
+          onBack={() => setPage("Home")}
+          onVerifyTest={() => setPage("VerifyTest")}
+
+          onCookiePolicy={() => setPage("CookiePolicy")}
+          onPrivacyPolicy={() => setPage("PrivacyPolicy")}
+
+          onHelpTechSup={() => setPage("HelpTechSup")}
+          onSafetySupport={() => setPage("SafetySupport")}
+
+          onPauseAccount={() => setPage("PauseAccount")}
+          onDeactivateAccount={() => setPage("DeactivateAccount")}
+        />
+      );
+
+    case "CookiePolicy":
+      return <CookiePolicy onBack={() => setPage("Settings")} />;
+
+    case "PrivacyPolicy":
+      return <PrivacyPolicy onBack={() => setPage("Settings")} />;
+
+    case "HelpTechSup":
+      return <HelpTechSup onBack={() => setPage("Settings")} />;
+
+    case "SafetySupport":
+      return <SafetySupport onBack={() => setPage("Settings")} />;
+
+    case "PauseAccount":
+      return <PauseAccount onBack={() => setPage("Settings")} />;
+
+    case "DeactivateAccount":
+      return <DeactivateAccount onBack={() => setPage("Settings")} />;
+
+    default:
       return assert.never(page);
-  
-}
+  }
 
 };
 
