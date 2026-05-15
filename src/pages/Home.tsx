@@ -13,8 +13,8 @@ import SuperLikeIcon from "../assets/logo/super_like_button.svg";
 interface HomeProps {
   setPageLanding: () => void;
   setPageSettings: () => void;
-  // Moved to Settings
-  //setPageVerifyTest: () => void;
+  setPageProfile: () => void;
+  setPageDateTracking: () => void;
 }
 
 type Match = {
@@ -56,9 +56,8 @@ const mockMatch: Match = {
 
 const Home: React.FC<HomeProps> = ({
   setPageLanding,
-  // moved to settings
-  // setPageVerifyTest,
-  setPageSettings,
+  setPageProfile,
+  setPageSettings
 }) => {
 
 // Moved action to top bar.tsx  
@@ -76,6 +75,8 @@ const Home: React.FC<HomeProps> = ({
         onSettingsClick={setPageSettings}
         onSignOutClick={setPageLanding}
       />
+      
+      {/* ^^^ Main */}
 
       {/* Main page */}
       <main className="mx-auto max-w-sm px-4 py-4">
@@ -168,7 +169,10 @@ const Home: React.FC<HomeProps> = ({
       </main>
 
       {/* Bottom nav */}
-      <BottomNav onHomeClick={() => {}} />
+      <BottomNav
+        onHomeClick={() => {}} 
+        onProfileClick={setPageProfile}
+      />
     </div>
   );
 };

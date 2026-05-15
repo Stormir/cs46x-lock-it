@@ -51,7 +51,7 @@ const Settings: React.FC<SettingsProps> = ({
         .select(
           "first_name, last_name, preferred_name, pronouns, gender_identity"
         )
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .single();
 
       if (error) {

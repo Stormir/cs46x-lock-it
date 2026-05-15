@@ -56,26 +56,36 @@
   width: calc(100% - 20px);
   max-width: 480px;
   bottom: 69px;
-  min-height: 350px;
+  height: 37vh;
+  max-height: 68vh;
   background: #24142e;
   border-radius: 12px;
   z-index: 600;
   color: white;
   text-align: center;
   padding: 10px 10px 0;
+  overflow: hidden;
+  transition:
+    min-height 0.25s ease,
+    height 0.25s ease,
+    bottom 0.25s ease;
+  padding-bottom: 95px;
+
+}
+/* Title Display */
+.module-display-title {
+  font-size: 25px;
+  color: white;
+  margin: -20px 0 15px 10px;
+  text-align: left;
+  align-self: flex-start;
 }
 
-.drag-bar {
-  width: 55px;
-  height: 3px;
-  border-radius: 20px;
-  background: white;
-  margin: 0 auto 28px;
-}
-
-.tracking-title {
-  font-size: 14px;
+/* main text contents sizing */ 
+.module-information-text-1{
+  font-size: 16px;
   margin-bottom: 18px;
+  margin: -8px auto 20px auto;
 }
 
 .tracking-subtext {
@@ -88,13 +98,13 @@
   margin-top: 12px;
 }
 
-
 .tracking-tabs {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
+  height: 85px;
   justify-content: space-evenly;
   border-top: 1px solid #66506f;
   padding: 10px 0;
@@ -128,6 +138,7 @@
   border: none;
 }
 
+/* The glow ring on blimp */
 .user-marker-glow {
   position: relative;
   width: 48px;
@@ -167,17 +178,13 @@
 /* for profile picture placeholder */
 .user-marker-profile-placeholder {
   position: absolute;
-
-  top: 6px;
-
-  width: 28px;
-  height: 28px;
-
+  top: 50%;
+  left: 50%;
+  width: 38px;
+  height: 38px;
   border-radius: 9999px;
-
-  background: #8a7d96;
-
-  z-index: 3;
+  transform: translate(-50%, -58%);
+  z-index: 2;
 }
 
 .tracking-tab-item {
@@ -188,6 +195,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .trusted-add-btn {
@@ -205,22 +213,16 @@
   cursor: pointer;
 }
 
+/* the glowing one. The one if you have none */ 
 .trusted-add-icon {
   width: 30px;
   height: 30px;
   object-fit: contain;
 }
 
-.sharing-title {
-  font-size: 30px;
-  color: white;
-  margin: -30px 250px 28px 0px;
-  text-align: left;
-}
-
 .sharing-email-row {
   width: 95%;
-  height: 44px;
+  height: 34px;
   margin: -8px auto 20px auto;
   background-color: #74637f;
   border-radius: 999px;
@@ -243,8 +245,8 @@
 }
 
 .sharing-email-add-btn {
-  width: 34px;
-  height: 34px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: none;
   background: white;
@@ -265,6 +267,8 @@
   font-size: 15px;
   line-height: 1.15;
   text-align: left;
+  margin: -8px auto 20px auto;
+
 }
 
 .trusted-close-btn {
@@ -283,6 +287,173 @@
   object-fit: contain;
 }
 
-.trusted-section {
+.tracking-card.minimized {
+  min-height: 105px;
+  height: 85px;
+  padding-top: 8px;
+}
+
+.tracking-card.minimized .tracking-tabs {
+  border-top: none;
+  padding-top: 8px;
+}
+
+.tracking-card.minimized .drag-bar {
+  margin-bottom: 6px;
+}
+
+.drag-bar {
+  width: 70px;
+  height: 20px;
+  margin: 0 auto 12px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
   position: relative;
+  z-index: 999;
+}
+
+.drag-bar::after {
+  content: "";
+  width: 55px;
+  height: 4px;
+  border-radius: 999px;
+  background: white;
+}
+
+/* Invitation stuff */
+
+.live-invite-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 14px 24px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.live-invite-avatar {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.live-invite-online-dot {
+  position: absolute;
+  right: 2px;
+  bottom: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #6fcf6a;
+}
+
+.live-invite-content {
+  flex: 1;
+}
+
+.live-invite-text {
+  margin: 0 0 8px;
+  color: white;
+  font-size: 20px;
+}
+
+.live-invite-actions {
+  display: flex;
+  gap: 28px;
+}
+
+.live-accept-btn,
+.live-decline-btn {
+  border: none;
+  border-radius: 999px;
+  color: white;
+  font-size: 16px;
+  padding: 2px 24px;
+}
+
+.live-action-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.live-action-icon {
+  height: 34px;
+  object-fit: contain;
+}
+
+/* for viewing friends locations under
+'Live Dates' */
+.live-date-list {
+  max-height: calc(68vh - 210px);
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-bottom: 10px;
+}
+
+.live-date-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+
+.live-date-name {
+  margin: 0 0 4px;
+  color: white;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.live-date-location {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+}
+
+.live-invite-avatar {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.live-invite-online-dot {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  background: #63d267;
+}
+
+.live-date-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.live-date-info {
+  flex: 1;
+  text-align: left;
+}
+
+.trusted-contacts-label {
+  width: 100%;
+  text-align: left;
+  padding-left: 0.5rem;
+  margin-bottom: 0rem;
 }

@@ -28,14 +28,11 @@ const TopBar: React.FC<TopBarProps> = ({
 
   const handleSignOut = async () => {
     setMenuOpen(false);
-    if (onSignOutClick) {
-      onSignOutClick();
-      return;
-    }
 
     await signOut();
-  };
 
+    onSignOutClick?.();
+  };
   return (
     <header className="sticky top-0 z-50" style={{ backgroundColor: BRAND }}>
       <div className="mx-auto flex max-w-sm items-center gap-3 px-4 py-3">
