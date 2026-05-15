@@ -9,8 +9,7 @@ import "../styles/DateTracking.css";
 import TopBar from "../components/TopBar";
 import BottomNav from "../components/BottomNav";
 import { ArrowLocationIcon, GlobeIcon, LiveDatesIcon, PastFutureDatesIcon,
-          ScheduleDateIcon, TrustedContactsIcon, YourLocationIcon, AddButtonIcon,
-          TCAddButton, TCDeclineButton
+          ScheduleDateIcon, TrustedContactsIcon, YourLocationIcon, AddButtonIcon
         } from "../components/DateTrackingIcons.tsx";
 import { supabase } from "../client";
 

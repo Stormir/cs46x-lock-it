@@ -7,6 +7,9 @@ import assert from "./utils/assert.tsx";
 import DateTracking from "./pages/DateTracking";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile.tsx";
+import EditProfile from "./pages/EditProfile.tsx";
+import ViewProfile from "./pages/ViewProfile.tsx";
+import Matches from "./pages/Matches.tsx";
 //settings page
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
@@ -21,6 +24,11 @@ type PageEnum =
   | "Home"
   | "Landing"
   | "VerifyTest"
+  | "ResetPassword"
+  | "Profile"
+  | "EditProfile"
+  | "ViewProfile"
+  | "Matches"
   | "Settings"
   | "CookiePolicy"
   | "PrivacyPolicy"
@@ -33,9 +41,16 @@ type PageEnum =
   | "Profile";
 
 const App = () => {
-  // TEMPORARY: open directly to Settings page
-  const [page, setPage] = React.useState<PageEnum>("Settings");
+  const [page, setPage] = React.useState<PageEnum>("Landing");
+  // stores ID of person whose profile is clicked
+  const [selectedProfileId, setSelectedProfileId] = React.useState<string | null>(null);
 
+  // sets ID and switches the app to new ViewProfile page
+  const openViewProfile = (profileId: string) => {
+    setSelectedProfileId(profileId);
+    setPage("ViewProfile");
+  };
+  
   // Supabase session tracking
   const { session, loading } = useSession();
 
@@ -67,28 +82,67 @@ const App = () => {
         setPageSettings={() => setPage("Settings")}
         setPageProfile={() => setPage("Profile")}
         setPageDateTracking={() => setPage("DateTracking")}
-
-      />
-  );
-  case "VerifyTest":
-    return (
-      <VerifyTest
-        onBack={() => setPage("Home")}
+        setPageMatches={() => setPage("Matches")}
+        setPageVerifyTest={() => setPage("VerifyTest")}
+        openViewProfile={openViewProfile}
       />
   );
 
   case "ResetPassword":
     return <ResetPassword setPageLanding={() => setPage("Landing")} />;
-  
-  case "Landing":
-    return <Landing setPageHome={() => setPage("Home")} />;
 
   case "Profile":
+      return (
+        <Profile
+          setPageHome={() => setPage("Home")}
+          setPageEditProfile={() => setPage("EditProfile")}
+        />
+      );
+
+  case "EditProfile":
+      return (
+        <EditProfile
+          setPageProfile={() => setPage("Profile")}
+        />
+      );
+  case "Matches":
     return (
-     <Profile
+      <Matches
+        setPageHome={() => setPage("Home")}
+        openViewProfile={openViewProfile}
+      />
+    );
+
+  case "ViewProfile":
+    if (!selectedProfileId) {
+      return (
+        <Home
+          setPageLanding={() => setPage("Landing")}
+          setPageSettings={() => setPage("Settings")}
+          setPageProfile={() => setPage("Profile")}
+          setPageMatches={() => setPage("Matches")}
+          setPageDateTracking={() => setPage("DateTracking")}
+          setPageVerifyTest={() => setPage("VerifyTest")}
+          openViewProfile={(profileId: string) => {
+            setSelectedProfileId(profileId);
+            setPage("ViewProfile");
+          }}
+        />
+      );
+    }
+
+    return (
+      <ViewProfile
+        profileId={selectedProfileId}
         setPageHome={() => setPage("Home")}
       />
-  );
+    );
+  
+  case "VerifyTest":
+      return <VerifyTest onBack={() => setPage("Home")} />;
+
+    case "Landing":
+      return <Landing setPageHome={() => setPage("Home")} />;
 
     case "Settings":
       return (
