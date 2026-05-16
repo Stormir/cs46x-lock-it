@@ -1,6 +1,7 @@
 import React from "react";
 import TopBar from "../components/TopBar";
 import BottomNav from "../components/BottomNav";
+import { supabase } from "../client";
 
 type PauseAccountProps = {
   onBack: () => void;
@@ -10,7 +11,28 @@ const PauseAccount: React.FC<PauseAccountProps> = ({ onBack }) => {
   const [confirmed, setConfirmed] = React.useState(false);
   const [paused, setPaused] = React.useState(false);
 
-  const handlePause = () => {
+  const handlePause = async () => {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+  
+    if (!user) {
+      console.error("No logged-in user found.");
+      return;
+    }
+  
+    const { error } = await supabase
+      .from("accounts")
+      .update({
+        account_status: "paused"
+      })
+      .eq("user_id", user.id);
+  
+    if (error) {
+      console.error("Error pausing account:", error);
+      return;
+    }
+  
     setPaused(true);
   };
 
