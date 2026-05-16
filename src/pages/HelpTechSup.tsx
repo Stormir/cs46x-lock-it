@@ -1,6 +1,7 @@
 import React from "react";
 import TopBar from "../components/TopBar";
 import BottomNav from "../components/BottomNav";
+import { supabase } from "../client";
 
 type HelpTechSupProps = {
   onBack: () => void;
@@ -12,16 +13,37 @@ const HelpTechSup: React.FC<HelpTechSupProps> = ({ onBack }) => {
   const [details, setDetails] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
-
-    // UI-only for now. Later this can be connected to Supabase.
-    console.log({
-      category,
-      subject,
-      details
-    });
-
+  
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+  
+    if (!user) {
+      console.error("No logged-in user found.");
+      return;
+    }
+  
+    const { error } = await supabase
+      .from("support_requests")
+      .insert({
+        user_id: user.id,
+        category,
+        subject,
+        details
+      });
+  
+    if (error) {
+      console.error(
+        "Error submitting support request:",
+        error
+      );
+      return;
+    }
+  
     setSubmitted(true);
     setSubject("");
     setDetails("");
