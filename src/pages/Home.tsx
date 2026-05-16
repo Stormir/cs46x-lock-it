@@ -35,6 +35,7 @@ interface HomeProps {
   setPageLanding: () => void;
   setPageSettings: () => void;
   setPageProfile: () => void;
+  setPageDateTracking: () => void;
   setPageMatches: () => void;
   setPageVerifyTest: () => void;
   openViewProfile: (profileId: string) => void;

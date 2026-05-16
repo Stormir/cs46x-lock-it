@@ -43,8 +43,10 @@ export async function signUp(input: SignUpInput) {
 
   if (error) {
     console.error("Sign-up failed:", error.message);
+    return {data, error};
   }
-  return {data, error};
+
+  return { data, error };
 }
 
 export async function signIn(email: string, password: string) {
@@ -52,6 +54,30 @@ export async function signIn(email: string, password: string) {
     email,
     password,
   });
+
+  if (data.user) {
+  const metadata = data.user.user_metadata;
+
+  const { error: accountError } = await supabase
+    .from("accounts")
+    .upsert({
+      user_id: data.user.id,
+      email: data.user.email,
+      first_name: metadata.first_name,
+      last_name: metadata.last_name,
+      preferred_name: metadata.preferred_name,
+      phone_number: metadata.phone_number,
+      gender_identity: metadata.gender_identity,
+      pronouns: metadata.pronouns,
+      account_status: "active",
+    });
+
+  if (accountError) {
+    console.error("Account upsert failed:", accountError);
+  } else {
+    console.log("Account row createed/updated:", data.user.email);
+  }
+}
 
   if (error) console.error("Sign-in failed:", error.message);
   return {data, error};
