@@ -10,6 +10,7 @@ type PauseAccountProps = {
 const PauseAccount: React.FC<PauseAccountProps> = ({ onBack }) => {
   const [confirmed, setConfirmed] = React.useState(false);
   const [paused, setPaused] = React.useState(false);
+  const [unpaused, setUnpaused] = React.useState(false);
 
   const handlePause = async () => {
     const {
@@ -34,6 +35,33 @@ const PauseAccount: React.FC<PauseAccountProps> = ({ onBack }) => {
     }
   
     setPaused(true);
+    setUnpaused(false);
+  };
+  const handleUnpause = async () => {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+  
+    if (!user) {
+      console.error("No logged-in user found.");
+      return;
+    }
+  
+    const { error } = await supabase
+      .from("accounts")
+      .update({
+        account_status: "active"
+      })
+      .eq("user_id", user.id);
+  
+    if (error) {
+      console.error("Error unpausing account:", error);
+      return;
+    }
+  
+    setPaused(false);
+    setConfirmed(false);
+    setUnpaused(true);
   };
 
   return (
@@ -66,8 +94,17 @@ const PauseAccount: React.FC<PauseAccountProps> = ({ onBack }) => {
           <div className="mb-4 border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-900">
             <p className="font-semibold">Account pause requested</p>
             <p className="mt-1">
-              Your account pause request has been recorded for this demo. A
-              Supabase update can be added later to save this permanently.
+              Your account status has been updated to paused. You can unpause your account
+              anytime by using the button below..
+            </p>
+          </div>
+        )}
+        {unpaused && (
+          <div className="mb-4 border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-900">
+            <p className="font-semibold">Account unpaused</p>
+            <p className="mt-1">
+              Your account status has been updated to active. Your profile can now be
+              shown again based on your app settings.
             </p>
           </div>
         )}
@@ -117,10 +154,18 @@ const PauseAccount: React.FC<PauseAccountProps> = ({ onBack }) => {
           >
             Pause My Account
           </button>
+          {paused && (
+            <button
+              type="button"
+              onClick={handleUnpause}
+              className="w-full border border-[#382543] bg-white px-4 py-3 font-semibold text-[#382543]"
+            >
+              Unpause My Account
+            </button>
+          )}
 
           <p className="pb-4 text-center text-xs text-neutral-500">
-            This page is UI-only for now. Supabase account status saving can be
-            added later.
+            Your account status is saved securely through Supabase.
           </p>
         </div>
       </div>
