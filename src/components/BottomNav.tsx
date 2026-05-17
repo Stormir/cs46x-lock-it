@@ -48,15 +48,14 @@ const BottomNav: React.FC<BottomNavProps> = ({
       className="fixed bottom-0 left-0 right-0 z-[60]"
       style={{ backgroundColor: BRAND }}
     >
-      <div className="mx-auto flex max-w-sm items-center justify-between px-4 py-3 text-white">
-        {/* Find Matches */}
+      <div className="mx-auto flex max-w-sm items-center justify-center gap-6 px-2 py-1 text-white">
         <NavIcon
           label="Find Matches"
           onClick={onHomeClick}
         >
           <img
             src={FindMatchesIcon}
-            className="h-7 w-7 object-contain"
+            className="h-[45px] w-[45px] object-contain"
           />
         </NavIcon>
 
@@ -64,7 +63,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
         <NavIcon label="View Matches">
           <img
             src={ViewMatchesIcon}
-            className="h-7 w-7 object-contain"
+            className="h-[45px] w-[45px] object-contain"
           />
         </NavIcon>
 
@@ -72,7 +71,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
         <NavIcon label="Messages">
           <img
             src={MessagesIcon}
-            className="h-7 w-7 object-contain"
+            className="h-[45px] w-[45px] object-contain"
           />
         </NavIcon>
 
@@ -81,7 +80,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
           <img
             src={DateTrackerIcon}
             onClick={onDateTrackerClick}
-            className="h-7 w-7 object-contain"
+            className="h-[45px] w-[45px] object-contain"
           />
         </NavIcon>
 
@@ -89,7 +88,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
         <NavIcon label="Profile" onClick={onProfileClick}>
           <img
             src={ProfileIcon}
-            className="h-7 w-7 object-contain"
+            className="h-[45px] w-[45px] object-contain"
           />
         </NavIcon>
       </div>
