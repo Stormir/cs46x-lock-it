@@ -1,6 +1,7 @@
 import React from "react";
 import TopBar from "../components/TopBar";
 import BottomNav from "../components/BottomNav";
+import { supabase } from "../client";
 
 type DeactivateAccountProps = {
   onBack: () => void;
@@ -9,9 +10,59 @@ type DeactivateAccountProps = {
 const DeactivateAccount: React.FC<DeactivateAccountProps> = ({ onBack }) => {
   const [confirmed, setConfirmed] = React.useState(false);
   const [deactivated, setDeactivated] = React.useState(false);
+  const [reactivated, setReactivated] = React.useState(false);
 
-  const handleDeactivate = () => {
+  const handleDeactivate = async () => {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+  
+    if (!user) {
+      console.error("No logged-in user found.");
+      return;
+    }
+  
+    const { error } = await supabase
+      .from("accounts")
+      .update({
+        account_status: "deactivated",
+        deactivated_at: new Date().toISOString()
+      })
+      .eq("user_id", user.id);
+  
+    if (error) {
+      console.error("Error deactivating account:", error);
+      return;
+    }
     setDeactivated(true);
+    setReactivated(false);
+  };
+
+  const handleReactivate = async () => {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+  
+    if (!user) {
+      console.error("No logged-in user found.");
+      return;
+    }
+  
+    const { error } = await supabase
+      .from("accounts")
+      .update({
+        account_status: "active"
+      })
+      .eq("user_id", user.id);
+  
+    if (error) {
+      console.error("Error reactivating account:", error);
+      return;
+    }
+  
+    setDeactivated(false);
+    setConfirmed(false);
+    setReactivated(true);
   };
 
   return (
@@ -37,16 +88,27 @@ const DeactivateAccount: React.FC<DeactivateAccountProps> = ({ onBack }) => {
 
           <p className="mt-3 text-sm leading-6 text-neutral-700">
             Deactivation is meant for users who no longer want their Lock-It
-            account active. This demo does not permanently delete account data.
+            account active. This action updates your account status but does 
+            not permanently delete your account data.
           </p>
         </div>
 
         {deactivated && (
           <div className="mb-4 border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-900">
-            <p className="font-semibold">Deactivation request submitted</p>
+            <p className="font-semibold">Account Deactivate</p>
             <p className="mt-1">
-              Your request has been recorded for this demo. A Supabase update
-              can be added later to save this status permanently.
+              Your account status has been updated to deactivated. Your account data has
+              not been permanently deleted.
+            </p>
+          </div>
+        )}
+        {reactivated && (
+          <div className="mb-4 border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-900">
+            <p className="font-semibold">Account reactivated</p>
+
+            <p className="mt-1">
+              Your account status has been updated to active. Your profile may now
+              become visible again based on your app settings.
             </p>
           </div>
         )}
@@ -58,8 +120,8 @@ const DeactivateAccount: React.FC<DeactivateAccountProps> = ({ onBack }) => {
               <li>Your account information is not deleted in this demo.</li>
               <li>This is different from temporarily pausing your account.</li>
               <li>
-                Full account deletion should only be added later with careful
-                Supabase/Auth handling.
+                This will only deactivate your account status and will not permanently delete
+                your account from Supabase Auth.
               </li>
             </ul>
           </DeactivateSection>
@@ -99,10 +161,18 @@ const DeactivateAccount: React.FC<DeactivateAccountProps> = ({ onBack }) => {
           >
             Submit Deactivation Request
           </button>
+          {deactivated && (
+            <button
+              type="button"
+              onClick={handleReactivate}
+              className="w-full border border-[#382543] bg-white px-4 py-3 font-semibold text-[#382543]"
+            >
+              Reactivate My Account
+            </button>
+          )}
 
           <p className="pb-4 text-center text-xs text-neutral-500">
-            This page is UI-only for now. Supabase account status saving can be
-            added later.
+            Your account status is saved securely through Supabase.
           </p>
         </div>
       </div>
