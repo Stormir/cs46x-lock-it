@@ -8,6 +8,8 @@ import ChangePrefIcon from "../assets/logo/changePref_white.svg";
 import SafetyResourcesIcon from "../assets/logo/safetySources_white.svg";
 import ChangeChannelsIcon from "../assets/logo/changeChan_white.svg";
 import TrackDatesIcon from "../assets/logo/loc_track_white.svg";
+import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
+
 
 const BRAND = "#382543";
 
@@ -35,7 +37,7 @@ const TopBar: React.FC<TopBarProps> = ({
   };
   return (
     <header className="sticky top-0 z-50" style={{ backgroundColor: BRAND }}>
-      <div className="mx-auto flex max-w-sm items-center gap-3 px-4 py-3">
+      <div className="-mx-1 flex max-w-sm items-center gap-3 px-4 py-3">
         {/* Hamburger menu */}
         <button
           type="button"
@@ -44,9 +46,9 @@ const TopBar: React.FC<TopBarProps> = ({
           aria-label="Open menu"
         >
           <div className="space-y-1">
-            <div className="h-0.5 w-6 bg-white" />
-            <div className="h-0.5 w-6 bg-white" />
-            <div className="h-0.5 w-6 bg-white" />
+            <div className="h-1 w-8 bg-white" />
+            <div className="h-1 w-8 bg-white" />
+            <div className="h-1 w-8 bg-white" />
           </div>
         </button>
 
@@ -60,7 +62,7 @@ const TopBar: React.FC<TopBarProps> = ({
           <img
             src={HomeLogo}
             alt="Lock It"
-            className="ml-auto h-8 object-contain"
+            className="ml-auto mr-[-30px] h-9 object-contain"
           />
         </div>
       </div>
@@ -84,14 +86,20 @@ const TopBar: React.FC<TopBarProps> = ({
           >
             {/* Home */}
             <button
-            type="button"
-            onClick={() => {
+              type="button"
+              onClick={() => {
                 setMenuOpen(false);
                 onHomeClick();
-            }}
-            className="w-full rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
+              }}
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
-            Home
+              <img
+                src={FindMatchesIcon}
+                alt="Home"
+                className="h-5 w-5 object-contain"
+              />
+
+              <span>Home</span>
             </button>
 
             {/* Preferences */}
