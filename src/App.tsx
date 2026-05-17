@@ -4,7 +4,7 @@ import Landing from "./pages/Landing.tsx";
 import Settings from "./pages/Settings";
 import { useSession } from "./api/useSession";
 import assert from "./utils/assert.tsx";
-import VerifyTest from "./pages/VerifyTest.tsx";
+import DateTracking from "./pages/DateTracking";
 import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile.tsx";
 import EditProfile from "./pages/EditProfile.tsx";
@@ -18,6 +18,8 @@ import SafetySupport from "./pages/SafetySupport.tsx";
 import PauseAccount from "./pages/PauseAccount.tsx";
 import DeactivateAccount from "./pages/DeactivateAccount.tsx";
 import PrivacyPreferences from "./pages/PrivacyPreferences.tsx";
+import VerifyTest from "./pages/VerifyTest.tsx";
+
 
 type PageEnum =
   | "Home"
@@ -35,7 +37,10 @@ type PageEnum =
   | "SafetySupport"
   | "PauseAccount"
   | "DeactivateAccount"
-  | "PrivacyPreferences";
+  | "PrivacyPreferences"
+  | "DateTracking"
+  | "ResetPassword"
+  | "Profile";
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
@@ -78,6 +83,7 @@ const App = () => {
         setPageLanding={() => setPage("Landing")}
         setPageSettings={() => setPage("Settings")}
         setPageProfile={() => setPage("Profile")}
+        setPageDateTracking={() => setPage("DateTracking")}
         setPageMatches={() => setPage("Matches")}
         setPageVerifyTest={() => setPage("VerifyTest")}
         openViewProfile={openViewProfile}
@@ -117,8 +123,12 @@ const App = () => {
           setPageSettings={() => setPage("Settings")}
           setPageProfile={() => setPage("Profile")}
           setPageMatches={() => setPage("Matches")}
+          setPageDateTracking={() => setPage("DateTracking")}
           setPageVerifyTest={() => setPage("VerifyTest")}
-          openViewProfile={openViewProfile}
+          openViewProfile={(profileId: string) => {
+            setSelectedProfileId(profileId);
+            setPage("ViewProfile");
+          }}
         />
       );
     }
@@ -151,6 +161,8 @@ const App = () => {
 
           onPauseAccount={() => setPage("PauseAccount")}
           onDeactivateAccount={() => setPage("DeactivateAccount")}
+
+          onDateTracking={() => setPage("DateTracking")}
         />
       );
 
@@ -175,6 +187,14 @@ const App = () => {
     case "DeactivateAccount":
       return <DeactivateAccount onBack={() => setPage("Settings")} />;
 
+    case "DateTracking":
+      return (
+        <DateTracking
+          setPageHome={() => setPage("Home")}
+          setPageSettings={() => setPage("Settings")}
+          setPageDateTracking={() => setPage("DateTracking")}
+        />
+      );
     default:
       return assert.never(page);
   }

@@ -9,6 +9,7 @@ const BRAND = "#382543";
 
 type BottomNavProps = {
   onHomeClick?: () => void;
+  onDateTrackerClick?: () => void;
   onProfileClick?: () => void;
 
 };
@@ -39,6 +40,7 @@ function NavIcon({
 
 const BottomNav: React.FC<BottomNavProps> = ({
   onHomeClick,
+  onDateTrackerClick,
   onProfileClick,
 }) => {
   return (
@@ -78,6 +80,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
         <NavIcon label="Date Tracker">
           <img
             src={DateTrackerIcon}
+            onClick={onDateTrackerClick}
             className="h-7 w-7 object-contain"
           />
         </NavIcon>
