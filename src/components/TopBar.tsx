@@ -10,7 +10,6 @@ import ChangeChannelsIcon from "../assets/logo/changeChan_white.svg";
 import TrackDatesIcon from "../assets/logo/loc_track_white.svg";
 import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
 
-
 const BRAND = "#382543";
 
 type TopBarProps = {
@@ -19,14 +18,15 @@ type TopBarProps = {
   onDateTrackerClick?: () => void;
   onSignOutClick?: () => void;
   ownPrimaryPhotoUrl?: string | null;
+
 };
 
 const TopBar: React.FC<TopBarProps> = ({
   onHomeClick,
   onSettingsClick,
   onDateTrackerClick,
-  ownPrimaryPhotoUrl,
-  onSignOutClick
+  onSignOutClick,
+  ownPrimaryPhotoUrl
 }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
@@ -39,7 +39,7 @@ const TopBar: React.FC<TopBarProps> = ({
   };
   return (
     <header className="sticky top-0 z-50" style={{ backgroundColor: BRAND }}>
-      <div className="-mx-1 flex max-w-sm items-center gap-3 px-4 py-3">
+      <div className="mx-auto flex max-w-sm items-center gap-3 px-4 py-3">
         {/* Hamburger menu */}
         <button
           type="button"
@@ -48,36 +48,31 @@ const TopBar: React.FC<TopBarProps> = ({
           aria-label="Open menu"
         >
           <div className="space-y-1">
-            <div className="h-1 w-8 bg-white" />
-            <div className="h-1 w-8 bg-white" />
-            <div className="h-1 w-8 bg-white" />
+            <div className="h-0.5 w-6 bg-white" />
+            <div className="h-0.5 w-6 bg-white" />
+            <div className="h-0.5 w-6 bg-white" />
           </div>
         </button>
 
-      {/* Profile circle */}
-      <button
-        type="button"
-        onClick={onHomeClick}
-        className="h-12 w-12 overflow-hidden rounded-full"
-        aria-label="Profile"
-      >
-        {ownPrimaryPhotoUrl ? (
-          <img
-            src={ownPrimaryPhotoUrl}
-            alt="Profile"
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="h-full w-full bg-white/10" />
-        )}
-      </button>
+        {/* Profile circle */}
+        <div className="h-12 w-12 overflow-hidden rounded-full bg-white/20">
+          {ownPrimaryPhotoUrl ? (
+            <img
+              src={ownPrimaryPhotoUrl}
+              alt="Your profile"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="h-full w-full bg-white/10" />
+          )}
+        </div>
 
         {/* Logo */}
         <div className="flex-1 text-right">
           <img
             src={HomeLogo}
             alt="Lock It"
-            className="ml-auto mr-[-30px] h-9 object-contain"
+            className="ml-auto h-8 object-contain"
           />
         </div>
       </div>
