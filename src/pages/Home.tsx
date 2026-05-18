@@ -588,6 +588,7 @@ React.useEffect(() => {
         onHomeClick={() => {}}
         onSettingsClick={setPageSettings}
         onSignOutClick={handleClickSignOut}
+        onDateTrackerClick={setPageDateTracking}
       />
 
       {/* Main page */}
@@ -723,7 +724,7 @@ React.useEffect(() => {
           </section>
 
           {/* Action buttons*/}
-          <section className="mt-4 flex items-center justify-between gap-2 pb-1">
+          <section className="fixed bottom-[72px] left-1/2 z-40 flex w-full max-w-[320px] -translate-x-1/2 items-center justify-between gap-2 px-4">
             <CircleButton
               label="Go Back"
               title="Go Back"
