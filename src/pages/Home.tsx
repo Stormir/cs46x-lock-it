@@ -24,7 +24,7 @@ import DrinksIcon from "../assets/icons/drinks.svg";
 // ---------------
 
 // Brand coloring
-const BRAND = "#382543";
+// const BRAND = "#382543";
 // URL Expiration 
 const MEDIA_URL_EXPIRES_IN_SECONDS = 60 * 60;
 
@@ -38,7 +38,6 @@ interface HomeProps {
   setPageDateTracking: () => void;
   setPageMatches: () => void;
   setPageViewYourMatches: () => void;
-  setPageVerifyTest: () => void;
   openViewProfile: (profileId: string) => void;
   setPageMatchMessages: () => void;
   
@@ -187,11 +186,9 @@ const Home: React.FC<HomeProps> = ({
   setPageDateTracking,
   setPageMatches,
   setPageViewYourMatches,
-  setPageVerifyTest,
   openViewProfile,
   setPageMatchMessages
 }) => {
-  const [menuOpen, setMenuOpen] = React.useState(false);
   // Gives home.tsx access to session?.user?.id
   const { session, loading: sessionLoading } = useSession();
   const [ownPrimaryPhotoUrl, setOwnPrimaryPhotoUrl] = React.useState<string | null>(null);
@@ -455,71 +452,14 @@ React.useEffect(() => {
   if (!currentCandidate) {
   return (
     <div className="min-h-screen bg-neutral-100 flex flex-col">
-      <header className="sticky top-0 z-40" style={{ backgroundColor: BRAND }}>
-        <div className="mx-auto flex max-w-sm items-center gap-3 px-4 py-3">
-          <button
-            type="button"
-            onClick={() => setMenuOpen((v) => !v)}
-            className="rounded-lg p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
-            aria-label="Open menu"
-          >
-            <div className="space-y-1">
-              <div className="h-0.5 w-6 bg-white" />
-              <div className="h-0.5 w-6 bg-white" />
-              <div className="h-0.5 w-6 bg-white" />
-            </div>
-          </button>
+      <TopBar
+        onHomeClick={() => {}}
+        onSettingsClick={setPageSettings}
+        onSignOutClick={handleClickSignOut}
+        onDateTrackerClick={setPageDateTracking}
+        ownPrimaryPhotoUrl={ownPrimaryPhotoUrl}
 
-          <button
-            type="button"
-            onClick={setPageProfile}
-            className="h-12 w-12 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30 hover:ring-white/60"
-            aria-label="Open profile"
-            title="Open profile"
-          >
-            {ownPrimaryPhotoUrl ? (
-              <img
-                src={ownPrimaryPhotoUrl}
-                alt="Open your profile"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="h-full w-full bg-white/10" />
-            )}
-          </button>
-
-          <div className="flex-1 text-right">
-            <div className="text-2xl font-bold tracking-tight text-white">
-              Lock It
-            </div>
-          </div>
-        </div>
-
-        {menuOpen && (
-          <div className="mx-auto max-w-sm px-4 pb-3">
-            <div className="rounded-2xl bg-white/10 p-2 ring-1 ring-white/15">
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false);
-                  setPageVerifyTest();
-                }}
-                className="w-full rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
-              >
-                Verify Test
-              </button>
-
-              <button
-                type="button"
-                onClick={handleClickSignOut}
-                className="w-full rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
-        )}
-      </header>
+      />
 
       <main className="mx-auto flex max-w-sm flex-1 flex-col items-center justify-center px-6 text-center">
         <section className="rounded-2xl border border-neutral-300 bg-white p-6 shadow-sm">
@@ -558,6 +498,13 @@ React.useEffect(() => {
           </div>
         </section>
       </main>
+      <BottomNav
+        onHomeClick={() => {}}
+        onProfileClick={setPageProfile}
+        onDateTrackerClick={setPageDateTracking}
+        onViewYourMatchesClick={setPageViewYourMatches}
+        onMatchMessagesClick={setPageMatchMessages}
+      />
     </div>
   );
 }
@@ -581,21 +528,22 @@ React.useEffect(() => {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-100 pb-20 flex flex-col">
-      {/* Top bar */}
+    <div className="min-h-screen bg-white pb-20 flex flex-col">
       {/* Top bar */}
       <TopBar
         onHomeClick={() => {}}
         onSettingsClick={setPageSettings}
         onSignOutClick={handleClickSignOut}
         onDateTrackerClick={setPageDateTracking}
+        ownPrimaryPhotoUrl={ownPrimaryPhotoUrl}
+
       />
 
       {/* Main page */}
-      <main className="mx-auto max-w-[320px] px-3 py-4 pb-28">
-        <section className="border border-neutral-500 bg-white p-2">
+      <main className="mx-auto w-full max-w-[450px] px-2 py-0 pb-28">
+        <section className="bg-white p-2">
          {/* Candidate Identity */}
-          <section className="mb-3 border border-neutral-300 bg-white p-2">
+          <section className="mb-1 borderbg-white p-2">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <button
@@ -605,17 +553,17 @@ React.useEffect(() => {
                       openViewProfile(currentCandidate.profile_id);
                     }
                   }}
-                  className="text-left text-base font-bold leading-tight text-[#382543] hover:underline"
+                  className="text-left text-xl font-bold leading-tight text-[#382543] hover:underline"
                 >
                   {displayName}
                   {currentCandidate?.pronouns && (
-                    <span className="ml-1 text-xs font-normal">
+                    <span className="ml-1 text-m font-normal">
                       ({currentCandidate.pronouns})
                     </span>
                   )}
                 </button>
 
-                <p className="mt-1 text-xs text-[#382543]">
+                <p className="mt-1 text-m text-[#382543]">
                   {ageText} | {displayCity}
                 </p>
               </div>
@@ -628,7 +576,7 @@ React.useEffect(() => {
               >
                 <img
                   src={TipsIcon}
-                  className="h-6 w-6 object-contain"
+                  className="h-8 w-8 object-contain"
                   alt="Tips"
                 />
               </button>
@@ -665,9 +613,17 @@ React.useEffect(() => {
                 ))}
               </div>
             ) : (
-              <div className="flex justify-center">
-                <div className="flex aspect-square w-36 items-center justify-center border border-dashed border-neutral-300 bg-neutral-100 px-2 text-center text-[11px] text-neutral-500">
-                  No photos added yet
+              <div className="grid grid-cols-2 gap-3">
+                <div className="aspect-square border border-neutral-200 bg-neutral-100">
+                  <div className="flex h-full w-full items-center justify-center text-center text-xs text-neutral-400">
+                    No photos added yet
+                  </div>
+                </div>
+
+                <div className="aspect-square border border-neutral-200 bg-neutral-100">
+                  <div className="flex h-full w-full items-center justify-center text-center text-xs text-neutral-400">
+                    No photos added yet
+                  </div>
                 </div>
               </div>
             )}
@@ -724,7 +680,7 @@ React.useEffect(() => {
           </section>
 
           {/* Action buttons*/}
-          <section className="fixed bottom-[72px] left-1/2 z-40 flex w-full max-w-[320px] -translate-x-1/2 items-center justify-between gap-2 px-4">
+          <section className="fixed bottom-[72px] left-1/2 z-40 flex w-full max-w-[405px] -translate-x-1/2 items-center justify-center gap-10 px-4">
             <CircleButton
               label="Go Back"
               title="Go Back"
@@ -733,7 +689,7 @@ React.useEffect(() => {
             >
               <img
                 src={GoBackIcon}
-                className="h-13 w-13 object-contain drop-shadow-md"
+                className="h-full w-full object-contain drop-shadow-md"
                 alt=""
               />
             </CircleButton>
@@ -746,7 +702,7 @@ React.useEffect(() => {
             >
               <img
                 src={SkipIcon}
-                className="h-13 w-13 object-contain drop-shadow-md"
+                className="h-full w-full object-contain drop-shadow-md"
                 alt=""
               />
             </CircleButton>
@@ -759,7 +715,7 @@ React.useEffect(() => {
             >
               <img
                 src={LikeIcon}
-                className="h-13 w-13 object-contain drop-shadow-md"
+                className="h-full w-full object-contain drop-shadow-md"
                 alt=""
               />
             </CircleButton>
@@ -772,7 +728,7 @@ React.useEffect(() => {
             >
               <img
                 src={SuperLikeIcon}
-                className="h-14 w-14 object-contain drop-shadow-md"
+                className="h-full w-full object-contain drop-shadow-md"
                 alt=""
               />
             </CircleButton>
@@ -796,12 +752,12 @@ React.useEffect(() => {
 function DetailItem({ icon, text }: { icon: string; text: string }) {
   return (
     <div className="flex items-center gap-2 text-neutral-800">
-      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-neutral-100">
+      <span className="inline-flex items-center justify-center">
         <img
           src={icon}
           alt=""
           aria-hidden="true"
-          className="h-4 w-4 object-contain"
+          className="h-5 w-5 object-contain"
         />
       </span>
 
@@ -830,7 +786,7 @@ function CircleButton({
       title={title}
       onClick={onClick}
       disabled={disabled}
-      className="flex h-16 w-16 items-center justify-center rounded-full bg-transparent transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+      className="flex h-24 w-24 items-center justify-center rounded-full bg-transparent transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
     >
       {children}
     </button>

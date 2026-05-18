@@ -18,12 +18,14 @@ type TopBarProps = {
   onSettingsClick?: () => void;
   onDateTrackerClick?: () => void;
   onSignOutClick?: () => void;
+  ownPrimaryPhotoUrl?: string | null;
 };
 
 const TopBar: React.FC<TopBarProps> = ({
   onHomeClick,
   onSettingsClick,
   onDateTrackerClick,
+  ownPrimaryPhotoUrl,
   onSignOutClick
 }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -52,10 +54,23 @@ const TopBar: React.FC<TopBarProps> = ({
           </div>
         </button>
 
-        {/* Profile circle */}
-        <div className="h-12 w-12 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30">
+      {/* Profile circle */}
+      <button
+        type="button"
+        onClick={onHomeClick}
+        className="h-12 w-12 overflow-hidden rounded-full"
+        aria-label="Profile"
+      >
+        {ownPrimaryPhotoUrl ? (
+          <img
+            src={ownPrimaryPhotoUrl}
+            alt="Profile"
+            className="h-full w-full object-cover"
+          />
+        ) : (
           <div className="h-full w-full bg-white/10" />
-        </div>
+        )}
+      </button>
 
         {/* Logo */}
         <div className="flex-1 text-right">

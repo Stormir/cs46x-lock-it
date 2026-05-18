@@ -31,6 +31,8 @@ type PageEnum =
   | "EditProfile"
   | "ViewProfile"
   | "Matches"
+  | "ViewYourMatches"
+  | "MatchMessages"
   | "Settings"
   | "CookiePolicy"
   | "PrivacyPolicy"
@@ -38,11 +40,7 @@ type PageEnum =
   | "SafetySupport"
   | "PauseAccount"
   | "DeactivateAccount"
-  | "DateTracking"
-  | "ResetPassword"
-  | "Profile"
-  | "ViewYourMatches"
-  | "MatchMessages";
+  | "DateTracking";
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
@@ -87,7 +85,6 @@ const App = () => {
         setPageProfile={() => setPage("Profile")}
         setPageDateTracking={() => setPage("DateTracking")}
         setPageMatches={() => setPage("Matches")}
-        setPageVerifyTest={() => setPage("VerifyTest")}
         openViewProfile={openViewProfile}
         setPageViewYourMatches={() => setPage("ViewYourMatches")}
         setPageMatchMessages={() => setPage("MatchMessages")}
@@ -143,7 +140,6 @@ const App = () => {
           setPageMatches={() => setPage("Matches")}
           setPageViewYourMatches={() => setPage("ViewYourMatches")}
           setPageDateTracking={() => setPage("DateTracking")}
-          setPageVerifyTest={() => setPage("VerifyTest")}
           setPageMatchMessages={() => setPage("MatchMessages")}
           openViewProfile={(profileId: string) => {
             setSelectedProfileId(profileId);
