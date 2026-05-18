@@ -540,7 +540,7 @@ React.useEffect(() => {
       />
 
       {/* Main page */}
-      <main className="mx-auto w-full max-w-[450px] px-2 py-0 pb-28">
+      <main className="mx-auto w-full px-2 py-0 pb-28 sm:max-w-[360px]">
         <section className="bg-white p-2">
          {/* Candidate Identity */}
           <section className="mb-1 borderbg-white p-2">
@@ -689,7 +689,7 @@ React.useEffect(() => {
             >
               <img
                 src={GoBackIcon}
-                className="h-full w-full object-contain drop-shadow-md"
+                className="h-full w-full object-contain drop-shadow-xl"
                 alt=""
               />
             </CircleButton>
@@ -702,7 +702,7 @@ React.useEffect(() => {
             >
               <img
                 src={SkipIcon}
-                className="h-full w-full object-contain drop-shadow-md"
+                className="h-full w-full object-contain drop-shadow-xl"
                 alt=""
               />
             </CircleButton>
@@ -715,7 +715,7 @@ React.useEffect(() => {
             >
               <img
                 src={LikeIcon}
-                className="h-full w-full object-contain drop-shadow-md"
+                className="h-full w-full object-contain drop-shadow-xl"
                 alt=""
               />
             </CircleButton>
@@ -728,7 +728,7 @@ React.useEffect(() => {
             >
               <img
                 src={SuperLikeIcon}
-                className="h-full w-full object-contain drop-shadow-md"
+                className="h-full w-full object-contain drop-shadow-xl"
                 alt=""
               />
             </CircleButton>
@@ -786,7 +786,7 @@ function CircleButton({
       title={title}
       onClick={onClick}
       disabled={disabled}
-      className="flex h-24 w-24 items-center justify-center rounded-full bg-transparent transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+      className="flex h-24 w-24 items-center justify-center rounded-full transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed"
     >
       {children}
     </button>
