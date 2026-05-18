@@ -10,6 +10,8 @@ import Profile from "./pages/Profile.tsx";
 import EditProfile from "./pages/EditProfile.tsx";
 import ViewProfile from "./pages/ViewProfile.tsx";
 import Matches from "./pages/Matches.tsx";
+import ViewYourMatches from "./pages/ViewYourMatches.tsx";
+import MatchMessages from "./pages/MatchMessages.tsx";
 //settings page
 import CookiePolicy from "./pages/CookiePolicy.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
@@ -38,7 +40,9 @@ type PageEnum =
   | "DeactivateAccount"
   | "DateTracking"
   | "ResetPassword"
-  | "Profile";
+  | "Profile"
+  | "ViewYourMatches"
+  | "MatchMessages";
 
 const App = () => {
   const [page, setPage] = React.useState<PageEnum>("Landing");
@@ -85,6 +89,8 @@ const App = () => {
         setPageMatches={() => setPage("Matches")}
         setPageVerifyTest={() => setPage("VerifyTest")}
         openViewProfile={openViewProfile}
+        setPageViewYourMatches={() => setPage("ViewYourMatches")}
+        setPageMatchMessages={() => setPage("MatchMessages")}
       />
   );
 
@@ -113,6 +119,20 @@ const App = () => {
       />
     );
 
+  case "ViewYourMatches":
+  return (
+    <ViewYourMatches
+      setPageHome={() => setPage("Home")}
+    />
+  );
+
+  case "MatchMessages":
+  return (
+    <MatchMessages
+      setPageHome={() => setPage("Home")}
+    />
+  );
+
   case "ViewProfile":
     if (!selectedProfileId) {
       return (
@@ -121,8 +141,10 @@ const App = () => {
           setPageSettings={() => setPage("Settings")}
           setPageProfile={() => setPage("Profile")}
           setPageMatches={() => setPage("Matches")}
+          setPageViewYourMatches={() => setPage("ViewYourMatches")}
           setPageDateTracking={() => setPage("DateTracking")}
           setPageVerifyTest={() => setPage("VerifyTest")}
+          setPageMatchMessages={() => setPage("MatchMessages")}
           openViewProfile={(profileId: string) => {
             setSelectedProfileId(profileId);
             setPage("ViewProfile");

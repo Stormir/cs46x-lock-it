@@ -37,8 +37,11 @@ interface HomeProps {
   setPageProfile: () => void;
   setPageDateTracking: () => void;
   setPageMatches: () => void;
+  setPageViewYourMatches: () => void;
   setPageVerifyTest: () => void;
   openViewProfile: (profileId: string) => void;
+  setPageMatchMessages: () => void;
+  
 }
 
 // Creates Type profile for canidate matches
@@ -181,9 +184,12 @@ const Home: React.FC<HomeProps> = ({
   setPageLanding,
   setPageSettings,
   setPageProfile,
+  setPageDateTracking,
   setPageMatches,
+  setPageViewYourMatches,
   setPageVerifyTest,
-  openViewProfile
+  openViewProfile,
+  setPageMatchMessages
 }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   // Gives home.tsx access to session?.user?.id
@@ -775,8 +781,12 @@ React.useEffect(() => {
 
       {/* Bottom nav */}
       <BottomNav
-        onHomeClick={() => {}} 
+        onHomeClick={() => {}}
         onProfileClick={setPageProfile}
+        onDateTrackerClick={setPageDateTracking}
+        onViewYourMatchesClick={setPageViewYourMatches}
+        onMatchMessagesClick={setPageMatchMessages}
+
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
-import ViewMatchesIcon from "../assets/logo/matches_heart_white.svg";
+import ViewYourMatchesIcon from "../assets/logo/matches_heart_white.svg";
 import MessagesIcon from "../assets/logo/msg_white.svg";
 import DateTrackerIcon from "../assets/logo/loc_track_white.svg";
 import ProfileIcon from "../assets/logo/usr_prof_white.svg";
@@ -11,6 +11,8 @@ type BottomNavProps = {
   onHomeClick?: () => void;
   onDateTrackerClick?: () => void;
   onProfileClick?: () => void;
+  onViewYourMatchesClick?: () => void;
+  onMatchMessagesClick?: () => void;
 
 };
 
@@ -42,6 +44,8 @@ const BottomNav: React.FC<BottomNavProps> = ({
   onHomeClick,
   onDateTrackerClick,
   onProfileClick,
+  onViewYourMatchesClick,
+  onMatchMessagesClick,
 }) => {
   return (
     <nav
@@ -59,16 +63,22 @@ const BottomNav: React.FC<BottomNavProps> = ({
           />
         </NavIcon>
 
-        {/* View Matches */}
-        <NavIcon label="View Matches">
+        {/* View Your Matches */}
+        <NavIcon
+          label="View Your Matches"
+          onClick={onViewYourMatchesClick}
+        >
           <img
-            src={ViewMatchesIcon}
-            className="h-[45px] w-[45px] object-contain"
+            src={ViewYourMatchesIcon}
+            className="h-11 w-11 object-contain"
           />
         </NavIcon>
 
         {/* Messages */}
-        <NavIcon label="Messages">
+        <NavIcon
+          label="Messages"
+          onClick={onMatchMessagesClick}
+        >
           <img
             src={MessagesIcon}
             className="h-[45px] w-[45px] object-contain"
