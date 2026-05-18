@@ -52,7 +52,7 @@ Lock It aims to provide a safe space for users when finding their match. Whether
 ### Catherine Kaye Dela Chica
 - email: [kaye.delachica@gmail.com](mailto:kaye.delachica@gmail.com)
 - github: [ckayed](https://github.com/ckayed)
-- linkedIn: link here
+- linkedIn: (https://www.linkedin.com/in/ckayedelachica/
 
 ### Yuritzia Peraza
 - Email: perazaortega1979@gmail.com
