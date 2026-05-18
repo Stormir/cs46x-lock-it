@@ -17,6 +17,7 @@ import HelpTechSup from "./pages/HelpTechSup.tsx";
 import SafetySupport from "./pages/SafetySupport.tsx";
 import PauseAccount from "./pages/PauseAccount.tsx";
 import DeactivateAccount from "./pages/DeactivateAccount.tsx";
+import PrivacyPreferences from "./pages/PrivacyPreferences.tsx";
 import VerifyTest from "./pages/VerifyTest.tsx";
 
 
@@ -36,6 +37,7 @@ type PageEnum =
   | "SafetySupport"
   | "PauseAccount"
   | "DeactivateAccount"
+  | "PrivacyPreferences"
   | "DateTracking"
   | "ResetPassword"
   | "Profile";
@@ -152,6 +154,7 @@ const App = () => {
 
           onCookiePolicy={() => setPage("CookiePolicy")}
           onPrivacyPolicy={() => setPage("PrivacyPolicy")}
+          onPrivacyPreferences={() => setPage("PrivacyPreferences")}
 
           onHelpTechSup={() => setPage("HelpTechSup")}
           onSafetySupport={() => setPage("SafetySupport")}
@@ -168,6 +171,9 @@ const App = () => {
 
     case "PrivacyPolicy":
       return <PrivacyPolicy onBack={() => setPage("Settings")} />;
+
+    case "PrivacyPreferences":
+      return <PrivacyPreferences onBack={() => setPage("Settings")} />;
 
     case "HelpTechSup":
       return <HelpTechSup onBack={() => setPage("Settings")} />;

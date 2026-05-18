@@ -8,6 +8,7 @@ type SettingsProps = {
   onVerifyTest: () => void;
   onCookiePolicy: () => void;
   onPrivacyPolicy: () => void;
+  onPrivacyPreferences: () => void;
   onHelpTechSup: () => void;
   onSafetySupport: () => void;
   onPauseAccount: () => void;
@@ -20,6 +21,7 @@ const Settings: React.FC<SettingsProps> = ({
   onVerifyTest,
   onCookiePolicy,
   onPrivacyPolicy,
+  onPrivacyPreferences,
   onHelpTechSup,
   onSafetySupport,
   onPauseAccount,
@@ -143,7 +145,7 @@ const Settings: React.FC<SettingsProps> = ({
         <Section title="Privacy">
           <ActionRow label="Cookie Policy" onClick={onCookiePolicy} />
           <ActionRow label="Privacy Policy" onClick={onPrivacyPolicy} />
-          <ActionRow label="Privacy Preferences" />
+          <ActionRow label="Privacy Preferences" onClick={onPrivacyPreferences} />
         </Section>
 
         {/* Contact Us */}
