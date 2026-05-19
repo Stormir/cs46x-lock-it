@@ -321,74 +321,101 @@ React.useEffect(() => {
 
   // Actions Handler
   const handleMatchAction = async (interactionType: InteractionType) => {
-  if (!session?.user?.id || !currentCandidate) return;
-
-  setActionSaving(true);
-  setMatchError(null);
-
-  const actorUserId = session.user.id;
-  const targetUserId = currentCandidate.profile_id;
-
-  const { error: interactionError } = await supabase
-  .from("user_interactions")
-  .upsert(
-    {
-      actor_user_id: actorUserId,
-      target_user_id: targetUserId,
-      interaction_type: interactionType
-    },
-    {
-      onConflict: "actor_user_id,target_user_id"
-    }
-  );
-
-  if (interactionError) {
-    console.error("Could not save interaction:", interactionError);
-    setMatchError(interactionError.message);
-    setActionSaving(false);
-    return;
-  }
-
-  if (interactionType === "like" || interactionType === "super_like") {
-    const { data: reverseInteraction, error: reverseError } = await supabase
+    if (!session?.user?.id || !currentCandidate) return;
+  
+    setActionSaving(true);
+    setMatchError(null);
+  
+    const actorUserId = session.user.id;
+    const targetUserId = currentCandidate.profile_id;
+  
+    console.log("Saving interaction:", {
+      actorUserId,
+      targetUserId,
+      interactionType
+    });
+  
+    const { error: interactionError } = await supabase
       .from("user_interactions")
-      .select("id, interaction_type")
-      .eq("actor_user_id", targetUserId)
-      .eq("target_user_id", actorUserId)
-      .in("interaction_type", ["like", "super_like"])
-      .maybeSingle();
-
-    if (reverseError) {
-      console.error("Could not check reverse interaction:", reverseError);
+      .upsert(
+        {
+          actor_user_id: actorUserId,
+          target_user_id: targetUserId,
+          interaction_type: interactionType
+        },
+        {
+          onConflict: "actor_user_id,target_user_id"
+        }
+      );
+  
+    console.log("Interaction save error:", interactionError);
+  
+    if (interactionError) {
+      console.error("Could not save interaction:", interactionError);
+      setMatchError(interactionError.message);
+      setActionSaving(false);
+      return;
     }
-
-    if (reverseInteraction) {
-      const [userOneId, userTwoId] = [actorUserId, targetUserId].sort();
-
-      const { error: matchInsertError } = await supabase
-        .from("matches")
-        .upsert(
-          {
-            user_one_id: userOneId,
-            user_two_id: userTwoId,
-            status: "matched"
-          },
-          {
-            onConflict: "user_one_id,user_two_id"
-          }
-        );
-
-      if (matchInsertError) {
-        console.error("Could not create match:", matchInsertError);
-      } else {
-        alert("It's a match!");
+  
+    if (interactionType === "like" || interactionType === "super_like") {
+      console.log("Checking reverse interaction:", {
+        actor_user_id: targetUserId,
+        target_user_id: actorUserId
+      });
+  
+      const { data: reverseInteraction, error: reverseError } = await supabase
+        .from("user_interactions")
+        .select("id, interaction_type")
+        .eq("actor_user_id", targetUserId)
+        .eq("target_user_id", actorUserId)
+        .in("interaction_type", ["like", "super_like"])
+        .maybeSingle();
+  
+      console.log("Reverse interaction result:", {
+        reverseInteraction,
+        reverseError
+      });
+  
+      if (reverseError) {
+        console.error("Could not check reverse interaction:", reverseError);
+      }
+  
+      if (reverseInteraction) {
+        const [userOneId, userTwoId] = [actorUserId, targetUserId].sort();
+  
+        console.log("Creating match:", {
+          userOneId,
+          userTwoId
+        });
+  
+        const { error: matchInsertError } = await supabase
+          .from("matches")
+          .upsert(
+            {
+              user_one_id: userOneId,
+              user_two_id: userTwoId,
+              status: "matched",
+              matched_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            },
+            {
+              onConflict: "user_one_id,user_two_id"
+            }
+          );
+  
+        console.log("Match insert error:", matchInsertError);
+  
+        if (matchInsertError) {
+          console.error("Could not create match:", matchInsertError);
+        } else {
+          alert("It's a match!");
+        }
       }
     }
-  }
-
-  setCurrentIndex((prev) => prev + 1);
-  setActionSaving(false);
-};
+  
+    setCurrentIndex((prev) => prev + 1);
+    setActionSaving(false);
+  };
 
   // Sets loading state for loading profiles
   if (sessionLoading || matchesLoading) {
