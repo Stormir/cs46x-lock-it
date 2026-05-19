@@ -9,6 +9,7 @@ import SafetyResourcesIcon from "../assets/logo/safetySources_white.svg";
 import ChangeChannelsIcon from "../assets/logo/changeChan_white.svg";
 import TrackDatesIcon from "../assets/logo/loc_track_white.svg";
 import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
+import HamburgerMenuIcon from "../assets/logo/hambgr_menu_white.svg";
 
 const BRAND = "#382543";
 
@@ -39,19 +40,19 @@ const TopBar: React.FC<TopBarProps> = ({
   };
   return (
     <header className="sticky top-0 z-50" style={{ backgroundColor: BRAND }}>
-      <div className="mx-auto flex max-w-sm items-center gap-3 px-4 py-3">
+      <div className="mx-auto flex max-w-sm items-center gap-3 px-0 py-3">
         {/* Hamburger menu */}
         <button
           type="button"
           onClick={() => setMenuOpen((current) => !current)}
-          className="rounded-lg p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
+          className="-ml-4 rounded-lg p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
           aria-label="Open menu"
         >
-          <div className="space-y-1">
-            <div className="h-0.5 w-6 bg-white" />
-            <div className="h-0.5 w-6 bg-white" />
-            <div className="h-0.5 w-6 bg-white" />
-          </div>
+          <img
+            src={HamburgerMenuIcon}
+            alt="Menu"
+            className="h-9 w-9 object-contain"
+          />
         </button>
 
         {/* Profile circle */}
@@ -72,7 +73,7 @@ const TopBar: React.FC<TopBarProps> = ({
           <img
             src={HomeLogo}
             alt="Lock It"
-            className="ml-auto h-8 object-contain"
+            className="ml-auto h-9.5 object-contain"
           />
         </div>
       </div>
