@@ -79,6 +79,9 @@ type ProfileProps = {
   setPageDateTracking: () => void;
   setPageViewYourMatches: () => void;
   setPageMatchMessages: () => void;
+  setPageEditPreferences: () => void;
+  setPageSafetySupportAndCommunity: () => void;
+  setPageChangeChannels: () => void;
 };
 
 // Helper Functions
@@ -196,7 +199,10 @@ const Profile: React.FC<ProfileProps> = ({
   setPageSettings,
   setPageDateTracking,
   setPageViewYourMatches,
-  setPageMatchMessages
+  setPageMatchMessages,
+  setPageEditPreferences,
+  setPageSafetySupportAndCommunity,
+  setPageChangeChannels
 }) => {
   // Gets the current logged-in user's session
   const { session, loading: sessionLoading } = useSession();
@@ -406,6 +412,9 @@ const Profile: React.FC<ProfileProps> = ({
       onHomeClick={setPageHome}
       onSettingsClick={setPageSettings}
       onDateTrackerClick={setPageDateTracking}
+      onPreferencesClick={setPageEditPreferences}
+      onSafetyClick={setPageSafetySupportAndCommunity}
+      onChangeChannelsClick={setPageChangeChannels}
     />
 
     <main className="mx-auto w-full px-2 py-0 pb-28 sm:max-w-[360px]">

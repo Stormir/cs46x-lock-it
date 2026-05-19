@@ -19,6 +19,9 @@ type TopBarProps = {
   onDateTrackerClick?: () => void;
   onSignOutClick?: () => void;
   ownPrimaryPhotoUrl?: string | null;
+  onPreferencesClick?: () => void;
+  onSafetyClick?: () => void;
+  onChangeChannelsClick?: () => void;
 
 };
 
@@ -26,9 +29,13 @@ const TopBar: React.FC<TopBarProps> = ({
   onHomeClick,
   onSettingsClick,
   onDateTrackerClick,
+  onPreferencesClick,
+  onSafetyClick,
+  onChangeChannelsClick,
   onSignOutClick,
   ownPrimaryPhotoUrl
 }) => {
+  
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const handleSignOut = async () => {
@@ -116,6 +123,10 @@ const TopBar: React.FC<TopBarProps> = ({
             {/* Preferences */}
             <button
               type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                onPreferencesClick?.();
+              }}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
               <img
@@ -149,6 +160,10 @@ const TopBar: React.FC<TopBarProps> = ({
             {/* Safety */}
             <button
               type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                onSafetyClick?.();
+              }}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
               <img
@@ -163,6 +178,10 @@ const TopBar: React.FC<TopBarProps> = ({
             {/* Change Channels */}
             <button
               type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                onChangeChannelsClick?.();
+              }}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
               <img

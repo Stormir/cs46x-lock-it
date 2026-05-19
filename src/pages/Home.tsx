@@ -40,7 +40,9 @@ interface HomeProps {
   setPageViewYourMatches: () => void;
   openViewProfile: (profileId: string) => void;
   setPageMatchMessages: () => void;
-  
+  setPageEditPreferences: () => void;
+  setPageSafetySupportAndCommunity: () => void;
+  setPageChangeChannels: () => void;
 }
 
 // Creates Type profile for canidate matches
@@ -177,8 +179,6 @@ async function addSignedUrlToMedia(
 }
 
 // Home Component 
-
-
 const Home: React.FC<HomeProps> = ({
   setPageLanding,
   setPageSettings,
@@ -187,7 +187,10 @@ const Home: React.FC<HomeProps> = ({
   setPageMatches,
   setPageViewYourMatches,
   openViewProfile,
-  setPageMatchMessages
+  setPageMatchMessages,
+  setPageEditPreferences,
+  setPageSafetySupportAndCommunity,
+  setPageChangeChannels
 }) => {
   // Gives home.tsx access to session?.user?.id
   const { session, loading: sessionLoading } = useSession();
@@ -457,8 +460,10 @@ React.useEffect(() => {
         onSettingsClick={setPageSettings}
         onSignOutClick={handleClickSignOut}
         onDateTrackerClick={setPageDateTracking}
+        onPreferencesClick={setPageEditPreferences}
+        onSafetyClick={setPageSafetySupportAndCommunity}
+        onChangeChannelsClick={setPageChangeChannels}
         ownPrimaryPhotoUrl={ownPrimaryPhotoUrl}
-
       />
 
       <main className="mx-auto flex max-w-sm flex-1 flex-col items-center justify-center px-6 text-center">
