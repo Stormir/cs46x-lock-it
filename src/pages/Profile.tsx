@@ -1,34 +1,12 @@
 import React from "react";
 import { supabase } from "../client";
 import { useSession } from "../api/useSession";
-
-import LogoPinkHome from "../assets/logo/logo_pink_home.svg";
-import GoBackButton from "../assets/icons/go_back_button.svg";
-
-// SVG Profile Icons
-import InterestedInIcon from "../assets/icons/interested_in.svg";
-import OccupationIcon from "../assets/icons/Occupation.svg";
-import ZodiacIcon from "../assets/icons/zodiac.svg";
-import EducationIcon from "../assets/icons/education.svg";
-import NationalityIcon from "../assets/icons/nationality.svg";
-import HometownIcon from "../assets/icons/hometown.svg";
-
-import DrinksIcon from "../assets/icons/drinks.svg";
-import SmokingIcon from "../assets/icons/smoking.svg";
-import ExerciseIcon from "../assets/icons/exercise.svg";
-import ChildrenIcon from "../assets/icons/children.svg";
-import HeightIcon from "../assets/icons/Height.svg";
-import DogsOkayIcon from "../assets/icons/Dogs_Okay.svg";
-
-import CommunicationIcon from "../assets/icons/Communication.svg";
-import FamilyIcon from "../assets/icons/Family.svg";
-
-//CONSTANTS
-
-// Business colors 
-const BRAND = "#382543";
-const BODY_TEXT = "#382543";
-
+import TopBar from "../components/TopBar";
+import BottomNav from "../components/BottomNav";
+import { InterestedInIcon, OccupationIcon, ZodiacIcon, EducationIcon,
+  NationalityIcon, HometownIcon, DrinksIcon, SmokingIcon, ExerciseIcon,
+  ChildrenIcon, HeightIcon, DogsOkayIcon, CommunicationIcon, FamilyIcon
+} from "../components/ProfileIcons";
 // Media Expiration 
 const MEDIA_URL_EXPIRES_IN_SECONDS = 60 * 60;
 
@@ -97,6 +75,13 @@ type ProfileMediaItem = ProfileMediaRow & {
 type ProfileProps = {
   setPageHome: () => void;
   setPageEditProfile: () => void;
+  setPageSettings: () => void;
+  setPageDateTracking: () => void;
+  setPageViewYourMatches: () => void;
+  setPageMatchMessages: () => void;
+  setPageEditPreferences: () => void;
+  setPageSafetySupportAndCommunity: () => void;
+  setPageChangeChannels: () => void;
 };
 
 // Helper Functions
@@ -208,10 +193,17 @@ async function addSignedUrlToMedia(
 }
 
 // Main Profile Page Component
-const Profile: React.FC<ProfileProps> = ({ 
-    setPageHome,
-    setPageEditProfile
-  }) => {
+const Profile: React.FC<ProfileProps> = ({
+  setPageHome,
+  setPageEditProfile,
+  setPageSettings,
+  setPageDateTracking,
+  setPageViewYourMatches,
+  setPageMatchMessages,
+  setPageEditPreferences,
+  setPageSafetySupportAndCommunity,
+  setPageChangeChannels
+}) => {
   // Gets the current logged-in user's session
   const { session, loading: sessionLoading } = useSession();
 
@@ -415,37 +407,20 @@ const Profile: React.FC<ProfileProps> = ({
 };
 
   return (
-  <div
-    className="min-h-screen overflow-y-auto pb-10"
-    style={{
-      backgroundColor: "#f3f3f3",
-      color: BODY_TEXT,
-      fontFamily: "Nunito, system-ui, sans-serif"
-    }}
-  >
-    {/* Header */}
-    <header className="sticky top-0 z-40" style={{ backgroundColor: BRAND }}>
-      <div className="mx-auto flex max-w-[320px] items-center justify-between px-3 py-2">
-        <button
-          type="button"
-          onClick={setPageHome}
-          className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/10"
-          aria-label="Go back home"
-        >
-          <img src={GoBackButton} alt="" className="h-5 w-5" />
-        </button>
+    <div className="min-h-screen bg-white pb-20 flex flex-col">
+    <TopBar
+      onHomeClick={setPageHome}
+      onSettingsClick={setPageSettings}
+      onDateTrackerClick={setPageDateTracking}
+      onPreferencesClick={setPageEditPreferences}
+      onSafetyClick={setPageSafetySupportAndCommunity}
+      onChangeChannelsClick={setPageChangeChannels}
+    />
 
-        <img src={LogoPinkHome} alt="Lock It" className="h-9" />
-      </div>
-    </header>
-
-    {/* Main profile scroll */}
-    <main className="mx-auto max-w-[320px] px-3 py-5">
-
-      <section className="border border-neutral-500 bg-white p-2">
-
+    <main className="mx-auto w-full px-2 py-0 pb-28 sm:max-w-[360px]">
+      <section className="bg-white p-2">
         {/* Profile Identity */}
-        <section className="mb-3 border border-neutral-300 bg-white p-2">
+        <section className="mb-1 bg-white p-2">
           <div className="flex items-start justify-between gap-2">
             <div>
               <h1 className="text-base font-bold leading-tight text-[#382543]">
@@ -725,7 +700,6 @@ const Profile: React.FC<ProfileProps> = ({
             />
           </div>
         </ProfileBox>
-
         {/* Prompt 2 */}
         <PromptPanel
           title={profile.prompt_2_question || "Example Prompt #2"}
@@ -733,6 +707,14 @@ const Profile: React.FC<ProfileProps> = ({
         />
       </section>
     </main>
+
+    <BottomNav
+      onHomeClick={setPageHome}
+      onProfileClick={() => {}}
+      onDateTrackerClick={setPageDateTracking}
+      onViewYourMatchesClick={setPageViewYourMatches}
+      onMatchMessagesClick={setPageMatchMessages}
+    />
   </div>
 );
 };
@@ -781,6 +763,7 @@ function IconDetail({
       </div>
     </div>
   );
+  
 }
 
 function PromptPanel({

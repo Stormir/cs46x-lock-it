@@ -8,6 +8,8 @@ import ChangePrefIcon from "../assets/logo/changePref_white.svg";
 import SafetyResourcesIcon from "../assets/logo/safetySources_white.svg";
 import ChangeChannelsIcon from "../assets/logo/changeChan_white.svg";
 import TrackDatesIcon from "../assets/logo/loc_track_white.svg";
+import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
+import HamburgerMenuIcon from "../assets/logo/hambgr_menu_white.svg";
 
 const BRAND = "#382543";
 
@@ -16,14 +18,24 @@ type TopBarProps = {
   onSettingsClick?: () => void;
   onDateTrackerClick?: () => void;
   onSignOutClick?: () => void;
+  ownPrimaryPhotoUrl?: string | null;
+  onPreferencesClick?: () => void;
+  onSafetyClick?: () => void;
+  onChangeChannelsClick?: () => void;
+
 };
 
 const TopBar: React.FC<TopBarProps> = ({
   onHomeClick,
   onSettingsClick,
   onDateTrackerClick,
-  onSignOutClick
+  onPreferencesClick,
+  onSafetyClick,
+  onChangeChannelsClick,
+  onSignOutClick,
+  ownPrimaryPhotoUrl
 }) => {
+  
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const handleSignOut = async () => {
@@ -35,24 +47,32 @@ const TopBar: React.FC<TopBarProps> = ({
   };
   return (
     <header className="sticky top-0 z-50" style={{ backgroundColor: BRAND }}>
-      <div className="mx-auto flex max-w-sm items-center gap-3 px-4 py-3">
+      <div className="mx-auto flex max-w-sm items-center gap-3 px-0 py-3">
         {/* Hamburger menu */}
         <button
           type="button"
           onClick={() => setMenuOpen((current) => !current)}
-          className="rounded-lg p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
+          className="-ml-4 rounded-lg p-2 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
           aria-label="Open menu"
         >
-          <div className="space-y-1">
-            <div className="h-0.5 w-6 bg-white" />
-            <div className="h-0.5 w-6 bg-white" />
-            <div className="h-0.5 w-6 bg-white" />
-          </div>
+          <img
+            src={HamburgerMenuIcon}
+            alt="Menu"
+            className="h-9 w-9 object-contain"
+          />
         </button>
 
         {/* Profile circle */}
-        <div className="h-12 w-12 overflow-hidden rounded-full bg-white/20 ring-2 ring-white/30">
-          <div className="h-full w-full bg-white/10" />
+        <div className="h-12 w-12 overflow-hidden rounded-full bg-white/20">
+          {ownPrimaryPhotoUrl ? (
+            <img
+              src={ownPrimaryPhotoUrl}
+              alt="Your profile"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="h-full w-full bg-white/10" />
+          )}
         </div>
 
         {/* Logo */}
@@ -60,7 +80,7 @@ const TopBar: React.FC<TopBarProps> = ({
           <img
             src={HomeLogo}
             alt="Lock It"
-            className="ml-auto h-8 object-contain"
+            className="ml-auto h-9.5 object-contain"
           />
         </div>
       </div>
@@ -84,19 +104,29 @@ const TopBar: React.FC<TopBarProps> = ({
           >
             {/* Home */}
             <button
-            type="button"
-            onClick={() => {
+              type="button"
+              onClick={() => {
                 setMenuOpen(false);
                 onHomeClick();
-            }}
-            className="w-full rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
+              }}
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
-            Home
+              <img
+                src={FindMatchesIcon}
+                alt="Home"
+                className="h-5 w-5 object-contain"
+              />
+
+              <span>Home</span>
             </button>
 
             {/* Preferences */}
             <button
               type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                onPreferencesClick?.();
+              }}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
               <img
@@ -130,6 +160,10 @@ const TopBar: React.FC<TopBarProps> = ({
             {/* Safety */}
             <button
               type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                onSafetyClick?.();
+              }}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
               <img
@@ -144,6 +178,10 @@ const TopBar: React.FC<TopBarProps> = ({
             {/* Change Channels */}
             <button
               type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                onChangeChannelsClick?.();
+              }}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-white hover:bg-white/10"
             >
               <img
