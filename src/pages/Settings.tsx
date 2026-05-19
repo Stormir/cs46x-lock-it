@@ -37,7 +37,10 @@ const Settings: React.FC<SettingsProps> = ({
     last_name: "",
     preferred_name: "",
     pronouns: "",
-    gender_identity: ""
+    gender_identity: "",
+    email: "",
+    phone_number: ""
+
   });
 
   React.useEffect(() => {
@@ -51,7 +54,7 @@ const Settings: React.FC<SettingsProps> = ({
       const { data, error } = await supabase
         .from("accounts")
         .select(
-          "first_name, last_name, preferred_name, pronouns, gender_identity"
+          "first_name, last_name, preferred_name, pronouns, gender_identity, email, phone_number"
         )
         .eq("user_id", user.id)
         .single();
@@ -103,10 +106,13 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Update with Colmumn Name */}
           <Row
             label="Email"
-            value="AddEmaiColmnHere@email.com"
+            value={profile.email || "Not set"}
           />
            {/* Update with Colmumn Name */}
-          <Row label="Phone Number" value="(503) 945-6154" />
+          <Row
+            label="Phone Number"
+            value={profile.phone_number || "Not set"}
+          />
           <Row label="Pronouns" value={profile.pronouns || "Not set"} arrow />
           <Row label="Location" value="Portland, OR" arrow />
         </Section>
