@@ -190,17 +190,13 @@ const App = () => {
         <Settings
           onBack={() => setPage("Home")}
           onVerifyTest={() => setPage("VerifyTest")}
-
           onCookiePolicy={() => setPage("CookiePolicy")}
           onPrivacyPolicy={() => setPage("PrivacyPolicy")}
           onPrivacyPreferences={() => setPage("PrivacyPreferences")}
-
           onHelpTechSup={() => setPage("HelpTechSup")}
           onSafetySupport={() => setPage("SafetySupport")}
-
           onPauseAccount={() => setPage("PauseAccount")}
           onDeactivateAccount={() => setPage("DeactivateAccount")}
-
           onDateTracking={() => setPage("DateTracking")}
           
         />
