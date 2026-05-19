@@ -77,7 +77,7 @@ type ProfileProps = {
   setPageEditProfile: () => void;
   setPageSettings: () => void;
   setPageDateTracking: () => void;
-  setPageViewYourMatches: () => void;
+  setPageMatches: () => void;
   setPageMatchMessages: () => void;
   setPageEditPreferences: () => void;
   setPageSafetySupportAndCommunity: () => void;
@@ -198,7 +198,7 @@ const Profile: React.FC<ProfileProps> = ({
   setPageEditProfile,
   setPageSettings,
   setPageDateTracking,
-  setPageViewYourMatches,
+  setPageMatches,
   setPageMatchMessages,
   setPageEditPreferences,
   setPageSafetySupportAndCommunity,
@@ -712,7 +712,7 @@ const Profile: React.FC<ProfileProps> = ({
       onHomeClick={setPageHome}
       onProfileClick={() => {}}
       onDateTrackerClick={setPageDateTracking}
-      onViewYourMatchesClick={setPageViewYourMatches}
+      onMatchesClick={setPageMatches}
       onMatchMessagesClick={setPageMatchMessages}
     />
   </div>

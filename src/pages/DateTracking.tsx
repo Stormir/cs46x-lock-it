@@ -17,6 +17,12 @@ type DateTrackingProps = {
   setPageHome: () => void;
   setPageSettings: () => void;
   setPageDateTracking: () => void;
+  setPageProfile: () => void;
+  setPageMatches: () => void;
+  setPageMatchMessages: () => void;
+  setPageEditPreferences: () => void;
+  setPageSafetySupportAndCommunity: () => void;
+  setPageChangeChannels: () => void;
 };
 
 type Latlngt = {
@@ -67,7 +73,13 @@ function RecenterMap({ position }: { position: Latlngt }) {
 export default function DateTracking({
   setPageHome,
   setPageSettings,
-  setPageDateTracking
+  setPageDateTracking,
+  setPageProfile,
+  setPageMatches,
+  setPageMatchMessages,
+  setPageEditPreferences,
+  setPageSafetySupportAndCommunity,
+  setPageChangeChannels,
 }: DateTrackingProps) {
   const [position, setPosition] = useState<Latlngt | null>(null);
   const [error, setError] = useState("");
@@ -413,6 +425,9 @@ useEffect(() => {
         onHomeClick={setPageHome}
         onSettingsClick={setPageSettings}
         onDateTrackerClick={setPageDateTracking}
+        onPreferencesClick={setPageEditPreferences}
+        onSafetyClick={setPageSafetySupportAndCommunity}
+        onChangeChannelsClick={setPageChangeChannels}
       />
 
       <div className="map-wrapper">
@@ -728,7 +743,10 @@ useEffect(() => {
 
       <BottomNav
         onHomeClick={setPageHome}
+        onProfileClick={setPageProfile}
         onDateTrackerClick={setPageDateTracking}
+        onMatchesClick={setPageMatches}
+        onMatchMessagesClick={setPageMatchMessages}
       />
       </div>
     );

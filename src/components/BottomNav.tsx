@@ -1,6 +1,6 @@
 import React from "react";
 import FindMatchesIcon from "../assets/logo/lockit_locket_white.svg";
-import ViewYourMatchesIcon from "../assets/logo/matches_heart_white.svg";
+import MatchesIcon from "../assets/logo/matches_heart_white.svg";
 import MessagesIcon from "../assets/logo/msg_white.svg";
 import DateTrackerIcon from "../assets/logo/loc_track_white.svg";
 import ProfileIcon from "../assets/logo/usr_prof_white.svg";
@@ -11,9 +11,8 @@ type BottomNavProps = {
   onHomeClick?: () => void;
   onDateTrackerClick?: () => void;
   onProfileClick?: () => void;
-  onViewYourMatchesClick?: () => void;
+  onMatchesClick?: () => void;
   onMatchMessagesClick?: () => void;
-
 };
 
 type NavIconProps = {
@@ -22,11 +21,7 @@ type NavIconProps = {
   onClick?: () => void;
 };
 
-function NavIcon({
-  label,
-  children,
-  onClick,
-}: NavIconProps) {
+function NavIcon({ label, children, onClick }: NavIconProps) {
   return (
     <button
       type="button"
@@ -44,7 +39,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
   onHomeClick,
   onDateTrackerClick,
   onProfileClick,
-  onViewYourMatchesClick,
+  onMatchesClick,
   onMatchMessagesClick,
 }) => {
   return (
@@ -53,48 +48,34 @@ const BottomNav: React.FC<BottomNavProps> = ({
       style={{ backgroundColor: BRAND }}
     >
       <div className="mx-auto flex max-w-sm items-center justify-center gap-6 px-2 py-1 text-white">
-        <NavIcon
-          label="Find Matches"
-          onClick={onHomeClick}
-        >
+        <NavIcon label="Find Matches" onClick={onHomeClick}>
           <img
             src={FindMatchesIcon}
             className="h-[45px] w-[45px] object-contain"
           />
         </NavIcon>
 
-        {/* View Your Matches */}
-        <NavIcon
-          label="View Your Matches"
-          onClick={onViewYourMatchesClick}
-        >
+        <NavIcon label="Matches" onClick={onMatchesClick}>
           <img
-            src={ViewYourMatchesIcon}
+            src={MatchesIcon}
             className="h-11 w-11 object-contain"
           />
         </NavIcon>
 
-        {/* Messages */}
-        <NavIcon
-          label="Messages"
-          onClick={onMatchMessagesClick}
-        >
+        <NavIcon label="Messages" onClick={onMatchMessagesClick}>
           <img
             src={MessagesIcon}
             className="h-[45px] w-[45px] object-contain"
           />
         </NavIcon>
 
-        {/* Date Tracker */}
-        <NavIcon label="Date Tracker">
+        <NavIcon label="Date Tracker" onClick={onDateTrackerClick}>
           <img
             src={DateTrackerIcon}
-            onClick={onDateTrackerClick}
             className="h-[45px] w-[45px] object-contain"
           />
         </NavIcon>
 
-        {/* Profile */}
         <NavIcon label="Profile" onClick={onProfileClick}>
           <img
             src={ProfileIcon}

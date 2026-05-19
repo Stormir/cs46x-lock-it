@@ -37,7 +37,6 @@ interface HomeProps {
   setPageProfile: () => void;
   setPageDateTracking: () => void;
   setPageMatches: () => void;
-  setPageViewYourMatches: () => void;
   openViewProfile: (profileId: string) => void;
   setPageMatchMessages: () => void;
   setPageEditPreferences: () => void;
@@ -185,7 +184,6 @@ const Home: React.FC<HomeProps> = ({
   setPageProfile,
   setPageDateTracking,
   setPageMatches,
-  setPageViewYourMatches,
   openViewProfile,
   setPageMatchMessages,
   setPageEditPreferences,
@@ -194,8 +192,6 @@ const Home: React.FC<HomeProps> = ({
 }) => {
   // Gives home.tsx access to session?.user?.id
   const { session, loading: sessionLoading } = useSession();
-  const [ownPrimaryPhotoUrl, setOwnPrimaryPhotoUrl] = React.useState<string | null>(null);
-
   // sets canidates as the array of other profiles
   const [candidates, setCandidates] = React.useState<MatchProfile[]>([]);
   // shows the index of the profile currently being shown
@@ -323,42 +319,6 @@ React.useEffect(() => {
 };
 */
 
-// Loads active users primary photo
-React.useEffect(() => {
-  const loadOwnPrimaryPhoto = async () => {
-    if (sessionLoading) return;
-
-    if (!session?.user?.id) {
-      setOwnPrimaryPhotoUrl(null);
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("profile_media")
-      .select("*")
-      .eq("user_id", session.user.id)
-      .eq("is_primary", true)
-      .maybeSingle();
-
-    if (error) {
-      console.error("Could not load own primary photo:", error);
-      setOwnPrimaryPhotoUrl(null);
-      return;
-    }
-
-    if (!data) {
-      setOwnPrimaryPhotoUrl(null);
-      return;
-    }
-
-    const mediaItem = await addSignedUrlToMedia(data as CandidateMediaRow);
-
-    setOwnPrimaryPhotoUrl(mediaItem?.url ?? null);
-  };
-
-  loadOwnPrimaryPhoto();
-}, [session, sessionLoading]);
-
   // Actions Handler
   const handleMatchAction = async (interactionType: InteractionType) => {
   if (!session?.user?.id || !currentCandidate) return;
@@ -463,7 +423,6 @@ React.useEffect(() => {
         onPreferencesClick={setPageEditPreferences}
         onSafetyClick={setPageSafetySupportAndCommunity}
         onChangeChannelsClick={setPageChangeChannels}
-        ownPrimaryPhotoUrl={ownPrimaryPhotoUrl}
       />
 
       <main className="mx-auto flex max-w-sm flex-1 flex-col items-center justify-center px-6 text-center">
@@ -507,7 +466,7 @@ React.useEffect(() => {
         onHomeClick={() => {}}
         onProfileClick={setPageProfile}
         onDateTrackerClick={setPageDateTracking}
-        onViewYourMatchesClick={setPageViewYourMatches}
+        onMatchesClick={setPageMatches}
         onMatchMessagesClick={setPageMatchMessages}
       />
     </div>
@@ -540,8 +499,9 @@ React.useEffect(() => {
         onSettingsClick={setPageSettings}
         onSignOutClick={handleClickSignOut}
         onDateTrackerClick={setPageDateTracking}
-        ownPrimaryPhotoUrl={ownPrimaryPhotoUrl}
-
+        onPreferencesClick={setPageEditPreferences}
+        onSafetyClick={setPageSafetySupportAndCommunity}
+        onChangeChannelsClick={setPageChangeChannels}
       />
 
       {/* Main page */}
@@ -742,14 +702,13 @@ React.useEffect(() => {
       </main>
 
       {/* Bottom nav */}
-      <BottomNav
-        onHomeClick={() => {}}
-        onProfileClick={setPageProfile}
-        onDateTrackerClick={setPageDateTracking}
-        onViewYourMatchesClick={setPageViewYourMatches}
-        onMatchMessagesClick={setPageMatchMessages}
-
-      />
+     <BottomNav
+      onHomeClick={() => {}}
+      onProfileClick={setPageProfile}
+      onDateTrackerClick={setPageDateTracking}
+      onMatchesClick={setPageMatches}
+      onMatchMessagesClick={setPageMatchMessages}
+    />
     </div>
   );
 };
