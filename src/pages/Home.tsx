@@ -463,7 +463,6 @@ React.useEffect(() => {
         onPreferencesClick={setPageEditPreferences}
         onSafetyClick={setPageSafetySupportAndCommunity}
         onChangeChannelsClick={setPageChangeChannels}
-        ownPrimaryPhotoUrl={ownPrimaryPhotoUrl}
       />
 
       <main className="mx-auto flex max-w-sm flex-1 flex-col items-center justify-center px-6 text-center">
@@ -540,8 +539,10 @@ React.useEffect(() => {
         onSettingsClick={setPageSettings}
         onSignOutClick={handleClickSignOut}
         onDateTrackerClick={setPageDateTracking}
+        onPreferencesClick={setPageEditPreferences}
+        onSafetyClick={setPageSafetySupportAndCommunity}
+        onChangeChannelsClick={setPageChangeChannels}
         ownPrimaryPhotoUrl={ownPrimaryPhotoUrl}
-
       />
 
       {/* Main page */}

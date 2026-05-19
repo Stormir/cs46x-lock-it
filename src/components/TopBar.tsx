@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { signOut } from "../api/auth";
+import { supabase } from "../client";
 // icons
 import HomeLogo from "../assets/logo/logo_pink_home.svg";
 import SettingsIcon from "../assets/logo/settings_white.svg";
@@ -18,7 +19,6 @@ type TopBarProps = {
   onSettingsClick?: () => void;
   onDateTrackerClick?: () => void;
   onSignOutClick?: () => void;
-  ownPrimaryPhotoUrl?: string | null;
   onPreferencesClick?: () => void;
   onSafetyClick?: () => void;
   onChangeChannelsClick?: () => void;
@@ -33,10 +33,42 @@ const TopBar: React.FC<TopBarProps> = ({
   onSafetyClick,
   onChangeChannelsClick,
   onSignOutClick,
-  ownPrimaryPhotoUrl
 }) => {
   
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [ownPrimaryPhotoUrl, setOwnPrimaryPhotoUrl] = useState<string | null>(null);
+  useEffect(() => {
+    const loadOwnPrimaryPhoto = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setOwnPrimaryPhotoUrl(null);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("profile_media")
+        .select("bucket, storage_path")
+        .eq("user_id", user.id)
+        .eq("is_primary", true)
+        .maybeSingle();
+
+      if (error || !data) {
+        setOwnPrimaryPhotoUrl(null);
+        return;
+      }
+
+      const { data: signedData } = await supabase.storage
+        .from(data.bucket)
+        .createSignedUrl(data.storage_path, 3600);
+
+      setOwnPrimaryPhotoUrl(signedData?.signedUrl ?? null);
+    };
+
+    loadOwnPrimaryPhoto();
+  }, []);
 
   const handleSignOut = async () => {
     setMenuOpen(false);
@@ -45,6 +77,7 @@ const TopBar: React.FC<TopBarProps> = ({
 
     onSignOutClick?.();
   };
+
   return (
     <header className="sticky top-0 z-50" style={{ backgroundColor: BRAND }}>
       <div className="mx-auto flex max-w-sm items-center gap-3 px-0 py-3">
