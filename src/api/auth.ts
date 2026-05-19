@@ -10,6 +10,7 @@ type SignUpInput = {
   phoneNumber: string;
   genderIdentity: string;
   pronouns: string;
+  zipCode: string;
 };
 
 export async function signUp(input: SignUpInput) {
@@ -21,6 +22,7 @@ export async function signUp(input: SignUpInput) {
     password,
     birthday,
     phoneNumber,
+    zipCode,
     genderIdentity,
     pronouns,
   } = input;
@@ -35,6 +37,7 @@ export async function signUp(input: SignUpInput) {
         preferred_name: preferredName?.trim() || null,
         birthdate: birthday,
         phone_number: phoneNumber?.trim() || null,
+        zip_code: zipCode,
         gender_identity: genderIdentity.trim(),
         pronouns: pronouns.trim(),
       },
