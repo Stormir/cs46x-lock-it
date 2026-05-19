@@ -6,8 +6,8 @@ type ChangeChannelsProps = {
   setPageSettings: () => void;
   setPageDateTracking: () => void;
   setPageProfile: () => void;
-  setPageViewYourMatches: () => void;
   setPageMatchMessages: () => void;
+  setPageMatches: () => void;
   setPageEditPreferences: () => void;
   setPageSafetySupportAndCommunity: () => void;
   setPageChangeChannels: () => void;
@@ -18,7 +18,7 @@ const ChangeChannels: React.FC<ChangeChannelsProps> = ({
   setPageSettings,
   setPageDateTracking,
   setPageProfile,
-  setPageViewYourMatches,
+  setPageMatches,
   setPageMatchMessages,
   setPageEditPreferences,
   setPageSafetySupportAndCommunity,
@@ -32,7 +32,7 @@ const ChangeChannels: React.FC<ChangeChannelsProps> = ({
       setPageSettings={setPageSettings}
       setPageDateTracking={setPageDateTracking}
       setPageProfile={setPageProfile}
-      setPageViewYourMatches={setPageViewYourMatches}
+      setPageMatches={setPageMatches}
       setPageMatchMessages={setPageMatchMessages}
       setPageEditPreferences={setPageEditPreferences}
       setPageSafetySupportAndCommunity={setPageSafetySupportAndCommunity}

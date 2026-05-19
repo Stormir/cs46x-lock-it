@@ -10,7 +10,7 @@ type ComingSoonPAGESProps = {
   setPageSettings: () => void;
   setPageDateTracking: () => void;
   setPageProfile: () => void;
-  setPageViewYourMatches: () => void;
+  setPageMatches: () => void;
   setPageMatchMessages: () => void;
   setPageEditPreferences: () => void;
   setPageSafetySupportAndCommunity: () => void;
@@ -24,7 +24,7 @@ const ComingSoonMENU: React.FC<ComingSoonPAGESProps> = ({
   setPageSettings,
   setPageDateTracking,
   setPageProfile,
-  setPageViewYourMatches,
+  setPageMatches,
   setPageMatchMessages,
   setPageEditPreferences,
   setPageSafetySupportAndCommunity,
@@ -76,7 +76,7 @@ const ComingSoonMENU: React.FC<ComingSoonPAGESProps> = ({
         onHomeClick={setPageHome}
         onProfileClick={setPageProfile}
         onDateTrackerClick={setPageDateTracking}
-        onViewYourMatchesClick={setPageViewYourMatches}
+        onMatchesClick={setPageMatches}
         onMatchMessagesClick={setPageMatchMessages}
       />
     </div>

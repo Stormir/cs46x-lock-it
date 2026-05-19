@@ -10,7 +10,7 @@ type ComingSoonPAGESProps = {
   setPageSettings: () => void;
   setPageDateTracking: () => void;
   setPageProfile: () => void;
-  setPageViewYourMatches: () => void;
+  setPageMatches: () => void;
   setPageMatchMessages: () => void;
   setPageEditPreferences: () => void;
 };
@@ -22,7 +22,7 @@ const ComingSoonPAGES: React.FC<ComingSoonPAGESProps> = ({
   setPageSettings,
   setPageDateTracking,
   setPageProfile,
-  setPageViewYourMatches,
+  setPageMatches,
   setPageMatchMessages,
   setPageEditPreferences,
 }) => {
@@ -61,7 +61,7 @@ const ComingSoonPAGES: React.FC<ComingSoonPAGESProps> = ({
         onHomeClick={setPageHome}
         onProfileClick={setPageProfile}
         onDateTrackerClick={setPageDateTracking}
-        onViewYourMatchesClick={setPageViewYourMatches}
+        onMatchesClick={setPageMatches}
         onMatchMessagesClick={setPageMatchMessages}
       />
     </div>

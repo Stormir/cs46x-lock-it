@@ -1,15 +1,22 @@
 import React from "react";
 import { supabase } from "../client";
 import { useSession } from "../api/useSession";
-
-import LogoPinkHome from "../assets/logo/logo_pink_home.svg";
-import GoBackButton from "../assets/icons/go_back_button.svg";
+import TopBar from "../components/TopBar";
+import BottomNav from "../components/BottomNav";
 
 const BRAND = "#382543";
 const MEDIA_URL_EXPIRES_IN_SECONDS = 60 * 60;
 
 type MatchesProps = {
   setPageHome: () => void;
+  setPageSettings: () => void;
+  setPageDateTracking: () => void;
+  setPageProfile: () => void;
+  setPageMatches: () => void;
+  setPageMatchMessages: () => void;
+  setPageEditPreferences: () => void;
+  setPageSafetySupportAndCommunity: () => void;
+  setPageChangeChannels: () => void;
   openViewProfile: (profileId: string) => void;
 };
 
@@ -119,6 +126,14 @@ async function addSignedUrlToMedia(
 
 const Matches: React.FC<MatchesProps> = ({
   setPageHome,
+  setPageSettings,
+  setPageDateTracking,
+  setPageProfile,
+  setPageMatches,
+  setPageMatchMessages,
+  setPageEditPreferences,
+  setPageSafetySupportAndCommunity,
+  setPageChangeChannels,
   openViewProfile
 }) => {
   const { session, loading: sessionLoading } = useSession();
@@ -348,26 +363,20 @@ const Matches: React.FC<MatchesProps> = ({
 
   return (
     <div
-      className="min-h-screen overflow-y-auto bg-neutral-100 pb-10"
+      className="min-h-screen overflow-y-auto bg-neutral-100 pb-24"
       style={{
         color: BRAND,
         fontFamily: "Nunito, system-ui, sans-serif"
       }}
     >
-      <header className="sticky top-0 z-40" style={{ backgroundColor: BRAND }}>
-        <div className="mx-auto flex max-w-[320px] items-center justify-between px-3 py-2">
-          <button
-            type="button"
-            onClick={setPageHome}
-            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/10"
-            aria-label="Go back home"
-          >
-            <img src={GoBackButton} alt="" className="h-5 w-5" />
-          </button>
-
-          <img src={LogoPinkHome} alt="Lock It" className="h-9" />
-        </div>
-      </header>
+      <TopBar
+        onHomeClick={setPageHome}
+        onSettingsClick={setPageSettings}
+        onDateTrackerClick={setPageDateTracking}
+        onPreferencesClick={setPageEditPreferences}
+        onSafetyClick={setPageSafetySupportAndCommunity}
+        onChangeChannelsClick={setPageChangeChannels}
+      />
 
       <main className="mx-auto max-w-[320px] px-3 py-5">
         <section className="border border-neutral-500 bg-white p-2">
@@ -466,7 +475,15 @@ const Matches: React.FC<MatchesProps> = ({
           )}
         </section>
       </main>
+      <BottomNav
+        onHomeClick={setPageHome}
+        onProfileClick={setPageProfile}
+        onDateTrackerClick={setPageDateTracking}
+        onMatchesClick={setPageMatches}
+        onMatchMessagesClick={setPageMatchMessages}
+      />
     </div>
+    
   );
 };
 

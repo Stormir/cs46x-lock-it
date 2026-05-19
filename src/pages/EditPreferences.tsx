@@ -6,7 +6,7 @@ type EditPreferencesProps = {
   setPageSettings: () => void;
   setPageDateTracking: () => void;
   setPageProfile: () => void;
-  setPageViewYourMatches: () => void;
+  setPageMatches: () => void;
   setPageMatchMessages: () => void;
   setPageEditPreferences: () => void;
   setPageSafetySupportAndCommunity: () => void;
@@ -18,7 +18,7 @@ const EditPreferences: React.FC<EditPreferencesProps> = ({
   setPageSettings,
   setPageDateTracking,
   setPageProfile,
-  setPageViewYourMatches,
+  setPageMatches,
   setPageMatchMessages,
   setPageEditPreferences,
   setPageSafetySupportAndCommunity,
@@ -32,7 +32,7 @@ const EditPreferences: React.FC<EditPreferencesProps> = ({
       setPageSettings={setPageSettings}
       setPageDateTracking={setPageDateTracking}
       setPageProfile={setPageProfile}
-      setPageViewYourMatches={setPageViewYourMatches}
+      setPageMatches={setPageMatches}
       setPageMatchMessages={setPageMatchMessages}
       setPageEditPreferences={setPageEditPreferences}
       setPageSafetySupportAndCommunity={setPageSafetySupportAndCommunity}

@@ -37,7 +37,6 @@ interface HomeProps {
   setPageProfile: () => void;
   setPageDateTracking: () => void;
   setPageMatches: () => void;
-  setPageViewYourMatches: () => void;
   openViewProfile: (profileId: string) => void;
   setPageMatchMessages: () => void;
   setPageEditPreferences: () => void;
@@ -185,7 +184,6 @@ const Home: React.FC<HomeProps> = ({
   setPageProfile,
   setPageDateTracking,
   setPageMatches,
-  setPageViewYourMatches,
   openViewProfile,
   setPageMatchMessages,
   setPageEditPreferences,
@@ -468,7 +466,7 @@ React.useEffect(() => {
         onHomeClick={() => {}}
         onProfileClick={setPageProfile}
         onDateTrackerClick={setPageDateTracking}
-        onViewYourMatchesClick={setPageViewYourMatches}
+        onMatchesClick={setPageMatches}
         onMatchMessagesClick={setPageMatchMessages}
       />
     </div>
@@ -704,14 +702,13 @@ React.useEffect(() => {
       </main>
 
       {/* Bottom nav */}
-      <BottomNav
-        onHomeClick={() => {}}
-        onProfileClick={setPageProfile}
-        onDateTrackerClick={setPageDateTracking}
-        onViewYourMatchesClick={setPageViewYourMatches}
-        onMatchMessagesClick={setPageMatchMessages}
-
-      />
+     <BottomNav
+      onHomeClick={() => {}}
+      onProfileClick={setPageProfile}
+      onDateTrackerClick={setPageDateTracking}
+      onMatchesClick={setPageMatches}
+      onMatchMessagesClick={setPageMatchMessages}
+    />
     </div>
   );
 };

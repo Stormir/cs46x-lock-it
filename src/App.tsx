@@ -10,7 +10,6 @@ import Profile from "./pages/Profile.tsx";
 import EditProfile from "./pages/EditProfile.tsx";
 import ViewProfile from "./pages/ViewProfile.tsx";
 import Matches from "./pages/Matches.tsx";
-import ViewYourMatches from "./pages/ViewYourMatches.tsx";
 import MatchMessages from "./pages/MatchMessages.tsx";
 import EditPreferences from "./pages/EditPreferences.tsx";
 import SafetySupportAndCommunity from "./pages/SafetySupportAndCommunity.tsx";
@@ -35,7 +34,6 @@ type PageEnum =
   | "EditProfile"
   | "ViewProfile"
   | "Matches"
-  | "ViewYourMatches"
   | "MatchMessages"
   | "Settings"
   | "CookiePolicy"
@@ -94,7 +92,6 @@ const App = () => {
         setPageDateTracking={() => setPage("DateTracking")}
         setPageMatches={() => setPage("Matches")}
         openViewProfile={openViewProfile}
-        setPageViewYourMatches={() => setPage("ViewYourMatches")}
         setPageMatchMessages={() => setPage("MatchMessages")}
         setPageEditPreferences={() => setPage("EditPreferences")}
         setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
@@ -112,7 +109,7 @@ const App = () => {
           setPageEditProfile={() => setPage("EditProfile")}
           setPageSettings={() => setPage("Settings")}
           setPageDateTracking={() => setPage("DateTracking")}
-          setPageViewYourMatches={() => setPage("ViewYourMatches")}
+          setPageMatches={() => setPage("Matches")}
           setPageMatchMessages={() => setPage("MatchMessages")}
           setPageEditPreferences={() => setPage("EditPreferences")}
           setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
@@ -130,23 +127,32 @@ const App = () => {
     return (
       <Matches
         setPageHome={() => setPage("Home")}
+        setPageSettings={() => setPage("Settings")}
+        setPageDateTracking={() => setPage("DateTracking")}
+        setPageProfile={() => setPage("Profile")}
+        setPageMatches={() => setPage("Matches")}
+        setPageMatchMessages={() => setPage("MatchMessages")}
+        setPageEditPreferences={() => setPage("EditPreferences")}
+        setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
+        setPageChangeChannels={() => setPage("ChangeChannels")}
         openViewProfile={openViewProfile}
       />
     );
 
-  case "ViewYourMatches":
-  return (
-    <ViewYourMatches
-      setPageHome={() => setPage("Home")}
-    />
-  );
-
   case "MatchMessages":
-  return (
-    <MatchMessages
-      setPageHome={() => setPage("Home")}
-    />
-  );
+    return (
+      <MatchMessages
+        setPageHome={() => setPage("Home")}
+        setPageSettings={() => setPage("Settings")}
+        setPageDateTracking={() => setPage("DateTracking")}
+        setPageProfile={() => setPage("Profile")}
+        setPageMatches={() => setPage("Matches")}
+        setPageMatchMessages={() => setPage("MatchMessages")}
+        setPageEditPreferences={() => setPage("EditPreferences")}
+        setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
+        setPageChangeChannels={() => setPage("ChangeChannels")}
+      />
+    );
 
   case "ViewProfile":
     if (!selectedProfileId) {
@@ -156,7 +162,6 @@ const App = () => {
           setPageSettings={() => setPage("Settings")}
           setPageProfile={() => setPage("Profile")}
           setPageMatches={() => setPage("Matches")}
-          setPageViewYourMatches={() => setPage("ViewYourMatches")}
           setPageDateTracking={() => setPage("DateTracking")}
           setPageMatchMessages={() => setPage("MatchMessages")}
 
@@ -230,12 +235,12 @@ const App = () => {
           setPageSettings={() => setPage("Settings")}
           setPageDateTracking={() => setPage("DateTracking")}
           setPageProfile={() => setPage("Profile")}
-          setPageViewYourMatches={() => setPage("ViewYourMatches")}
+          setPageMatches={() => setPage("Matches")}
           setPageMatchMessages={() => setPage("MatchMessages")}
           setPageEditPreferences={() => setPage("EditPreferences")}
           setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
           setPageChangeChannels={() => setPage("ChangeChannels")}
-        />
+    />
       )
     case "EditPreferences":
       return (
@@ -244,7 +249,7 @@ const App = () => {
           setPageSettings={() => setPage("Settings")}
           setPageDateTracking={() => setPage("DateTracking")}
           setPageProfile={() => setPage("Profile")}
-          setPageViewYourMatches={() => setPage("ViewYourMatches")}
+          setPageMatches={() => setPage("Matches")}
           setPageMatchMessages={() => setPage("MatchMessages")}
           setPageEditPreferences={() => setPage("EditPreferences")}
           setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
@@ -259,8 +264,8 @@ const App = () => {
           setPageSettings={() => setPage("Settings")}
           setPageDateTracking={() => setPage("DateTracking")}
           setPageProfile={() => setPage("Profile")}
-          setPageViewYourMatches={() => setPage("ViewYourMatches")}
           setPageMatchMessages={() => setPage("MatchMessages")}
+          setPageMatches={() => setPage("Matches")}
           setPageEditPreferences={() => setPage("EditPreferences")}
           setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
           setPageChangeChannels={() => setPage("ChangeChannels")}
@@ -274,8 +279,8 @@ const App = () => {
           setPageSettings={() => setPage("Settings")}
           setPageDateTracking={() => setPage("DateTracking")}
           setPageProfile={() => setPage("Profile")}
-          setPageViewYourMatches={() => setPage("ViewYourMatches")}
           setPageMatchMessages={() => setPage("MatchMessages")}
+          setPageMatches={() => setPage("Matches")}
           setPageEditPreferences={() => setPage("EditPreferences")}
           setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
           setPageChangeChannels={() => setPage("ChangeChannels")}

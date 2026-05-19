@@ -6,7 +6,7 @@ type SafetySupportAndCommunityProps = {
   setPageSettings: () => void;
   setPageDateTracking: () => void;
   setPageProfile: () => void;
-  setPageViewYourMatches: () => void;
+  setPageMatches: () => void;
   setPageMatchMessages: () => void;
   setPageEditPreferences: () => void;
   setPageSafetySupportAndCommunity: () => void;
@@ -18,7 +18,7 @@ const SafetySupportAndCommunity: React.FC<SafetySupportAndCommunityProps> = ({
   setPageSettings,
   setPageDateTracking,
   setPageProfile,
-  setPageViewYourMatches,
+  setPageMatches,
   setPageMatchMessages,
   setPageEditPreferences,
   setPageSafetySupportAndCommunity,
@@ -32,7 +32,7 @@ const SafetySupportAndCommunity: React.FC<SafetySupportAndCommunityProps> = ({
       setPageSettings={setPageSettings}
       setPageDateTracking={setPageDateTracking}
       setPageProfile={setPageProfile}
-      setPageViewYourMatches={setPageViewYourMatches}
+      setPageMatches={setPageMatches}
       setPageMatchMessages={setPageMatchMessages}
       setPageEditPreferences={setPageEditPreferences}
       setPageSafetySupportAndCommunity={setPageSafetySupportAndCommunity}
