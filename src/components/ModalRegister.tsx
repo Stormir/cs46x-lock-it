@@ -19,6 +19,7 @@ type RegisterForm = {
   phoneNumber: string;
   genderIdentity: string;
   pronouns: string;
+  zipCode: string;
 };
 
 const ModalRegister: React.FC<ModalRegisterProps> = ({
@@ -35,7 +36,8 @@ const ModalRegister: React.FC<ModalRegisterProps> = ({
     birthday: "",
     phoneNumber: "",
     genderIdentity: "",
-    pronouns: ""
+    pronouns: "",
+    zipCode: "",
   });
 
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +48,34 @@ const ModalRegister: React.FC<ModalRegisterProps> = ({
   const handleResetForm = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setViewNone();
+  };
+
+  // Handles enabling user loccation
+  const handleUseLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Location services are not supported by this browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        const response = await fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+        );
+
+        const data = await response.json();
+
+        setForm((prev) => ({
+          ...prev,
+          zipCode: data.postcode || ""
+        }));
+      },
+      () => {
+        alert("Location permission was denied.");
+      }
+    );
   };
 
   const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,6 +89,7 @@ const ModalRegister: React.FC<ModalRegisterProps> = ({
       form.confirmPassword &&
       form.birthday &&
       form.phoneNumber &&
+      form.zipCode &&
       form.genderIdentity &&
       form.pronouns
     ) {
@@ -71,6 +102,7 @@ const ModalRegister: React.FC<ModalRegisterProps> = ({
           password: form.password,
           birthday: form.birthday,
           phoneNumber: form.phoneNumber,
+          zipCode: form.zipCode,
           genderIdentity: form.genderIdentity,
           pronouns: form.pronouns,
         });
@@ -198,6 +230,27 @@ const ModalRegister: React.FC<ModalRegisterProps> = ({
               value={form.phoneNumber}
               className="w-full rounded-md border border-gray-300 px-3 py-2"
             />
+          </label>
+
+          {/* Zip Code */}
+          <label className="flex flex-col gap-1 text-sm text-[#382543]">
+            Zip Code:
+            <input
+              name="zipCode"
+              onChange={handleChangeInput}
+              required
+              type="text"
+              value={form.zipCode}
+              className="w-full rounded-md border border-gray-300 px-3 py-2"
+            />
+
+            <button
+              type="button"
+              onClick={handleUseLocation}
+              className="w-fit text-xs underline text-blue-600 hover:text-blue-800"
+            >
+              Enable Location Services
+            </button>
           </label>
 
           {/* Gender Identity */}

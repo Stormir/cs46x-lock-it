@@ -39,7 +39,8 @@ const Settings: React.FC<SettingsProps> = ({
     pronouns: "",
     gender_identity: "",
     email: "",
-    phone_number: ""
+    phone_number: "",
+    zip_code: ""
 
   });
 
@@ -54,7 +55,7 @@ const Settings: React.FC<SettingsProps> = ({
       const { data, error } = await supabase
         .from("accounts")
         .select(
-          "first_name, last_name, preferred_name, pronouns, gender_identity, email, phone_number"
+          "first_name, last_name, preferred_name, pronouns, gender_identity, email, phone_number, zip_code"
         )
         .eq("user_id", user.id)
         .single();
@@ -114,7 +115,15 @@ const Settings: React.FC<SettingsProps> = ({
             value={profile.phone_number || "Not set"}
           />
           <Row label="Pronouns" value={profile.pronouns || "Not set"} arrow />
-          <Row label="Location" value="Portland, OR" arrow />
+          <Row
+            label="Current Location"
+            value={
+              profile.zip_code
+                ? `Portland, OR (${profile.zip_code})`
+                : "Location unavailable"
+            }
+            arrow
+          />
         </Section>
 
       {/* Account Verification*/}

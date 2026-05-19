@@ -238,7 +238,44 @@ export default function DateTracking({
     setPendingInvite(null);
   };
 
-  
+  // updates zipcode 
+  const startZipCodeUpdates = (userId: string) => {
+    const updateZipCode = async () => {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+
+          const response = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          );
+
+          const data = await response.json();
+
+          const newZipCode = data.postcode;
+
+          if (!newZipCode) return;
+
+          await supabase
+            .from("accounts")
+            .update({
+              zip_code: newZipCode,
+            })
+            .eq("user_id", userId);
+        },
+        (error) => {
+          console.error("Could not get location:", error);
+        }
+      );
+    };
+
+    // Run once immediately
+    updateZipCode();
+
+    // Then every 5 minutes
+    const intervalId = setInterval(updateZipCode, 5 * 60 * 1000);
+
+    return intervalId;
+  };
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -297,6 +334,22 @@ export default function DateTracking({
       navigator.geolocation.clearWatch(watchId);
     };
  }, [trustedContacts]);
+
+ useEffect(() => {
+  let intervalId: ReturnType<typeof setInterval>;
+
+  supabase.auth.getUser().then(({ data: { user } }) => {
+    if (!user) return;
+
+    intervalId = startZipCodeUpdates(user.id);
+  });
+
+  return () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+  };
+}, []);
 
   useEffect(() => {
   const loadPendingInvite = async () => {
