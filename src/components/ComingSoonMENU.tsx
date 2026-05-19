@@ -3,27 +3,44 @@ import TopBar from "./TopBar";
 import BottomNav from "./BottomNav";
 import TeamPhoto from "../assets/logo/lockit_teamphoto.png";
 
-type ComingSoonMENUProps = {
+type ComingSoonPAGESProps = {
   title?: string;
   onBack: () => void;
-  onSettingsClick?: () => void;
-  onDateTrackerClick?: () => void;
+  setPageHome: () => void;
+  setPageSettings: () => void;
+  setPageDateTracking: () => void;
+  setPageProfile: () => void;
+  setPageViewYourMatches: () => void;
+  setPageMatchMessages: () => void;
+  setPageEditPreferences: () => void;
+  setPageSafetySupportAndCommunity: () => void;
+  setPageChangeChannels: () => void;
 };
 
-const ComingSoonMENU: React.FC<ComingSoonMENUProps> = ({
+const ComingSoonMENU: React.FC<ComingSoonPAGESProps> = ({
   title = "Coming Soon",
   onBack,
-  onSettingsClick,
-  onDateTrackerClick,
+  setPageHome,
+  setPageSettings,
+  setPageDateTracking,
+  setPageProfile,
+  setPageViewYourMatches,
+  setPageMatchMessages,
+  setPageEditPreferences,
+  setPageSafetySupportAndCommunity,
+  setPageChangeChannels,
 }) => {
   return (
     <div className="min-h-screen bg-neutral-100 pb-24">
       {/* Shared top bar */}
       <TopBar
-        onHomeClick={onBack}
-        onSettingsClick={onSettingsClick}
-        onDateTrackerClick={onDateTrackerClick}
-        onSignOutClick={onBack}
+        onHomeClick={setPageHome}
+        onSettingsClick={setPageSettings}
+        onDateTrackerClick={setPageDateTracking}
+        onPreferencesClick={setPageEditPreferences}
+        onSafetyClick={setPageSafetySupportAndCommunity}
+        onChangeChannelsClick={setPageChangeChannels}
+        onSignOutClick={setPageHome}
       />
 
       {/* Page content */}
@@ -56,8 +73,11 @@ const ComingSoonMENU: React.FC<ComingSoonMENUProps> = ({
 
       {/* Shared bottom nav */}
       <BottomNav
-        onHomeClick={onBack}
-        onDateTrackerClick={onDateTrackerClick}
+        onHomeClick={setPageHome}
+        onProfileClick={setPageProfile}
+        onDateTrackerClick={setPageDateTracking}
+        onViewYourMatchesClick={setPageViewYourMatches}
+        onMatchMessagesClick={setPageMatchMessages}
       />
     </div>
   );

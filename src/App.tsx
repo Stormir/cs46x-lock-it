@@ -229,12 +229,26 @@ const App = () => {
           setPageHome={() => setPage("Home")}
           setPageSettings={() => setPage("Settings")}
           setPageDateTracking={() => setPage("DateTracking")}
+          setPageProfile={() => setPage("Profile")}
+          setPageViewYourMatches={() => setPage("ViewYourMatches")}
+          setPageMatchMessages={() => setPage("MatchMessages")}
+          setPageEditPreferences={() => setPage("EditPreferences")}
+          setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
+          setPageChangeChannels={() => setPage("ChangeChannels")}
         />
       )
     case "EditPreferences":
       return (
         <EditPreferences
           setPageHome={() => setPage("Home")}
+          setPageSettings={() => setPage("Settings")}
+          setPageDateTracking={() => setPage("DateTracking")}
+          setPageProfile={() => setPage("Profile")}
+          setPageViewYourMatches={() => setPage("ViewYourMatches")}
+          setPageMatchMessages={() => setPage("MatchMessages")}
+          setPageEditPreferences={() => setPage("EditPreferences")}
+          setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
+          setPageChangeChannels={() => setPage("ChangeChannels")}
         />
       );
 
@@ -242,6 +256,14 @@ const App = () => {
       return (
         <SafetySupportAndCommunity
           setPageHome={() => setPage("Home")}
+          setPageSettings={() => setPage("Settings")}
+          setPageDateTracking={() => setPage("DateTracking")}
+          setPageProfile={() => setPage("Profile")}
+          setPageViewYourMatches={() => setPage("ViewYourMatches")}
+          setPageMatchMessages={() => setPage("MatchMessages")}
+          setPageEditPreferences={() => setPage("EditPreferences")}
+          setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
+          setPageChangeChannels={() => setPage("ChangeChannels")}
         />
       );
 
@@ -249,6 +271,14 @@ const App = () => {
       return (
         <ChangeChannels
           setPageHome={() => setPage("Home")}
+          setPageSettings={() => setPage("Settings")}
+          setPageDateTracking={() => setPage("DateTracking")}
+          setPageProfile={() => setPage("Profile")}
+          setPageViewYourMatches={() => setPage("ViewYourMatches")}
+          setPageMatchMessages={() => setPage("MatchMessages")}
+          setPageEditPreferences={() => setPage("EditPreferences")}
+          setPageSafetySupportAndCommunity={() => setPage("SafetySupportAndCommunity")}
+          setPageChangeChannels={() => setPage("ChangeChannels")}
         />
       );
     default:

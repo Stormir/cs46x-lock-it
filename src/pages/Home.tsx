@@ -501,6 +501,9 @@ React.useEffect(() => {
         onSettingsClick={setPageSettings}
         onSignOutClick={handleClickSignOut}
         onDateTrackerClick={setPageDateTracking}
+        onPreferencesClick={setPageEditPreferences}
+        onSafetyClick={setPageSafetySupportAndCommunity}
+        onChangeChannelsClick={setPageChangeChannels}
       />
 
       {/* Main page */}
