@@ -1,17 +1,12 @@
 import React from "react";
 import { supabase } from "../client";
 import { useSession } from "../api/useSession";
-
-import LogoPinkHome from "../assets/logo/logo_pink_home.svg";
-import GoBackButton from "../assets/icons/go_back_button.svg";
+import TopBar from "../components/TopBar";
+import BottomNav from "../components/BottomNav";
 
 // ----------------------
 // Constants 
 // ----------------------
-
-//Lock it brand colors 
-const BRAND = "#382543";
-const BODY_TEXT = "#382543";
 
 // Supabase Storage settings for profile uploads 
 const PROFILE_MEDIA_BUCKET = "profile-media";
@@ -53,6 +48,14 @@ const PROMPT_2_OPTIONS = [
 //Props passed from app.tsx
 type EditProfileProps = {
   setPageProfile: () => void;
+  setPageHome: () => void;
+  setPageSettings: () => void;
+  setPageDateTracking: () => void;
+  setPageMatches: () => void;
+  setPageMatchMessages: () => void;
+  setPageEditPreferences: () => void;
+  setPageSafetySupportAndCommunity: () => void;
+  setPageChangeChannels: () => void;
 };
 
 // Row shape from profile_media table
@@ -201,7 +204,17 @@ async function addSignedUrlToMedia(
 // ----------------------
 
 
-const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
+const EditProfile: React.FC<EditProfileProps> = ({
+  setPageProfile,
+  setPageHome,
+  setPageSettings,
+  setPageDateTracking,
+  setPageMatches,
+  setPageMatchMessages,
+  setPageEditPreferences,
+  setPageSafetySupportAndCommunity,
+  setPageChangeChannels
+}) => {
   // Current logged-in user session
   const { session, loading: sessionLoading } = useSession();
 
@@ -640,43 +653,41 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
   }, [previewUrl]);
 
   return (
-    <div
-      className="min-h-screen overflow-y-auto pb-10"
-      style={{
-        backgroundColor: "#f3f3f3",
-        color: BODY_TEXT,
-        fontFamily: "Nunito, system-ui, sans-serif"
-      }}
-    >
-      {/* Header */}
-      <header className="sticky top-0 z-40" style={{ backgroundColor: BRAND }}>
-        <div className="mx-auto flex max-w-[320px] items-center justify-between px-3 py-2">
-          <button
-            type="button"
-            onClick={setPageProfile}
-            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/10"
-            aria-label="Go back to profile"
-          >
-            <img src={GoBackButton} alt="" className="h-5 w-5" />
-          </button>
+  <div className="min-h-screen bg-white pb-20 flex flex-col">
+    <TopBar
+      onHomeClick={setPageHome}
+      onSettingsClick={setPageSettings}
+      onDateTrackerClick={setPageDateTracking}
+      onPreferencesClick={setPageEditPreferences}
+      onSafetyClick={setPageSafetySupportAndCommunity}
+      onChangeChannelsClick={setPageChangeChannels}
+    />
 
-          <img src={LogoPinkHome} alt="Lock It" className="h-9" />
-        </div>
-      </header>
+    <main className="mx-auto w-full px-2 py-0 pb-28 sm:max-w-[360px]">
+      <section className="bg-white p-2">
 
-      {/* Main edit profile content */}
-      <main className="mx-auto max-w-[320px] px-3 py-5">
-        <section className="border border-neutral-500 bg-white p-2">
-          {/* Page title */}
-          <section className="mb-3 border border-neutral-300 bg-white p-3">
-            <h1 className="text-base font-bold text-[#382543]">
-              Edit Profile
-            </h1>
+        {/* Edit Profile Header */}
+        <section className="mb-1 bg-white p-2">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <h1 className="text-base font-bold leading-tight text-[#382543]">
+                Edit Profile
+              </h1>
 
-            <p className="mt-1 text-[11px] text-neutral-500">
-              Update your profile photos and details here.
-            </p>
-          </section>
+              <p className="mt-1 text-xs text-[#382543]">
+                Update your profile photos and details here.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={setPageProfile}
+              className="text-[11px] font-semibold text-[#382543] underline underline-offset-2"
+            >
+              Done
+            </button>
+          </div>
+        </section>
 
           {/* Photo upload section */}
           <section className="mb-3 border border-neutral-300 bg-white">
@@ -686,7 +697,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
 
             <div className="p-3">
               <label className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-neutral-300 bg-neutral-100 px-3 py-6 text-center hover:bg-neutral-200">
-                <span className="text-xs font-semibold text-[#382543]">
+                <span className="text-xs font-semibold text-neutral-400">
                   Choose photo
                 </span>
 
@@ -712,8 +723,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
                 type="button"
                 onClick={handleUploadPhoto}
                 disabled={!selectedPhoto || uploading || media.length >= MAX_PROFILE_MEDIA}
-                className="mt-3 w-full border border-[#382543] bg-white px-3 py-2 text-xs font-semibold text-[#382543] transition-colors
-                 hover:bg-[#382543] hover:text-white active:bg-[#2b1c34] disabled:cursor-not-allowed disabled:border-neutral-300 disabled:bg-white disabled:text-[#382543] disabled:opacity-40"
+                className="mt-3 w-full border border-[#382543] bg-white px-3 py-2 text-xs font-semibold text-neutral-400 transition-colors
+                 hover:bg-[#382543] hover:text-white active:bg-[#2b1c34] disabled:cursor-not-allowed disabled:border-neutral-300 disabled:bg-white disabled:text-neutral-400 disabled:opacity-40"
               >
                 {uploading ? "Uploading..." : "Upload photo"}
               </button>
@@ -779,7 +790,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
                         />
 
                         {item.is_primary && (
-                        <span className="absolute left-1 top-1 rounded bg-white/80 px-1 py-0.5 text-[9px] font-semibold text-[#382543]">
+                        <span className="absolute left-1 top-1 rounded bg-white/80 px-1 py-0.5 text-[9px] font-semibold text-neutral-400">
                             Primary
                         </span>
                       )}
@@ -808,7 +819,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
           <EditSection title="Demographics">
 
             <TextField
-                label="City"
+                label="Home Town"
                 name="display_city"
                 value={profileForm.display_city}
                 onChange={handleProfileChange}
@@ -1062,9 +1073,16 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
           >
             {profileSaving ? "Saving..." : "Save Profile"}
           </button>
-        </section>
-      </main>
-    </div>
+              </section>
+    </main>
+    <BottomNav
+      onHomeClick={setPageHome}
+      onProfileClick={setPageProfile}
+      onDateTrackerClick={setPageDateTracking}
+      onMatchesClick={setPageMatches}
+      onMatchMessagesClick={setPageMatchMessages}
+    />
+  </div>
   );
 };
 
@@ -1101,14 +1119,14 @@ function TextField({
 }) {
   return (
     <label className="flex min-h-9 items-center gap-2 border-b border-neutral-100 px-3 py-2 last:border-b-0 text-[11px]">
-      <span className="shrink-0 font-medium text-[#7A1E43]">{label}</span>
+      <span className="shrink-0 font-medium text-[#382543]">{label}</span>
 
       <input
         name={name}
         type={type}
         value={value}
         onChange={onChange}
-        className="min-w-0 flex-1 bg-transparent text-right text-[11px] font-medium text-[#382543] outline-none placeholder:text-neutral-300"
+        className="min-w-0 flex-1 bg-transparent text-right text-[11px] font-medium text-neutral-400 outline-none placeholder:text-neutral-300"
       />
     </label>
   );
@@ -1127,7 +1145,7 @@ function TextAreaField({
 }) {
   return (
     <label className="block text-[11px]">
-      <div className="border-b border-neutral-100 px-3 py-2 font-medium text-[#7A1E43]">
+      <div className="border-b border-neutral-100 px-3 py-2 font-medium text-[#382543]">
         {label}
       </div>
 
@@ -1137,7 +1155,7 @@ function TextAreaField({
         onChange={onChange}
         rows={4}
         placeholder="Start typing here..."
-        className="min-h-28 w-full resize-none bg-white px-3 py-2 text-[11px] text-[#382543] outline-none placeholder:text-neutral-300"
+        className="min-h-28 w-full resize-none bg-white px-3 py-2 text-[11px] text-neutral-400 outline-none placeholder:text-neutral-300"
       />
     </label>
   );
@@ -1158,13 +1176,13 @@ function SelectField({
 }) {
   return (
     <label className="flex min-h-9 items-center gap-2 border-b border-neutral-100 px-3 py-2 text-[11px] last:border-b-0">
-      <span className="shrink-0 font-medium text-[#7A1E43]">{label}</span>
+      <span className="shrink-0 font-medium text-[#382543]">{label}</span>
 
       <select
         name={name}
         value={value}
         onChange={onChange}
-        className="min-w-0 flex-1 appearance-none bg-transparent text-right text-[11px] font-medium text-[#382543] outline-none"
+        className="min-w-0 flex-1 appearance-none bg-transparent text-right text-[11px] font-medium text-neutral-400 outline-none"
       >
         <option value="">Select one</option>
 
@@ -1183,7 +1201,7 @@ function SelectField({
         })}
       </select>
 
-      <span className="text-[#7A1E43]">›</span>
+      <span className="text-[#382543]">›</span>
     </label>
   );
 }

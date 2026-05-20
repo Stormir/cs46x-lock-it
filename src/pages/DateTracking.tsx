@@ -9,7 +9,8 @@ import "../styles/DateTracking.css";
 import TopBar from "../components/TopBar";
 import BottomNav from "../components/BottomNav";
 import { ArrowLocationIcon, GlobeIcon, LiveDatesIcon, PastFutureDatesIcon,
-          ScheduleDateIcon, TrustedContactsIcon, YourLocationIcon, AddButtonIcon
+          ScheduleDateIcon, TrustedContactsIcon, YourLocationIcon, AddButtonIcon,
+          TCAddButton, TCDeclineButton
         } from "../components/DateTrackingIcons.tsx";
 import { supabase } from "../client";
 
@@ -589,7 +590,7 @@ useEffect(() => {
                 <p className="module-display-title">Live Dates</p>
 
                 {pendingInvite && (
-                  <div className="live-invite-row">
+                  <div className="live-invite-row flex items-start">
                     <div className="live-invite-avatar">
                     </div>
 
@@ -598,13 +599,29 @@ useEffect(() => {
                         {pendingInvite.preferred_name} wants you to follow them
                       </p>
 
-                      <div className="live-invite-actions">
-                        <button type="button" className="live-action-btn" onClick={handleAcceptInvite}>
-                          Accept
+                      <div className="live-invite-actions -ml-1">
+                        <button
+                          type="button"
+                          onClick={handleAcceptInvite}
+                          className="bg-transparent border-none p-0"
+                        >
+                          <img
+                            src={TCAddButton}
+                            alt="Accept invite"
+                            className="h-6 w-auto object-contain"
+                          />
                         </button>
 
-                        <button type="button" className="live-action-btn" onClick={handleDeclineInvite}>
-                          Decline
+                        <button
+                          type="button"
+                          onClick={handleDeclineInvite}
+                          className="bg-transparent border-none p-0"
+                        >
+                          <img
+                            src={TCDeclineButton}
+                            alt="Decline invite"
+                            className="h-6 w-auto object-contain"
+                          />
                         </button>
                       </div>
                     </div>

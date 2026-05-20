@@ -118,11 +118,21 @@ const App = () => {
       );
 
   case "EditProfile":
-      return (
-        <EditProfile
-          setPageProfile={() => setPage("Profile")}
-        />
-      );
+    return (
+      <EditProfile
+        setPageProfile={() => setPage("Profile")}
+        setPageHome={() => setPage("Home")}
+        setPageSettings={() => setPage("Settings")}
+        setPageDateTracking={() => setPage("DateTracking")}
+        setPageMatches={() => setPage("Matches")}
+        setPageMatchMessages={() => setPage("MatchMessages")}
+        setPageEditPreferences={() => setPage("EditPreferences")}
+        setPageSafetySupportAndCommunity={() =>
+          setPage("SafetySupportAndCommunity")
+        }
+        setPageChangeChannels={() => setPage("ChangeChannels")}
+      />
+    );
   case "Matches":
     return (
       <Matches

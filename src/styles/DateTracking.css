@@ -328,11 +328,15 @@
 
 .live-invite-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
-  margin: 14px 24px 0;
+  margin: 14px 0px 0;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.live-invite-row .live-invite-avatar {
+  margin-top: 14px;
 }
 
 .live-invite-avatar {
@@ -355,6 +359,8 @@
 
 .live-invite-content {
   flex: 1;
+  text-align: left;
+  padding-top: 6px;
 }
 
 .live-invite-text {
