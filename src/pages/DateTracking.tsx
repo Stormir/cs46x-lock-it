@@ -537,7 +537,21 @@ useEffect(() => {
             )}
         </MapContainer>
 
-       
+        <button className="floating-map-btn top-btn">
+          <img
+            src={GlobeIcon}
+            alt="Map options"
+            className="h-5 w-5 object-contain"
+          />
+        </button>
+
+        <button className="floating-map-btn bottom-btn" onClick={recenterMap}>
+          <img
+            src={ArrowLocationIcon}
+            alt="Recenter map"
+            className="h-7 w-7 object-contain"
+          />
+        </button>
       </div>
 
       <div className={`tracking-card ${isCardMinimized ? "minimized" : ""}`}>
@@ -567,8 +581,6 @@ useEffect(() => {
         aria-label={isCardMinimized ? "Expand panel" : "Minimize panel"}
       >
       </button>
-
-      
         
 
         {!isCardMinimized && (
@@ -587,7 +599,7 @@ useEffect(() => {
                         {pendingInvite.preferred_name} wants you to follow them
                       </p>
 
-                      <div className="live-invite-actions">
+                      <div className="live-invite-actions -ml-1">
                         <button
                           type="button"
                           onClick={handleAcceptInvite}
