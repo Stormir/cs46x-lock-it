@@ -1,9 +1,8 @@
 import React from "react";
 import { supabase } from "../client";
 import { useSession } from "../api/useSession";
-
-import LogoPinkHome from "../assets/logo/logo_pink_home.svg";
-import GoBackButton from "../assets/icons/go_back_button.svg";
+import TopBar from "../components/TopBar";
+import BottomNav from "../components/BottomNav";
 
 // ----------------------
 // Constants 
@@ -53,6 +52,14 @@ const PROMPT_2_OPTIONS = [
 //Props passed from app.tsx
 type EditProfileProps = {
   setPageProfile: () => void;
+  setPageHome: () => void;
+  setPageSettings: () => void;
+  setPageDateTracking: () => void;
+  setPageMatches: () => void;
+  setPageMatchMessages: () => void;
+  setPageEditPreferences: () => void;
+  setPageSafetySupportAndCommunity: () => void;
+  setPageChangeChannels: () => void;
 };
 
 // Row shape from profile_media table
@@ -201,7 +208,17 @@ async function addSignedUrlToMedia(
 // ----------------------
 
 
-const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
+const EditProfile: React.FC<EditProfileProps> = ({
+  setPageProfile,
+  setPageHome,
+  setPageSettings,
+  setPageDateTracking,
+  setPageMatches,
+  setPageMatchMessages,
+  setPageEditPreferences,
+  setPageSafetySupportAndCommunity,
+  setPageChangeChannels
+}) => {
   // Current logged-in user session
   const { session, loading: sessionLoading } = useSession();
 
@@ -640,43 +657,41 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
   }, [previewUrl]);
 
   return (
-    <div
-      className="min-h-screen overflow-y-auto pb-10"
-      style={{
-        backgroundColor: "#f3f3f3",
-        color: BODY_TEXT,
-        fontFamily: "Nunito, system-ui, sans-serif"
-      }}
-    >
-      {/* Header */}
-      <header className="sticky top-0 z-40" style={{ backgroundColor: BRAND }}>
-        <div className="mx-auto flex max-w-[320px] items-center justify-between px-3 py-2">
-          <button
-            type="button"
-            onClick={setPageProfile}
-            className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/10"
-            aria-label="Go back to profile"
-          >
-            <img src={GoBackButton} alt="" className="h-5 w-5" />
-          </button>
+  <div className="min-h-screen bg-white pb-20 flex flex-col">
+    <TopBar
+      onHomeClick={setPageHome}
+      onSettingsClick={setPageSettings}
+      onDateTrackerClick={setPageDateTracking}
+      onPreferencesClick={setPageEditPreferences}
+      onSafetyClick={setPageSafetySupportAndCommunity}
+      onChangeChannelsClick={setPageChangeChannels}
+    />
 
-          <img src={LogoPinkHome} alt="Lock It" className="h-9" />
-        </div>
-      </header>
+    <main className="mx-auto w-full px-2 py-0 pb-28 sm:max-w-[360px]">
+      <section className="bg-white p-2">
 
-      {/* Main edit profile content */}
-      <main className="mx-auto max-w-[320px] px-3 py-5">
-        <section className="border border-neutral-500 bg-white p-2">
-          {/* Page title */}
-          <section className="mb-3 border border-neutral-300 bg-white p-3">
-            <h1 className="text-base font-bold text-[#382543]">
-              Edit Profile
-            </h1>
+        {/* Edit Profile Header */}
+        <section className="mb-1 bg-white p-2">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <h1 className="text-base font-bold leading-tight text-[#382543]">
+                Edit Profile
+              </h1>
 
-            <p className="mt-1 text-[11px] text-neutral-500">
-              Update your profile photos and details here.
-            </p>
-          </section>
+              <p className="mt-1 text-xs text-neutral-500">
+                Update your profile photos and details here.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={setPageProfile}
+              className="text-[11px] font-semibold text-[#382543] underline underline-offset-2"
+            >
+              Done
+            </button>
+          </div>
+        </section>
 
           {/* Photo upload section */}
           <section className="mb-3 border border-neutral-300 bg-white">
@@ -1062,9 +1077,16 @@ const EditProfile: React.FC<EditProfileProps> = ({ setPageProfile }) => {
           >
             {profileSaving ? "Saving..." : "Save Profile"}
           </button>
-        </section>
-      </main>
-    </div>
+              </section>
+    </main>
+    <BottomNav
+      onHomeClick={setPageHome}
+      onProfileClick={setPageProfile}
+      onDateTrackerClick={setPageDateTracking}
+      onMatchesClick={setPageMatches}
+      onMatchMessagesClick={setPageMatchMessages}
+    />
+  </div>
   );
 };
 
