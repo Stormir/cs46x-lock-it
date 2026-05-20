@@ -819,7 +819,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
           <EditSection title="Demographics">
 
             <TextField
-                label="City"
+                label="Home Town"
                 name="display_city"
                 value={profileForm.display_city}
                 onChange={handleProfileChange}

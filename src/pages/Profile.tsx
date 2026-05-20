@@ -592,7 +592,7 @@ const Profile: React.FC<ProfileProps> = ({
 
             <IconDetail
               icon={HometownIcon}
-              label="City"
+              label="Home Town"
               value={displayCity}
             />
           </div>
