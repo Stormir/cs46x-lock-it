@@ -8,10 +8,6 @@ import BottomNav from "../components/BottomNav";
 // Constants 
 // ----------------------
 
-//Lock it brand colors 
-const BRAND = "#382543";
-const BODY_TEXT = "#382543";
-
 // Supabase Storage settings for profile uploads 
 const PROFILE_MEDIA_BUCKET = "profile-media";
 const MAX_PROFILE_MEDIA = 9;
@@ -678,7 +674,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                 Edit Profile
               </h1>
 
-              <p className="mt-1 text-xs text-neutral-500">
+              <p className="mt-1 text-xs text-[#382543]">
                 Update your profile photos and details here.
               </p>
             </div>
@@ -701,7 +697,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
 
             <div className="p-3">
               <label className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-neutral-300 bg-neutral-100 px-3 py-6 text-center hover:bg-neutral-200">
-                <span className="text-xs font-semibold text-[#382543]">
+                <span className="text-xs font-semibold text-neutral-400">
                   Choose photo
                 </span>
 
@@ -727,8 +723,8 @@ const EditProfile: React.FC<EditProfileProps> = ({
                 type="button"
                 onClick={handleUploadPhoto}
                 disabled={!selectedPhoto || uploading || media.length >= MAX_PROFILE_MEDIA}
-                className="mt-3 w-full border border-[#382543] bg-white px-3 py-2 text-xs font-semibold text-[#382543] transition-colors
-                 hover:bg-[#382543] hover:text-white active:bg-[#2b1c34] disabled:cursor-not-allowed disabled:border-neutral-300 disabled:bg-white disabled:text-[#382543] disabled:opacity-40"
+                className="mt-3 w-full border border-[#382543] bg-white px-3 py-2 text-xs font-semibold text-neutral-400 transition-colors
+                 hover:bg-[#382543] hover:text-white active:bg-[#2b1c34] disabled:cursor-not-allowed disabled:border-neutral-300 disabled:bg-white disabled:text-neutral-400 disabled:opacity-40"
               >
                 {uploading ? "Uploading..." : "Upload photo"}
               </button>
@@ -794,7 +790,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         />
 
                         {item.is_primary && (
-                        <span className="absolute left-1 top-1 rounded bg-white/80 px-1 py-0.5 text-[9px] font-semibold text-[#382543]">
+                        <span className="absolute left-1 top-1 rounded bg-white/80 px-1 py-0.5 text-[9px] font-semibold text-neutral-400">
                             Primary
                         </span>
                       )}
@@ -1123,14 +1119,14 @@ function TextField({
 }) {
   return (
     <label className="flex min-h-9 items-center gap-2 border-b border-neutral-100 px-3 py-2 last:border-b-0 text-[11px]">
-      <span className="shrink-0 font-medium text-[#7A1E43]">{label}</span>
+      <span className="shrink-0 font-medium text-[#382543]">{label}</span>
 
       <input
         name={name}
         type={type}
         value={value}
         onChange={onChange}
-        className="min-w-0 flex-1 bg-transparent text-right text-[11px] font-medium text-[#382543] outline-none placeholder:text-neutral-300"
+        className="min-w-0 flex-1 bg-transparent text-right text-[11px] font-medium text-neutral-400 outline-none placeholder:text-neutral-300"
       />
     </label>
   );
@@ -1149,7 +1145,7 @@ function TextAreaField({
 }) {
   return (
     <label className="block text-[11px]">
-      <div className="border-b border-neutral-100 px-3 py-2 font-medium text-[#7A1E43]">
+      <div className="border-b border-neutral-100 px-3 py-2 font-medium text-[#382543]">
         {label}
       </div>
 
@@ -1159,7 +1155,7 @@ function TextAreaField({
         onChange={onChange}
         rows={4}
         placeholder="Start typing here..."
-        className="min-h-28 w-full resize-none bg-white px-3 py-2 text-[11px] text-[#382543] outline-none placeholder:text-neutral-300"
+        className="min-h-28 w-full resize-none bg-white px-3 py-2 text-[11px] text-neutral-400 outline-none placeholder:text-neutral-300"
       />
     </label>
   );
@@ -1180,13 +1176,13 @@ function SelectField({
 }) {
   return (
     <label className="flex min-h-9 items-center gap-2 border-b border-neutral-100 px-3 py-2 text-[11px] last:border-b-0">
-      <span className="shrink-0 font-medium text-[#7A1E43]">{label}</span>
+      <span className="shrink-0 font-medium text-[#382543]">{label}</span>
 
       <select
         name={name}
         value={value}
         onChange={onChange}
-        className="min-w-0 flex-1 appearance-none bg-transparent text-right text-[11px] font-medium text-[#382543] outline-none"
+        className="min-w-0 flex-1 appearance-none bg-transparent text-right text-[11px] font-medium text-neutral-400 outline-none"
       >
         <option value="">Select one</option>
 
@@ -1205,7 +1201,7 @@ function SelectField({
         })}
       </select>
 
-      <span className="text-[#7A1E43]">›</span>
+      <span className="text-[#382543]">›</span>
     </label>
   );
 }
