@@ -97,7 +97,7 @@ export async function signOut() {
 // Must be updated after we launch website 
 export async function sendPasswordResetEmail(email: string){
   const {data, error} = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "http://localhost:5173/lock-it/reset-password",
+    redirectTo: "https://main.d17a0g9c59ekyv.amplifyapp.com/reset-password",
   });
   if (error) {
     console.error("Password reset email failed:", error.message);
