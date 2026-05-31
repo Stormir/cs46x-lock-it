@@ -507,11 +507,15 @@ useEffect(() => {
             attribution="&copy; OpenStreetMap contributors &copy; CARTO"
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           />
-          */}
           <TileLayer
             attribution='&copy; OpenStreetMap contributors'
             url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
             noWrap={true}
+          />
+          */}
+          <TileLayer
+            url={`https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=${import.meta.env.VITE_STADIA_API_KEY}`}
+            attribution='&copy; Stadia Maps'
           />
 
           {position && (
