@@ -23,7 +23,7 @@ import PauseAccount from "./pages/PauseAccount.tsx";
 import DeactivateAccount from "./pages/DeactivateAccount.tsx";
 import PrivacyPreferences from "./pages/PrivacyPreferences.tsx";
 import VerifyTest from "./pages/VerifyTest.tsx";
-
+import { signOut } from "./api/auth";
 
 type PageEnum =
   | "Home"
@@ -195,8 +195,24 @@ const App = () => {
     );
   
   case "VerifyTest":
-      return <VerifyTest onBack={() => setPage("Home")} />;
-
+    return (
+      <VerifyTest
+        onBack={() => setPage("Settings")}
+        onHomeClick={() => setPage("Home")}
+        onSettingsClick={() => setPage("Settings")}
+        onSignOutClick={async () => {
+          await signOut();
+          setPage("Landing");
+        }}
+        onDateTrackerClick={() => setPage("DateTracking")}
+        onProfileClick={() => setPage("Profile")}
+        onMatchesClick={() => setPage("Matches")}
+        onMatchMessagesClick={() => setPage("MatchMessages")}
+        onPreferencesClick={() => setPage("EditPreferences")}
+        onSafetyClick={() => setPage("SafetySupportAndCommunity")}
+        onChangeChannelsClick={() => setPage("ChangeChannels")}
+      />
+    );
     case "Landing":
       return <Landing setPageHome={() => setPage("Home")} />;
 
